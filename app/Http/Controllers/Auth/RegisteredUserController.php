@@ -49,6 +49,9 @@ class RegisteredUserController extends Controller
         $adminEmail = 'krobotechies@gmail.com';
         $userRole = Role::where('name', 'user')->first();
         $adminRole = Role::where('name', 'admin')->first();
+        
+        
+        // check to see if the auth user has an admin email and then assign role
 
         if ($user->email === $adminEmail && $adminRole) {
             $user->assignRole($adminRole);

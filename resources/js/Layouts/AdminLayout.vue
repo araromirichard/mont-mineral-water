@@ -13,11 +13,11 @@
                     </div>
 
                     <!-- Navigation Links -->
-                    <div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
+                    <!-- <div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
                         <NavLink :href="route('dashboard')" :active="route().current('dashboard')">
                             Dashboard
                         </NavLink>
-                    </div>
+                    </div> -->
                 </div>
 
                 <div class="hidden sm:flex sm:items-center sm:ml-6">
@@ -27,15 +27,15 @@
                             <template #trigger>
                                 <span class="inline-flex rounded-md">
                                     <button type="button"
-                                        class="inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md text-gray-500 bg-white hover:text-gray-700 focus:outline-none transition ease-in-out duration-150">
+                                        class="inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-full text-gray-500 bg-white hover:bg-gray-100 hover:p-2 focus:outline-none transition ease-in-out duration-150 cursor-pointer">
                                         {{ $page.props.auth.user.name }}
 
-                                        <svg class="ml-2 -mr-0.5 h-4 w-4" xmlns="http://www.w3.org/2000/svg"
-                                            viewBox="0 0 20 20" fill="currentColor">
-                                            <path fill-rule="evenodd"
-                                                d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
-                                                clip-rule="evenodd" />
+                                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                                            stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+                                            <path stroke-linecap="round" stroke-linejoin="round"
+                                                d="M17.982 18.725A7.488 7.488 0 0012 15.75a7.488 7.488 0 00-5.982 2.975m11.963 0a9 9 0 10-11.963 0m11.963 0A8.966 8.966 0 0112 21a8.966 8.966 0 01-5.982-2.275M15 9.75a3 3 0 11-6 0 3 3 0 016 0z" />
                                         </svg>
+
                                     </button>
                                 </span>
                             </template>
@@ -56,14 +56,14 @@
                         class="inline-flex items-center justify-center p-2 rounded-md text-gray-400 hover:text-gray-500 hover:bg-gray-100 focus:outline-none focus:bg-gray-100 focus:text-gray-500 transition duration-150 ease-in-out">
                         <svg class="h-6 w-6" stroke="currentColor" fill="none" viewBox="0 0 24 24">
                             <path :class="{
-                                    hidden: showingNavigationDropdown,
-                                    'inline-flex': !showingNavigationDropdown,
-                                }" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                hidden: showingNavigationDropdown,
+                                'inline-flex': !showingNavigationDropdown,
+                            }" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                 d="M4 6h16M4 12h16M4 18h16" />
                             <path :class="{
-                                    hidden: !showingNavigationDropdown,
-                                    'inline-flex': showingNavigationDropdown,
-                                }" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                hidden: !showingNavigationDropdown,
+                                'inline-flex': showingNavigationDropdown,
+                            }" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                 d="M6 18L18 6M6 6l12 12" />
                         </svg>
                     </button>
@@ -77,13 +77,13 @@
                 <ResponsiveNavLink :href="route('admin.index')" :active="route().current('admin.index')">
                     Dashboard
                 </ResponsiveNavLink>
-                <ResponsiveNavLink>
+                <ResponsiveNavLink :href="route('admin.users.index')" :active="route().current('admin.users.index')">
                     Users
                 </ResponsiveNavLink>
-                <ResponsiveNavLink>
+                <ResponsiveNavLink :href="route('admin.products.index')" :active="route().current('admin.products.index')">
                     Products
                 </ResponsiveNavLink>
-                <ResponsiveNavLink>
+                <ResponsiveNavLink href="#">
                     Orders
                 </ResponsiveNavLink>
             </div>
@@ -108,17 +108,18 @@
     </nav>
 
     <aside id="logo-sidebar"
-        class="fixed top-0 left-0 z-40 w-64 h-screen pt-20 transition-transform -translate-x-full bg-gray-50 border-r border-gray-200 sm:translate-x-0 dark:bg-gray-800 dark:border-gray-700"
+        class="fixed top-0 left-0 z-40 w-64 h-screen pt-20 transition-transform -translate-x-full bg-neutrals-200 border-r border-gray-200 sm:translate-x-0 dark:bg-gray-800 dark:border-gray-700"
         aria-label="Sidebar">
 
-        <div class="h-full px-3 pb-4 overflow-y-auto bg-gray-50 dark:bg-gray-800">
+        <div class="h-full px-3 pb-4 overflow-y-auto bg-neutrals-200 dark:bg-gray-800">
             <!-- Logo -->
             <div class="shrink-0 flex items-center">
                 <Link :href="route('dashboard')">
                 <ApplicationLogo class="block h-14 w-auto fill-current text-gray-800" />
                 </Link>
             </div>
-            <SideNavLinks class="flex items-center mt-4 py-2 px-6 bg-gray-700 bg-opacity-25 text-gray-100"
+            <SideNavLinks
+                class="flex items-center mt-4 py-2 px-6 text-gray-500 hover:bg-gray-700 hover:bg-opacity-25 hover:text-gray-100"
                 :href="route('admin.index')" :active="route().current('admin.index')">
                 <svg class="h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
                     stroke="currentColor">
@@ -131,7 +132,7 @@
                 <span class="mx-3">Dashboard</span>
             </SideNavLinks>
 
-            <SideNavLinks
+            <SideNavLinks :href="route('admin.users.index')" :active="route().current('admin.users.index')"
                 class="flex items-center mt-4 py-2 px-6 text-gray-500 hover:bg-gray-700 hover:bg-opacity-25 hover:text-gray-100">
                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
                     stroke="currentColor" class="w-6 h-6">
@@ -140,7 +141,7 @@
                 </svg>
                 <span class="mx-3">Users</span>
             </SideNavLinks>
-            <SideNavLinks
+            <SideNavLinks :href="route('admin.products.index')" :active="route().current('admin.products.index')"
                 class="flex items-center mt-4 py-2 px-6 text-gray-500 hover:bg-gray-700 hover:bg-opacity-25 hover:text-gray-100">
                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
                     stroke="currentColor" class="w-6 h-6">
@@ -149,7 +150,7 @@
                 </svg>
                 <span class="mx-3">Products</span>
             </SideNavLinks>
-            <SideNavLinks
+            <SideNavLinks href="#"
                 class="flex items-center mt-4 py-2 px-6 text-gray-500 hover:bg-gray-700 hover:bg-opacity-25 hover:text-gray-100">
                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
                     stroke="currentColor" class="w-6 h-6">
