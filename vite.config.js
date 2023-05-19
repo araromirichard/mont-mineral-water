@@ -18,9 +18,9 @@ export default defineConfig({
             },
         }),
     ],
-    resolve: {
-        alias: {
-            'gsap': 'gsap' // Add this line
-        }
-    }
+    // resolve: {
+    //     alias: {
+    //         'gsap': 'gsap' // Add this line
+    //     }
+    // }
 });

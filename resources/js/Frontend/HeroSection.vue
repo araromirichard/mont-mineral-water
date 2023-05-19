@@ -12,7 +12,7 @@
                 of togetherness</p>
             <p class="font-sans text-lg sm:text-xl font-normal tracking-wider text-white pt-2 sm:pt-5">Don’t Drink Alone</p>
 
-            <MontButton class="mt-2 sm:mt-4">
+            <MontButton class="mt-2 sm:mt-4" :has-icon="true">
                 Shop Now
                 <template v-slot:icon>
                     <svg class="hidden sm:block animate-bounce" width="14" height="10" viewBox="0 0 14 10" fill="none"
@@ -30,21 +30,25 @@
 </template>
   
 <script setup>
-import { onMounted } from 'vue';
-import { gsap } from 'gsap';
-import MontButton from '@/Components/MontButton.vue'
+import { onMounted, inject, nextTick } from 'vue';
+// import { gsap } from 'gsap';
+import MontButton from '@/Components/MontButton.vue';
+
+const gsap = inject('gsap')
 
 onMounted(() => {
-    gsap.to('.cloud', {
-        x: '-100%',
-        repeat: -1,
-        ease: 'linear',
-        duration: 20,
-        stagger: {
-            each: 5,
-            from: 'random'
-        }
-    });
+    nextTick(() => {
+        gsap.to('.cloud', {
+            x: '-100%',
+            repeat: -1,
+            ease: 'linear',
+            duration: 20,
+            stagger: {
+                each: 5,
+                from: 'random'
+            }
+        });
+    })
 });
 </script>
   

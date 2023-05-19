@@ -1,9 +1,9 @@
 <script setup>
-import { gsap } from 'gsap';
+// import { gsap } from 'gsap';
 
 import { Head, Link } from '@inertiajs/vue3';
 import CartModal from '@/Components/CartModal.vue'
-import { nextTick, ref } from 'vue';
+import { nextTick, ref, inject } from 'vue';
 import ApplicationLogo from '@/Components/ApplicationLogo.vue';
 import IconButton from '@/Components/IconButton.vue';
 import NavLink from '@/Components/NavLink.vue';
@@ -26,7 +26,11 @@ const handleOpenCart = () => {
 };
 const closeModal = () => {
     openCart.value = false;
-}
+};
+
+const gsap = inject('gsap');
+
+
 
 function animateIn() {
     showShopDropdown.value = true;
