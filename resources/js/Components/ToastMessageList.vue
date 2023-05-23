@@ -1,7 +1,7 @@
 <template>
     <TransitionGroup tag="div" enter-active-class="duration-500" enter-from-class="translate-x-full opacity-0"
         leave-active-class="duration-500" leave-to-class="translate-x-full opacity-0"
-        class="fixed top-5 right-5 w-full max-w-xs z-50 space-y-2">
+        class="fixed top-5 right-10 w-full max-w-2xl z-50 space-y-2">
         <ToastMessage v-for="(item, index) in toast.items" :key="item.key" :message="item.message" :type="item.type"
             @remove="remove(index)" />
     </TransitionGroup>

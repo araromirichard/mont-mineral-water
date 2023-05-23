@@ -1,8 +1,9 @@
 <script setup>
 
 import InputError from '@/Components/InputError.vue';
-import InputLabel from '@/Components/InputLabel.vue';
-import PrimaryButton from '@/Components/PrimaryButton.vue';
+import AppLayout from '@/Layouts/AppLayout.vue';
+
+import FormButton from '@/Components/FormButton.vue';
 import TextInput from '@/Components/TextInput.vue';
 import { Head, useForm } from '@inertiajs/vue3';
 
@@ -22,40 +23,34 @@ const submit = () => {
 </script>
 
 <template>
-    <div>
-        <Head title="Forgot Password" />
+    <AppLayout>
+        <div class="container mx-auto my-10 flex justify-center items-center  min-h-[70vh] ">
+            <div class="bg-neutral-100 max-w-xl p-8 rounded-sm">
+                <p class="text-primary-500 font-bold text-base py-2">Forgot Password?</p>
 
-        <div class="mb-4 text-sm text-gray-600">
-            Forgot your password? No problem. Just let us know your email address and we will email you a password reset
-            link that will allow you to choose a new one.
-        </div>
+                <div class="mb-4 text-sm text-gray-600">
+                    No problem. Just let us know your email address and we will email you a password
+                    reset
+                    link that will allow you to choose a new one.
+                </div>
 
-        <div v-if="status" class="mb-4 font-medium text-sm text-green-600">
-            {{ status }}
-        </div>
 
-        <form @submit.prevent="submit">
-            <div>
-                <InputLabel for="email" value="Email" />
+                <form @submit.prevent="submit">
+                    <div>
 
-                <TextInput
-                    id="email"
-                    type="email"
-                    class="mt-1 block w-full"
-                    v-model="form.email"
-                    required
-                    autofocus
-                    autocomplete="username"
-                />
+                        <TextInput id="email" type="email" class="mt-1 block w-full" v-model="form.email" required autofocus
+                            autocomplete="username" />
 
-                <InputError class="mt-2" :message="form.errors.email" />
+                        <InputError class="mt-2" :message="form.errors.email" />
+                    </div>
+
+                    <div class="flex items-center justify-end mt-4">
+                        <FormButton class="" :class="{ 'opacity-25': form.processing }" :disabled="form.processing">
+                            Register
+                        </FormButton>
+                    </div>
+                </form>
             </div>
-
-            <div class="flex items-center justify-end mt-4">
-                <PrimaryButton :class="{ 'opacity-25': form.processing }" :disabled="form.processing">
-                    Email Password Reset Link
-                </PrimaryButton>
-            </div>
-        </form>
-    </div>
+        </div>
+    </AppLayout>
 </template>

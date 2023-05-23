@@ -12,7 +12,7 @@
                 of togetherness</p>
             <p class="font-sans text-lg sm:text-xl font-normal tracking-wider text-white pt-2 sm:pt-5">Don’t Drink Alone</p>
 
-            <MontButton class="mt-2 sm:mt-4" :has-icon="true">
+            <Link  class="inline-flex items-center mt-2 sm:mt-4 px-5 py-3 bg-primary-500 border border-transparent rounded-full font-semibold text-sm text-white capitalize tracking-widest hover:bg-gray-700 focus:bg-gray-700 active:bg-gray-900 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 transition ease-in-out duration-150 space-x-2" :has-icon="true">
                 Shop Now
                 <template v-slot:icon>
                     <svg class="hidden sm:block animate-bounce" width="14" height="10" viewBox="0 0 14 10" fill="none"
@@ -23,7 +23,7 @@
                     </svg>
 
                 </template>
-            </MontButton>
+            </Link>
 
         </div>
     </div>
@@ -31,10 +31,9 @@
   
 <script setup>
 import { onMounted, inject, nextTick } from 'vue';
-// import { gsap } from 'gsap';
+ import { gsap } from 'gsap';
 import MontButton from '@/Components/MontButton.vue';
 
-const gsap = inject('gsap')
 
 onMounted(() => {
     nextTick(() => {

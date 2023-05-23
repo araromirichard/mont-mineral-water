@@ -50,6 +50,7 @@ onUnmounted(() => {
 
 const maxWidthClass = computed(() => {
     return {
+        mobile: 'w-full',
         sm: 'sm:max-w-sm',
         md: 'sm:max-w-md',
         lg: 'sm:max-w-lg',
@@ -85,7 +86,7 @@ const maxWidthClass = computed(() => {
                     </div> -->
 
                     <div v-show="show"
-                        class="mt-0 bg-neutrals-100 overflow-hidden shadow-xl transform transition-all sm:w-full absolute top-0 right-0"
+                        class="mt-0 bg-neutrals-50 h-screen sm:h-auto overflow-hidden shadow-xl transform transition-all sm:w-full absolute top-0 right-0"
                         :class="maxWidthClass">
                         <slot v-if="show" />
                     </div>

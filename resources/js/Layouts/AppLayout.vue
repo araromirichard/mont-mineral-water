@@ -1,14 +1,16 @@
 <script setup>
-// import { gsap } from 'gsap';
-
+import { gsap } from 'gsap';
+import { Modal } from 'momentum-modal'
 import { Head, Link } from '@inertiajs/vue3';
 import CartModal from '@/Components/CartModal.vue'
-import { nextTick, ref, inject } from 'vue';
+import { computed, nextTick, ref } from 'vue';
 import ApplicationLogo from '@/Components/ApplicationLogo.vue';
-import IconButton from '@/Components/IconButton.vue';
+import ShopCart from '@/Components/ShopCart.vue';
+import { cartCount } from '@/Stores/cart'
 import NavLink from '@/Components/NavLink.vue';
 import ResponsiveNavLink from '@/Components/ResponsiveNavLink.vue';
 import ToastMessageList from '@/Components/ToastMessageList.vue';
+
 
 const showingNavigationDropdown = ref(false);
 const showDropdown = ref(false);
@@ -17,7 +19,11 @@ const showShopDropdown = ref(false);
 const toggleDropdown = () => {
     showDropdown.value = !showDropdown.value;
 
-}
+};
+
+
+
+
 const openCart = ref(false);
 const shopDropdown = ref(null);
 
@@ -28,9 +34,10 @@ const closeModal = () => {
     openCart.value = false;
 };
 
-const gsap = inject('gsap');
-
-
+const modalWidth = computed(() => {
+    const isMobile = window.innerWidth <= 768;
+    return isMobile ? 'mobile' : 'lg';
+});
 
 function animateIn() {
     showShopDropdown.value = true;
@@ -42,7 +49,7 @@ function animateIn() {
             ease: 'power2.out',
         });
     });
-}
+};
 
 function animateOut() {
     gsap.to(shopDropdown.value, {
@@ -54,17 +61,19 @@ function animateOut() {
             showShopDropdown.value = false;
         },
     });
-}
+};
+
 
 
 
 </script>
 
 <template>
-    <Head title="Home" />
+    <Head title="Mont |" />
+ 
     <ToastMessageList />
     <nav class="bg-white fixed w-full z-20 top-0 left-0 border-b border-neutral-100">
-        <div class="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4">
+        <div class="max-w-screen-xl flex flex-wrap items-center justify-between container mx-auto py-4">
             <button @click="showingNavigationDropdown = !showingNavigationDropdown"
                 class="inline-flex items-center sm:hidden justify-center p-2 rounded-md text-neutral-500 hover:text-gray-500 hover:bg-gray-100 focus:outline-none focus:bg-gray-100 focus:text-gray-500 transition duration-150 ease-in-out">
                 <svg class="h-6 w-6" stroke="currentColor" fill="none" viewBox="0 0 24 24">
@@ -86,7 +95,7 @@ function animateOut() {
             <div class="flex sm:order-2 md:space-x-2">
                 <!-- Cart button and other buttons -->
                 <button @click="handleOpenCart"
-                    class="p-2 hover:bg-neutral-100 rounded-full transition duration-75 ease-in">
+                    class="relative p-2 hover:bg-neutral-100 rounded-full transition duration-75 ease-in">
                     <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                         <path d="M5.28052 17.5L3.80251 9.5H21.1975L19.7195 17.5H5.28052Z" stroke="#051C2C" stroke-width="3"
                             stroke-linejoin="round" />
@@ -96,7 +105,11 @@ function animateOut() {
                             d="M3.46535 1.67945C3.28832 0.870164 2.48875 0.357618 1.67945 0.53465C0.870164 0.711682 0.357618 1.51125 0.53465 2.32055L3.46535 1.67945ZM6.96535 17.6795L3.46535 1.67945L0.53465 2.32055L4.03465 18.3205L6.96535 17.6795Z"
                             fill="#051C2C" />
                     </svg>
+                    <span v-if="cartCount > 0"
+                        class="absolute top-2 right-1 -mt-1 -mr-1 px-[6px] text-xs font-normal text-white bg-secondary-400 rounded-full">{{
+                            cartCount }}</span>
                 </button>
+
                 <button @click="toggleDropdown"
                     class="p-2 hover:bg-neutral-100 rounded-full transition duration-75 ease-in">
                     <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -147,7 +160,7 @@ function animateOut() {
                 <div class="hidden space-x-8 sm:flex">
 
                     <div>
-                        <NavLink href="#" @mouseover="animateIn">
+                        <NavLink :href="route('shop')" @mouseover="animateIn">
                             Shop
                         </NavLink>
                         <div v-if="showShopDropdown" @mouseout="animateOut" ref="shopDropdown"
@@ -169,10 +182,10 @@ function animateOut() {
                         </div>
                     </div>
 
-                    <NavLink href="#">
+                    <NavLink :href="route('contact.mont')">
                         Contact Us
                     </NavLink>
-                    <NavLink href="#">
+                    <NavLink :href="route('about.mont')">
                         About Mont
                     </NavLink>
                 </div>
@@ -215,46 +228,16 @@ function animateOut() {
 
 
     </nav>
-    <CartModal :show="openCart" @close="closeModal">
-        <div class="p-6 block justify-center">
-            <div class="flex items-center justify-end w-full">
-                <button @click="closeModal"
-                    class="p-2 hover:bg-white text-neutral-400 rounded-full transition duration-75 ease-in">
-                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
-                        stroke="currentColor" class="w-6 h-6">
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
-                    </svg>
-
-                </button>
-            </div>
-            <div class="flex justify-center items-center text-primary-500 font-bold text-2xl">
-                Your cart
-            </div>
-            <div class="flex items-center justify-center py-4">
-                <img class=" w-68 h-64" src="/empty_cart.png
-               " alt="An Empty cart" />
-            </div>
-            <div class="block items-center justify-center">
-                <p class="text-center text-primary-500 text-base font-bold">Your Cart is Empty</p>
-            </div>
-            <div class="flex items-center justify-center mx-auto py-2" style="max-width: 250px;">
-                <p class="text-center">Looks like you haven’t added
-                    anything to your cart yet.</p>
-            </div>
-            <div class="flex justify-center items-center mx-auto pb-4">
-                <IconButton href="#" btn-inner-text="Start Shopping">
-                    Start Shopping
-                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
-                        stroke="currentColor" class="w-6 h-6 pl-2 animate-pulse font-semibold">
-                        <path stroke-linecap="round" stroke-linejoin="round"
-                            d="M4.5 12h15m0 0l-6.75-6.75M19.5 12l-6.75 6.75" />
-                    </svg>
-                </IconButton>
-            </div>
-
-        </div>
+    <CartModal :show="openCart" :max-width="modalWidth">
+        <ShopCart @close-modal="closeModal" />
     </CartModal>
+    <!-- <Link :href="route('cart')">
+        <Modal>
+            <ShopCart  />
+        </Modal>
+    </Link> -->
     <main class=" mt-[88px]">
+        
         <slot></slot>
     </main>
     <footer class="bg-primary-500 w-full h-[200px] flex justify-center items-center">
@@ -365,4 +348,9 @@ function animateOut() {
     font-size: 12px;
     line-height: 17px;
     color: #FFFFFF;
-}</style>
+}
+
+.badge {
+    @apply absolute top-0 right-0 -mt-1 -mr-1 px-1 text-xs font-semibold text-white bg-red-500 rounded-full;
+}
+</style>

@@ -31,7 +31,7 @@ class HandleInertiaRequests extends Middleware
     public function share(Request $request): array
     {
         $sharedData = parent::share($request);
-        
+
         $sharedData['csrf_token'] = csrf_token();
 
         // Add the user and Ziggy data to the shared data array
@@ -54,6 +54,8 @@ class HandleInertiaRequests extends Middleware
                 'error' => $request->session()->get('error') ?? null,
                 'info' => $request->session()->get('info') ?? null,
             ],
+
+            'message' => $request->session()->get('message') ?? null,
         ];
 
         return $sharedData;
