@@ -19,8 +19,6 @@
 </template>
 
 <script setup>
-import QuantitySelector from '@/Components/QuantitySelector.vue';
-import AddToCartButton from '@/Components/AddToCartButton.vue';
 import { addToCart } from '@/Stores/cart'
 import { Link } from '@inertiajs/vue3';
 import { computed, ref } from 'vue';
@@ -30,19 +28,7 @@ const props = defineProps({
 });
 const quantity = ref(10);
 
-function increaseqty() {
-  quantity.value++;
-}
-function decreaseqty() {
-  if (quantity.value > 10) {
-    quantity.value--;
-  }
-}
 
-function handleAddToCart() {
-  let productId = props.product.id;
-  addToCart(productId, quantity.value);
-}
 
 const packSize = computed(() => {
   switch (props.product.size) {

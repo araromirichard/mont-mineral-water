@@ -11,16 +11,17 @@ export const updateCartCount = (count) => {
 };
 
 export const addToCart = (productId, quantity) => {
-    const form = useForm({
-        product_id: productId,
-        quantity: quantity,
-    });
+  const form = useForm({
+    product_id: productId,
+    quantity: quantity,
+  });
 
-    try {
-        form.post(route('cart.add'));
-        cartCount.value++; // Increment the cartCount when the request is successful
-        updateCartCount(cartCount.value);
-    } catch (error) {
-        console.error(error);
-    }
+  try {
+     form.post(route('cart.add'));
+    // cartCount.value++; // Increment the cartCount when the request is successful
+    // updateCartCount(cartCount.value);
+  } catch (error) {
+    console.error(error);
+    // Handle error cases (e.g., display an error message to the user)
+  }
 };
