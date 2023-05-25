@@ -37,11 +37,6 @@ Route::get('/shop', [ControllersProductController::class, 'index'])->name('shop'
 Route::get('/shop/{product}', [ControllersProductController::class, 'showproduct'])->name('show-product');
 Route::inertia('/about-mont', 'AboutMontMineralWater')->name('about.mont');
 
-// cart routes......
-Route::post('/cart/add', [CartController::class, 'addToCart'])->name('cart.add');
-Route::get('/cart/count', [CartController::class, 'getCount'])->name('cart.count');
-Route::get('/cart', [CartController::class, 'showCart'])->name('cart');
-
 
 // Admin Routes....
 Route::middleware(['auth', 'verified', 'role:admin'])->prefix('admin')->name('admin.')->group(function () {

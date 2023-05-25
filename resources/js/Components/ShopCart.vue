@@ -12,7 +12,7 @@
       Your cart
     </div>
     <div v-if="cartItems.length > 0">
-      <CartItem v-for="item in cartItems" :key="item.productId" :item="item" @cart-updated="fetchCartItems" />
+      <CartItem v-for="item in cartItems" :key="item.productId" :item="item" @cart-updated="updateCart(item.productId, item.quantity)" @item-deleted="deleteCartItem(item.productId)" @qty-increased="updateCart(item.productId, item.quantity)" @qty-decreased="updateCart(item.productId, item.quantity)"/>
       <div class="cartActions grid grid-cols-4 border-y border-spacing-1 border-gray-300 py-4">
         <p class="col-span-3 text-secondary-400 font-bold tracking-wide text-base">
           Subtotal ({{ totalQuantity }} items):
@@ -60,6 +60,7 @@ import CartItem from '@/Components/CartItem.vue';
 import IconButton from '@/Components/IconButton.vue';
 import axios from 'axios';
 import { ref, onMounted, computed } from 'vue';
+import ToastStore from '@/Stores/ToastStore';
 
 const cartItems = ref([]);
 const subtotal = ref(0);
@@ -88,7 +89,9 @@ const fetchCartItems = async () => {
 
 const updateCart = async (productId, quantity) => {
   try {
-    await axios.post('/api/cart/update', { productId, quantity });
+   const {data} = await axios.patch('/api/cart/update', { product_id: productId, quantity });
+  //  console.log(JSON.stringify(data.message, null, 2));
+   ToastStore.add({message: data.message});
     fetchCartItems();
   } catch (error) {
     console.error('Error updating cart:', error);
@@ -97,7 +100,8 @@ const updateCart = async (productId, quantity) => {
 
 const deleteCartItem = async (productId) => {
   try {
-    await axios.post('/api/cart/delete', { productId });
+   const {data} = await axios.delete(`/api/cart/${productId}`);
+    ToastStore.add({message: data.message});
     fetchCartItems();
   } catch (error) {
     console.error('Error deleting item from cart:', error);

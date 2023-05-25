@@ -23,11 +23,10 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 Route::middleware('web')->group(function () {
     // Get the cart items
     Route::get('/cart', [CartController::class, 'getCartItems'])->name('cart.items');
-
-    // Remove a product from the cart
-    Route::delete('/cart/{product_id}', [CartController::class, 'deleteCartItem'])->name('cart.delete');
-
 });
+Route::post('/cart/add', [CartController::class, 'addToCart'])->name('cart.add');
+// Remove a product from the cart
+Route::delete('/cart/{product_id}', [CartController::class, 'deleteCartItem'])->name('cart.delete');
 
 
 Route::patch('/cart/{product_id}', [CartController::class, 'updateCart']);

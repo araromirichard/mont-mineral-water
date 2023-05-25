@@ -1,27 +1,28 @@
 import { ref } from 'vue';
-import { useForm } from '@inertiajs/vue3';
+import axios from 'axios';
+import ToastStore from './ToastStore';
 
-// Retrieve the cartCount value from local storage or default to 0
 export const cartCount = ref(parseInt(localStorage.getItem('cartCount')) || 0);
 
-// Function to update the cartCount and store it in local storage
 export const updateCartCount = (count) => {
   cartCount.value = count;
   localStorage.setItem('cartCount', count.toString());
 };
 
-export const addToCart = (productId, quantity) => {
-  const form = useForm({
-    product_id: productId,
-    quantity: quantity,
-  });
-
+export const addToCart = async (productId, quantity) => {
   try {
-     form.post(route('cart.add'));
-    // cartCount.value++; // Increment the cartCount when the request is successful
-    // updateCartCount(cartCount.value);
+    const response = await axios.post('/api/cart/add', {
+      product_id: productId,
+      quantity: quantity,
+    });
+
+    if (response.status === 200) {
+      updateCartCount(response.data.cartItemCount);
+      ToastStore.add({ message: response.data.message })
+    }
   } catch (error) {
     console.error(error);
     // Handle error cases (e.g., display an error message to the user)
+    ToastStore.add({ message: "an Error Occurred while adding product, try again" })
   }
 };

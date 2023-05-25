@@ -28,12 +28,11 @@
                     <p class="font-bold text-xl text-primary-500">{{ product.name }} | {{ product.size }}</p>
                     <p class="text-secondary-400 font-semibold text-base">GHS {{ product.price }}</p>
                     <p v-html="product.description" class="pt-2 max-w-sm"></p>
-                    <div class="flex space-x-5 py-4" v-if="!disableBtn">
+                    <div class="flex space-x-2 py-4" v-if="!disableBtn">
                         <QuantitySelector :quantity="quantity" @minus="decreaseqty" @add="increaseqty" />
                         <button
                         @click.stop="handleAddToCart"
-                        :disabled="disableBtn"
-                            class="inline-flex items-center px-24 py-3 bg-primary-500 border border-transparent rounded-full font-semibold text-sm text-white capitalize tracking-widest hover:bg-gray-700 focus:bg-gray-700 active:bg-gray-900 focus:outline-none transition ease-in-out duration-150 space-x-2">
+                            class="inline-flex items-center px-20 py-3 bg-primary-500 border border-transparent rounded-full font-semibold text-sm text-white capitalize tracking-widest hover:bg-gray-700 focus:bg-gray-700 active:bg-gray-900 focus:outline-none transition ease-in-out duration-150 space-x-2">
                             <svg width="16" height="21" viewBox="0 0 16 21" fill="none" xmlns="http://www.w3.org/2000/svg">
                                 <path
                                     d="M4.66668 7.99992V4.66658C4.66668 2.82492 6.16251 1.33325 8.00001 1.33325C9.84168 1.33325 11.3333 2.82909 11.3333 4.66658V7.99992M1.33334 6.33325H14.6667V19.6666H1.33334V6.33325Z"

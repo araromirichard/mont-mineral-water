@@ -9,9 +9,9 @@ use Illuminate\Http\Request;
 class CartController extends Controller
 {
 
+
     public function addToCart(Request $request)
     {
-
         $productId = $request->input('product_id');
         $quantity = $request->input('quantity');
 
@@ -26,7 +26,6 @@ class CartController extends Controller
         // Retrieve the cart items from the session
         $cartItems = $request->session()->get('cart', []);
 
-        // Check if the product already exists in the cart
         $existingItemIndex = $this->getCartItemIndex($cartItems, $productId);
 
         if ($existingItemIndex !== -1) {
@@ -43,7 +42,7 @@ class CartController extends Controller
                 'quantity' => $quantity,
                 'price' => $product->price
             ];
-            $message = 'Product added to the cart.';
+            $message = 'Product added to the cart successfully.';
         }
 
         // Calculate subtotal
@@ -55,8 +54,14 @@ class CartController extends Controller
         // Store the subtotal in the session
         $request->session()->put('subtotal', $subtotal);
 
-        return redirect()->back()->with('success', $message);
+        $cartItemCount = count($cartItems);
+
+        return response()->json([
+            'cartItemCount' => $cartItemCount,
+            'message' => $message,
+        ]);
     }
+
 
     public function updateCart(Request $request)
     {
@@ -97,12 +102,15 @@ class CartController extends Controller
 
     public function deleteCartItem(Request $request, $productId)
     {
+        // Convert $productId to an integer
+        $productId = intval($productId);
+
         // Retrieve the cart items from the session
         $cartItems = $request->session()->get('cart', []);
-
+        // dd($cartItems);
         // Find the item in the cart by product ID
         $itemIndex = $this->getCartItemIndex($cartItems, $productId);
-
+        // dd($itemIndex);
         if ($itemIndex !== -1) {
             // If the item exists, remove it from the cart
             array_splice($cartItems, $itemIndex, 1);
