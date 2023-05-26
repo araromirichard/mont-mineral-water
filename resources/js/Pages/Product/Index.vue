@@ -2,7 +2,7 @@
 import AdminLayout from '@/Layouts/AdminLayout.vue';
 import PaginationCom from '@/Components/PaginationCom.vue'
 import { Head, Link, router } from '@inertiajs/vue3';
-import { ref, computed, watch, defineProps } from 'vue';
+import { ref, computed, watch} from 'vue';
 import Modal from '@/Components/Modal.vue';
 import SecondaryButton from '@/Components/SecondaryButton.vue';
 import DangerButton from '@/Components/DangerButton.vue';

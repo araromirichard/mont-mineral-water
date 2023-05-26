@@ -36,7 +36,7 @@ const decrement = () => {
   
 <style scoped>
 .quantity-selector {
-    @apply inline-flex items-center border border-primary-100 rounded space-x-2 p-2;
+    @apply inline-flex items-center border border-primary-100 rounded space-x-4 px-2 py-1;
 }
 
 .quantity-btn {

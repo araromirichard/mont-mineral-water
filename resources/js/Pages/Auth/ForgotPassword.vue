@@ -5,7 +5,7 @@ import AppLayout from '@/Layouts/AppLayout.vue';
 
 import FormButton from '@/Components/FormButton.vue';
 import TextInput from '@/Components/TextInput.vue';
-import { Head, useForm } from '@inertiajs/vue3';
+import { useForm } from '@inertiajs/vue3';
 
 defineProps({
     status: {

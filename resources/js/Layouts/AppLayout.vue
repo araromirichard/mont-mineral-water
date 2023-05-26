@@ -1,6 +1,5 @@
 <script setup>
 import { gsap } from 'gsap';
-import { Modal } from 'momentum-modal'
 import { Head, Link } from '@inertiajs/vue3';
 import CartModal from '@/Components/CartModal.vue'
 import { computed, nextTick, ref } from 'vue';

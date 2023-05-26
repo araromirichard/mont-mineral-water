@@ -1,6 +1,6 @@
 <template>
     <AppLayout>
-        <div>
+        <div class="">
             <section id="shophero" ref="shopheroRef">
                 <ShopHero />
             </section>

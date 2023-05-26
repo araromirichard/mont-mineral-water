@@ -3,7 +3,7 @@ import InputError from '@/Components/InputError.vue';
 import FormButton from '@/Components/FormButton.vue';
 import TextInput from '@/Components/TextInput.vue';
 import AppLayout from '@/Layouts/AppLayout.vue';
-import { Head, Link, useForm } from '@inertiajs/vue3';
+import { Link, useForm } from '@inertiajs/vue3';
 
 defineProps({
     canResetPassword: {

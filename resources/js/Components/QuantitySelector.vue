@@ -1,15 +1,15 @@
 <template>
-  <div class="quantity-selector border border-gray-300 flex items-center rounded">
+  <div class="quantity-selector border border-gray-300 flex items-center rounded space-x-2">
     <button @click="decrement($event)" class="quantity-btn">
       <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"
-        class="w-5 h-5">
+        class="w-4 h-4">
         <path stroke-linecap="round" stroke-linejoin="round" d="M18 12H6" />
       </svg>
     </button>
-    <div class="quantity-value flex-grow flex items-center justify-center font-bold text-lg">{{ quantity }}</div>
+    <div class="quantity-value flex-grow flex items-center justify-center font-bold text-xs">{{ quantity }}</div>
     <button @click="increment($event)" class="quantity-btn">
       <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"
-        class="w-5 h-5">
+        class="w-4 h-4">
         <path stroke-linecap="round" stroke-linejoin="round" d="M12 6v12m6-6H6" />
       </svg>
     </button>
@@ -17,7 +17,6 @@
 </template>
   
 <script setup>
-import { defineProps, defineEmits } from 'vue';
 
 const props = defineProps({
   quantity: Number
@@ -36,7 +35,7 @@ const decrement = (event) => {
   
 <style scoped>
 .quantity-selector {
-  @apply flex items-center border border-neutral-100 rounded p-2;
+  @apply flex items-center border border-neutral-400 rounded p-2;
 }
 
 .quantity-btn {
