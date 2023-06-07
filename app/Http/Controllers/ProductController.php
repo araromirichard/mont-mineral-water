@@ -21,6 +21,7 @@ class ProductController extends Controller
                 'id' => $product->id,
                 'name' => $product->name,
                 'size' => $product->size,
+                'pack_size' => $product->pack_size,
                 'price' => $product->price,
                 'image' => $firstImage ? $firstImage->image_path : null,
             ];
@@ -37,6 +38,7 @@ class ProductController extends Controller
             'id' => $product->id,
             'name' => $product->name,
             'size' => $product->size,
+            'pack_size' => $product->pack_size,
             'price' => $product->price,
             'description' => $product->description,
             'images' => $product->productImages->pluck('image_path'),
@@ -53,6 +55,7 @@ class ProductController extends Controller
                 'id' => $product->id,
                 'name' => $product->name,
                 'size' => $product->size,
+                'pack_size' => $product->pack_size,
                 'price' => $product->price,
                 'image' => $firstImage ? $firstImage->image_path : null,
             ];
@@ -62,5 +65,26 @@ class ProductController extends Controller
             'product' => $formattedProduct,
             'otherProducts' => $formattedOtherProducts,
         ]);
+    }
+
+
+    public function fetchAllProducts()
+    {
+        $products = Product::with('productImages')->get();
+
+        $formattedProducts = $products->map(function ($product) {
+            $firstImage = $product->productImages->first();
+
+            return [
+                'id' => $product->id,
+                'name' => $product->name,
+                'size' => $product->size,
+                'pack_size' => $product->pack_size,
+                'price' => $product->price,
+                'image' => $firstImage ? $firstImage->image_path : null,
+            ];
+        });
+
+        return response()->json($formattedProducts);
     }
 }

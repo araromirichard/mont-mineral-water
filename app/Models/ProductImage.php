@@ -22,4 +22,10 @@ class ProductImage extends Model
     {
         return $this->belongsTo(Product::class);
     }
+    
+    // Define the relationship with the OrderItems model
+    public function orderItems()
+    {
+        return $this->hasMany(OrderItem::class);
+    }
 }

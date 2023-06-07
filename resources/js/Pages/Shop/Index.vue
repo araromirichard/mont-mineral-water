@@ -1,4 +1,6 @@
 <template>
+    
+    <Head title="Shop" />
     <AppLayout>
         <div class="">
             <section id="shophero" ref="shopheroRef">
@@ -6,7 +8,7 @@
             </section>
 
             <section id="products" ref="productsRef">
-                <div class="p-10 block sm:flex justify-around items-center space-y-8 sm:space-y-0 space-x-0 sm:space-x-8">
+                <div class="p-10 sm:px-0 block sm:flex justify-around items-center space-y-8 sm:space-y-0 space-x-0">
                     <ProductCard v-for="(product, index) in products" :key="index" :ref="'productCardRef' + index"
                         :product="product" />
                 </div>
@@ -16,6 +18,7 @@
 </template>
 
 <script setup>
+import { Head } from '@inertiajs/vue3';
 import { ref, onMounted } from 'vue';
 import gsap from 'gsap';
 import ScrollTrigger from 'gsap/ScrollTrigger';

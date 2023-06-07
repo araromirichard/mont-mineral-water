@@ -55,6 +55,7 @@ class ProductController extends Controller
         $request->validate([
             'name' => 'required|string',
             'size' => 'required|string',
+            'pack_size' => 'required|string',
             'description' => 'required|string',
             'price' => 'required|numeric',
             'images' => 'required|array',
@@ -65,6 +66,7 @@ class ProductController extends Controller
         $product = new Product();
         $product->name = $request->input('name');
         $product->size = $request->input('size');
+        $product->pack_size = $request->input('pack_size');
         $product->description = $request->input('description');
         $product->price = $request->input('price');
         $product->user_id = auth()->user()->id;
@@ -108,6 +110,7 @@ class ProductController extends Controller
                 'name' => $product->name,
                 'description' => $product->description,
                 'size' => $product->size,
+                'pack_size' => $product->pack_size,
                 'price' => $product->price,
                 'product_images' => $productImages,
             ],
@@ -132,6 +135,7 @@ class ProductController extends Controller
                 'name' => $product->name,
                 'description' => $product->description,
                 'size' => $product->size,
+                'pack_size' => $product->pack_size,
                 'price' => $product->price,
                 'product_images' => $productImages,
             ],
@@ -146,47 +150,119 @@ class ProductController extends Controller
 
     // ...
 
+    // public function update(Request $request, string $id)
+    // {
+    //     $product = Product::findOrFail($id);
+
+    //     $validatedData = $request->validate([
+    //         'name' => 'required|string',
+    //         'description' => 'required|string',
+    //         'size' => 'required|string',
+    //         'pack_size' => 'required|string',
+    //         'price' => 'required|numeric',
+    //     ]);
+
+    //     if ($request->hasFile('images')) {
+    //         $images = $request->file('images');
+
+    //         $validatedImages = [];
+
+    //         foreach ($images as $image) {
+    //             // Manually validate each image
+    //             if ($this->validateImage($image)) {
+    //                 $validatedImages[] = $image;
+    //             }
+    //         }
+
+    //         // Assign the validated images to the validated data
+    //         $validatedData['images'] = $validatedImages;
+
+    //         // Remove existing product images
+    //         $product->productImages()->delete();
+    //     }
+
+    //     // Update the product
+    //     $product->name = $validatedData['name'];
+    //     $product->description = $validatedData['description'];
+    //     $product->size = $validatedData['size'];
+    //     $product->pack_size = $validatedData['pack_size'];
+    //     $product->price = $validatedData['price'];
+    //     $product->save();
+
+    //     // Handle product images
+    //     if ($request->hasFile('images')) {
+    //         $images = $request->file('images');
+
+    //         foreach ($images as $image) {
+    //             $filename = $image->getClientOriginalName();
+    //             $path = 'product_images/' . $filename;
+
+    //             if (Storage::disk('public')->exists($path)) {
+    //                 // Image already exists, replace it
+    //                 Storage::disk('public')->delete($path);
+    //             }
+
+    //             $imagePath = $image->storeAs('product_images', $filename, 'public');
+
+    //             $productImage = new ProductImage();
+    //             $productImage->product_id = $product->id;
+    //             $productImage->image_path = $imagePath;
+    //             $productImage->save();
+    //         }
+    //     }
+
+    //     return redirect()->route('admin.products.show', ['product' => $product->id])
+    //         ->with('success', 'Product updated successfully.');
+    // }
+
+
     public function update(Request $request, string $id)
     {
-        // dd($request->images);
+       
         $product = Product::findOrFail($id);
 
-        $validatedData = $request->validate([
+        $request->validate([
             'name' => 'required|string',
-            'description' => 'required|string',
             'size' => 'required|string',
+            'pack_size' => 'required|string',
+            'description' => 'required|string',
             'price' => 'required|numeric',
-            'image.*' => 'image|mimes:jpeg,png|max:5242880',
+            'images' => 'nullable|array',
+            'images.*.*' => 'image|mimes:jpeg,png|max:5242880',
         ]);
 
-        $product->name = $validatedData['name'];
-        $product->description = $validatedData['description'];
-        $product->size = $validatedData['size'];
-        $product->price = $validatedData['price'];
+        // Update the product fields
+        $product->name = $request->input('name');
+        $product->size = $request->input('size');
+        $product->pack_size = $request->input('pack_size');
+        $product->description = $request->input('description');
+        $product->price = $request->input('price');
         $product->save();
 
-        // Handle product images
+        dd($request->hasFile('images'));
+        // Process and store product images
         if ($request->hasFile('images')) {
-            $images = $request->file('images');
+            
+            dd($product->productImages());
+            // Remove existing product images
+            $product->productImages()->delete();
 
-            foreach ($images as $image) {
-                $filename = $image->getClientOriginalName();
-                $path = 'product_images/' . $filename;
+            // Process and store new product images
+            foreach ($request->file('images') as $image) {
+                if ($image->isValid()) {
+                    $filename = $image->getClientOriginalName();
+                    $path = $image->storeAs('public/product_images', $filename);
 
-                if (Storage::disk('public')->exists($path)) {
-                    // Image already exists, replace it
-                    Storage::disk('public')->delete($path);
+                    $publicImagePath = str_replace('public/', '', $path);
+
+                    $productImage = new ProductImage();
+                    $productImage->product_id = $product->id;
+                    $productImage->image_path = $publicImagePath;
+                    dd($productImage);
+                    $productImage->save();
                 }
-
-                $imagePath = $image->storeAs('product_images', $filename, 'public');
-
-                $productImage = new ProductImage();
-                $productImage->product_id = $product->id;
-                $productImage->image_path = $imagePath;
-                $productImage->save();
             }
         }
-
 
         return redirect()->route('admin.products.show', ['product' => $product->id])
             ->with('success', 'Product updated successfully.');
@@ -212,5 +288,19 @@ class ProductController extends Controller
 
         return redirect()->route('admin.products.index')
             ->with('success', 'Product deleted successfully.');
+    }
+
+
+    // Custom image validation method
+    private function validateImage($image)
+    {
+        // Perform your custom validation logic here
+        // Return true if the image is valid, false otherwise
+
+        if ($image->isValid() && in_array($image->getClientOriginalExtension(), ['jpg', 'jpeg', 'png'])) {
+            return true;
+        }
+
+        return false;
     }
 }

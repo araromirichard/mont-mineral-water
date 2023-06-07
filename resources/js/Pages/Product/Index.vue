@@ -124,6 +124,9 @@ watch(search, (value) => {
                                         Size
                                     </th>
                                     <th scope="col" class="px-6 py-3">
+                                       Pack Size
+                                    </th>
+                                    <th scope="col" class="px-6 py-3">
                                         Price (GH₵)
                                     </th>
                                     <th scope="col" class="px-6 py-3 flex justify-center">
@@ -147,6 +150,9 @@ watch(search, (value) => {
                                         </td>
                                         <!-- <pre>{{ product.product_images[0].image_path }}</pre> -->
                                         <td class="px-6 py-4" v-html="product.size">
+
+                                        </td>
+                                        <td class="px-6 py-4" v-html="product.pack_size">
 
                                         </td>
                                         <td class="px-6 py-4">

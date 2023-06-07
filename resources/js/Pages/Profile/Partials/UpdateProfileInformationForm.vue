@@ -17,7 +17,9 @@ defineProps({
 const user = usePage().props.auth.user;
 
 const form = useForm({
-    name: user.name,
+    first_name: user.first_name,
+    last_name: user.last_name,
+    phone: user.phone,
     email: user.email,
 });
 </script>
@@ -33,33 +35,36 @@ const form = useForm({
         </header>
 
         <form @submit.prevent="form.patch(route('profile.update'))" class="mt-6 space-y-6">
+            <div class="flex flex-wrap -mx-2 space-y-2 sm:space-y-0">
+                <div class="w-full md:w-1/2 px-2">
+                    <div>
+                        <InputLabel for="first_name" value="First Name" />
+                        <TextInput id="first_name" type="text" class="mt-1 block w-full" v-model="form.first_name" required
+                            autofocus autocomplete="first_name" placeholder="first name" />
+                        <InputError class="mt-2" :message="form.errors.first_name" />
+                    </div>
+                </div>
+                <div class="w-full md:w-1/2 px-2">
+                    <div>
+                        <InputLabel for="last_name" value="Last Name" />
+                        <TextInput id="last_name" type="text" class="mt-1 block w-full" v-model="form.last_name" required
+                            autofocus autocomplete="last_name" placeholder="last name" />
+                        <InputError class="mt-2" :message="form.errors.last_name" />
+                    </div>
+                </div>
+            </div>
             <div>
-                <InputLabel for="name" value="Name" />
-
-                <TextInput
-                    id="name"
-                    type="text"
-                    class="mt-1 block w-full"
-                    v-model="form.name"
-                    required
-                    autofocus
-                    autocomplete="name"
-                />
-
-                <InputError class="mt-2" :message="form.errors.name" />
+                <InputLabel for="phone" value="Phone Naumber" />
+                <TextInput id="phone" type="text" class="mt-1 block w-full" v-model="form.phone" required autofocus
+                    autocomplete="last_name" placeholder="Phone Number" />
+                <InputError class="mt-2" :message="form.errors.phone" />
             </div>
 
             <div>
                 <InputLabel for="email" value="Email" />
 
-                <TextInput
-                    id="email"
-                    type="email"
-                    class="mt-1 block w-full"
-                    v-model="form.email"
-                    required
-                    autocomplete="username"
-                />
+                <TextInput id="email" type="email" class="mt-1 block w-full" v-model="form.email" required
+                    autocomplete="username" />
 
                 <InputError class="mt-2" :message="form.errors.email" />
             </div>
@@ -67,20 +72,13 @@ const form = useForm({
             <div v-if="mustVerifyEmail && user.email_verified_at === null">
                 <p class="text-sm mt-2 text-gray-800">
                     Your email address is unverified.
-                    <Link
-                        :href="route('verification.send')"
-                        method="post"
-                        as="button"
-                        class="underline text-sm text-gray-600 hover:text-gray-900 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
-                    >
-                        Click here to re-send the verification email.
+                    <Link :href="route('verification.send')" method="post" as="button"
+                        class="underline text-sm text-gray-600 hover:text-gray-900 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+                    Click here to re-send the verification email.
                     </Link>
                 </p>
 
-                <div
-                    v-show="status === 'verification-link-sent'"
-                    class="mt-2 font-medium text-sm text-green-600"
-                >
+                <div v-show="status === 'verification-link-sent'" class="mt-2 font-medium text-sm text-green-600">
                     A new verification link has been sent to your email address.
                 </div>
             </div>
