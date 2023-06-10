@@ -51,7 +51,6 @@ function decreaseqty() {
 const handleAddToCart = () => {
   let productId = props.product.id;
   addToCart(productId, quantity.value);
-  disableBtn.value = true;
 };
 
 const packSize = computed(() => {

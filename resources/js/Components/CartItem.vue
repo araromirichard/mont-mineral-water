@@ -4,6 +4,7 @@
             <img :src="'/storage/' + item.imagePath" :alt="item.name">
         </div>
         <div class="row-span-2 col-span-2 space-y-2 pb-2">
+            <!-- TODO : MAKE PACKS DYNAMIC -->
             <p class="font-bold text-lg">{{ item.name }} | {{ item.size }} | Pack of 12</p>
             <p class="font-bold tracking-wider text-primary-400 text-xs">Quantity</p>
             <div>
@@ -21,7 +22,6 @@
   
 <script setup>
 import QuantitySelectorCart from '@/Components/QuantitySelectorCart.vue';
-import axios from 'axios';
 
 const props = defineProps({
     item: Object,
@@ -46,33 +46,10 @@ function decreaseQty() {
 function deleteItem() {
     emit('item-deleted');
 }
-// function deleteItem() {
-//     axios.delete(`/api/cart/${props.item.productId}`)
-//         .then(response => {
-//             console.log(response);
-//             // Handle the response or emit an event indicating the successful item deletion
-//             emit('cart-updated');
-//         })
-//         .catch(error => {
-//             // Handle the error or emit an event indicating the failed item deletion
-//             console.log(error);
-//         });
-// }
+
 function updateCart() {
     emit('cart-updated');
 }
-// function updateCart(productId, quantity) {
-//     axios.patch(`/api/cart/${productId}`, { product_id: productId, quantity })
-//         .then(response => {
-//             console.log(response);
-//             // Handle the response or emit an event indicating the successful cart update
-//             emit('cart-updated');
-//         })
-//         .catch(error => {
-//             // Handle the error or emit an event indicating the failed cart update
-//             console.log(error);
-//         });
-// }
 
 
 </script>

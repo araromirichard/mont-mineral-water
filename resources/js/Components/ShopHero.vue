@@ -1,7 +1,7 @@
 <template>
     <div class="hidden sm:block">
         <div class="wrapper h-[63vh] grid grid-cols-12">
-            <div class="flex flex-col justify-center sm:col-span-7 md:col-span-6 h-full bg-primary-500 border-none md:px-10 xl:px-16 py-6">
+            <div class="flex flex-col justify-center sm:col-span-7 md:col-span-6 h-full bg-primary-500 border-none container mx-auto  py-6">
                 <p class=" font-extrabold sm:text-xl tracking-wider md:text-5xl text-secondary-400 sm:max-w-xl md:max-w-xl">Best enjoyed with
                     great company </p>
                 <p class=" text-2xl tracking-wider text-neutral-100 py-4">Don’t Drink Alone</p>

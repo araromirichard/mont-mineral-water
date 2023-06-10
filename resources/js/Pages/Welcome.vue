@@ -1,4 +1,6 @@
 <template>
+    <Head title="Home" />
+    
     <AppLayout>
         <div>
             <section id="hero" ref="heroSection">
@@ -24,6 +26,7 @@ import OurProduct from '@/Frontend/OurProduct.vue';
 import OurContacts from '@/Frontend/OurContacts.vue';
 import AppLayout from '@/Layouts/AppLayout.vue';
 import { onBeforeUnmount, onMounted, nextTick, ref } from 'vue';
+import { Head } from '@inertiajs/vue3';
 
 
 const props = defineProps({
@@ -38,6 +41,8 @@ const scrollToTop = () => {
 };
 
 const contactRef = ref(null);
+
+
 
 onMounted(async () => {
     await nextTick();
@@ -58,6 +63,8 @@ onBeforeUnmount(() => {
         window.scrollTo(0, 0);
     }
 });
+
+
 </script>
   
 <style scoped>

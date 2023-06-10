@@ -39,6 +39,7 @@ class CartController extends Controller
                 'name' => $product->name,
                 'imagePath' => $product->productImages->first()->image_path,
                 'size' => $product->size,
+                'pack_size' => $product->pack_size,
                 'quantity' => $quantity,
                 'price' => $product->price
             ];
@@ -150,6 +151,15 @@ class CartController extends Controller
 
         return response()->json(['cartItems' => $cartItems, 'subtotal' => $subtotal]);
     }
+    public function getTotalItems(Request $request)
+    {
+        // Retrieve the cart items from the session
+        $cartItems = $request->session()->get('cart', []);
+
+        $totaItems = count($cartItems);
+
+        return response()->json(['totalItems' => $totaItems]);
+    }
 
 
     private function getCartItemIndex($cartItems, $productId)
@@ -172,5 +182,17 @@ class CartController extends Controller
         }
 
         return $subtotal;
+    }
+
+    public function share(Request $request)
+    {
+        // Retrieve the cart items from the session
+        $cartItems = $request->session()->get('cart', []);
+
+        $totalItems = count($cartItems);
+
+        return array_merge(parent::share($request), [
+            'totalItems' => $totalItems,
+        ]);
     }
 }
