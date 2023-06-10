@@ -1,8 +1,8 @@
 <template>
     <AppLayout>
-        <div class="page-wrapper ">
-            <div class="hero-section hero-1 ">
-                <div class="hero-text px-6 sm:px- top-14 space-y-4">
+        <div class="page-wrapper">
+            <div class="hero-section hero-1">
+                <div class="hero-text px-6 sm:px-12 top-14 space-y-4">
                     <p class=" text-xl sm:text-3xl md:text-4xl text-primary-500 font-bold w-[55%] sm:w-[33%]">From Pristine
                         Springs to Your Table</p>
                     <p class="hidden sm:flex text-primary-500 text-base w-[45%]">Our journey began when we discovered a
