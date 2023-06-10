@@ -3,6 +3,7 @@
 namespace App\Http\Middleware;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Session;
 use Inertia\Middleware;
 use Tightenco\Ziggy\Ziggy;
 
@@ -31,16 +32,35 @@ class HandleInertiaRequests extends Middleware
     public function share(Request $request): array
     {
         $sharedData = parent::share($request);
-        
+
         $sharedData['csrf_token'] = csrf_token();
 
-        // Add the user and Ziggy data to the shared data array
+        // Retrieve the orderNumber from the session
+        $orderNumber = Session::get('orderNumber');
+
+        // Add the orderNumber to the shared data array
+        $sharedData['orderNumber'] = $orderNumber;
+
+        // Retrieve the default shipping address for the authenticated user
+        $defaultShippingAddress = null;
+        if ($request->user()) {
+            $defaultShippingAddress = $request->user()->shippingAddresses()
+                ->where('is_default', true)
+                ->first();
+        }
+
+        // Add the user, default shipping address, and Ziggy data to the shared data array
         $sharedData['auth'] = [
             'user' => $request->user(),
+            'defaultShippingAddress' => $defaultShippingAddress,
+            'shippingAddresses' => $request->user() ? $request->user()->shippingAddresses : [],
         ];
+
+
         $sharedData['is_admin'] = [
             'is_admin' => $request->user() ? $request->user()->hasRole('admin') : false,
         ];
+
         $sharedData['ziggy'] = function () use ($request) {
             return array_merge((new Ziggy)->toArray(), [
                 'location' => $request->url(),
@@ -54,6 +74,7 @@ class HandleInertiaRequests extends Middleware
                 'error' => $request->session()->get('error') ?? null,
                 'info' => $request->session()->get('info') ?? null,
             ],
+            'message' => $request->session()->get('message') ?? null,
         ];
 
         return $sharedData;

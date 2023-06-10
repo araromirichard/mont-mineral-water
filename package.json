@@ -6,11 +6,12 @@
     },
     "devDependencies": {
         "@inertiajs/vue3": "^1.0.0",
+        "@shrutibalasa/tailwind-grid-auto-fit": "^1.1.0",
         "@tailwindcss/forms": "^0.5.3",
         "@vitejs/plugin-vue": "^4.0.0",
         "@vue/server-renderer": "^3.2.31",
         "autoprefixer": "^10.4.12",
-        "axios": "^1.1.2",
+        "axios": "^1.2.0",
         "laravel-vite-plugin": "^0.7.2",
         "postcss": "^8.4.18",
         "tailwindcss": "^3.2.1",
@@ -20,10 +21,15 @@
     "dependencies": {
         "@ckeditor/ckeditor5-build-classic": "^37.1.0",
         "@ckeditor/ckeditor5-vue": "^5.1.0",
+        "@vueuse/core": "^10.1.2",
         "filepond": "^4.30.4",
         "filepond-plugin-file-poster": "^2.5.1",
         "filepond-plugin-file-validate-type": "^1.2.8",
         "filepond-plugin-image-preview": "^4.6.11",
+        "gsap": "^3.11.5",
+        "lodash": "^4.17.21",
+        "momentum-modal": "^0.2.1",
+        "swiper": "^9.3.2",
         "vue-filepond": "^7.0.3"
     }
 }

@@ -16,12 +16,24 @@ const props = defineProps({
     product: Object
 })
 
+// Define the options for size and pack size
+const sizeOptions = ref([
+    { label: '330 ML', value: '330 ML' },
+    { label: '500 ML', value: '500 ML' },
+    { label: '1 Litre', value: '1 Litre' },
+]);
 
+const packSizeOptions = ref([
+    { label: 'Pack of 24 bottles', value: 'Pack of 24 bottles' },
+    { label: 'Pack of 15 bottles', value: 'Pack of 15 bottles' },
+    { label: 'Pack of 12 bottles', value: 'Pack of 12 bottles' },
+]);
 
 const form = useForm({
     name: '',
     description: '',
     size: '',
+    pack_size: '',
     price: '',
     images: [],
     previewImages: [], // New property to store preview image URLs
@@ -144,15 +156,40 @@ const pageTitle = computed(() => {
                         <div class="space-y-4">
                             <div>
                                 <InputLabel for="name" value="Name" />
-                                <TextInput id="name" type="text" class="mt-1 block w-full" v-model="form.name" autofocus
-                                    autocomplete="Product name" placeholder="Product Name" />
+                                <TextInput id="name" type="text"
+                                    class="mt-1 block w-full border-gray-[#828282] focus:border-secondary-200 focus:ring-secondary-200 rounded-md shadow-sm placeholder:uppercase placeholder:text-sm placeholder:text-neutral-300 placeholder:tracking-widest"
+                                    v-model="form.name" autofocus autocomplete="Product name" placeholder="Product Name" />
                                 <InputError class="mt-2" :message="form.errors.name" />
                             </div>
                             <div>
                                 <InputLabel for="size" value="Size" />
-                                <TextInput id="size" type="text" class="mt-1 block w-full" v-model="form.size" autofocus
-                                    autocomplete="Product size" placeholder="Product Size" />
+                                <select id="size" v-model="form.size"
+                                    class="mt-1 block w-full border-gray-[#828282] focus:border-secondary-200 focus:ring-secondary-200 rounded-md shadow-sm placeholder:uppercase placeholder:text-sm placeholder:text-neutral-300 placeholder:tracking-widest">
+                                    <option
+                                        class="placeholder:text-sm placeholder:text-neutral-300 placeholder:tracking-widest"
+                                        value="">Select Size</option>
+                                    <option v-for="sizeOption in sizeOptions" :key="sizeOption.value"
+                                        :value="sizeOption.value">
+                                        {{ sizeOption.label }}
+                                    </option>
+                                </select>
                                 <InputError class="mt-2" :message="form.errors.size" />
+                            </div>
+                            <div>
+                                <InputLabel for="pack_size" value="Pack Size" />
+                                <select id="pack_size" v-model="form.pack_size"
+                                    class="mt-1 block w-full border-gray-[#828282] focus:border-secondary-200 focus:ring-secondary-200 rounded-md shadow-sm placeholder:uppercase placeholder:text-sm placeholder:text-neutral-300 placeholder:tracking-widest">
+                                    <!-- <option
+                                        class="placeholder:text-sm placeholder:text-neutral-300 placeholder:tracking-widest"
+                                        value="">Select Pack Size</option> -->
+                                    <option
+                                        class="space-y-2"
+                                        v-for="packSizeOption in packSizeOptions" :key="packSizeOption.value"
+                                        :value="packSizeOption.value">
+                                        {{ packSizeOption.label }}
+                                    </option>
+                                </select>
+                                <InputError class="mt-2" :message="form.errors.pack_size" />
                             </div>
                             <div>
                                 <InputLabel for="price" value="Price" />
@@ -184,7 +221,7 @@ const pageTitle = computed(() => {
                                     <template v-for="(preview, index) in form.previewImages" :key="index">
                                         <div class="relative">
                                             <img :src="preview" alt="Preview" class=" w-52 h-32 rounded-md" />
-                                            <button @click="removeImage(index)"
+                                            <button @click.stop.prevent="removeImage(index)"
                                                 class="absolute top-1 right-1 bg-red-500 text-white rounded-full w-6 h-6 flex items-center justify-center">
                                                 <svg class="w-4 h-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"
                                                     fill="currentColor">
@@ -222,3 +259,12 @@ const pageTitle = computed(() => {
         </div>
     </AdminLayout>
 </template>
+<style>
+select {
+    /* Set the background color for the select input */
+    background-color: #fff;
+}
+
+select option:hover {
+    background-color: #e2e8f0;
+}</style>

@@ -50,6 +50,7 @@ onUnmounted(() => {
 
 const maxWidthClass = computed(() => {
     return {
+        mobile: 'w-full',
         sm: 'sm:max-w-sm',
         md: 'sm:max-w-md',
         lg: 'sm:max-w-lg',
@@ -62,7 +63,7 @@ const maxWidthClass = computed(() => {
 <template>
     <teleport to="body">
         <transition leave-active-class="duration-200">
-            <div v-show="show" class="fixed inset-0 overflow-y-auto px-4 sm:px-0 z-50" scroll-region>
+            <div v-show="show" class="fixed inset-0 overflow-y-auto px-4 sm:px-0 z-40" scroll-region>
                 <transition enter-active-class="ease-out duration-300" enter-from-class="opacity-0"
                     enter-to-class="opacity-100" leave-active-class="ease-in duration-200" leave-from-class="opacity-100"
                     leave-to-class="opacity-0">
@@ -85,7 +86,7 @@ const maxWidthClass = computed(() => {
                     </div> -->
 
                     <div v-show="show"
-                        class="mt-0 bg-neutrals-100 overflow-hidden shadow-xl transform transition-all sm:w-full absolute top-0 right-0"
+                        class="mt-0 bg-neutrals-50 h-screen sm:h-auto overflow-hidden shadow-xl transform transition-all sm:w-full absolute top-0 right-0"
                         :class="maxWidthClass">
                         <slot v-if="show" />
                     </div>

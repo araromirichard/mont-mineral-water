@@ -17,6 +17,7 @@ class Product extends Model
         'price',
         'image',
         'size',
+        'pack_size'
     ];
 
     public function user()
@@ -27,5 +28,10 @@ class Product extends Model
     public function productImages()
     {
         return $this->hasMany(ProductImage::class);
+    }
+
+    public function orderItems()
+    {
+        return $this->hasMany(OrderItem::class);
     }
 }

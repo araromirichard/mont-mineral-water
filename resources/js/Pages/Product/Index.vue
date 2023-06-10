@@ -2,7 +2,7 @@
 import AdminLayout from '@/Layouts/AdminLayout.vue';
 import PaginationCom from '@/Components/PaginationCom.vue'
 import { Head, Link, router } from '@inertiajs/vue3';
-import { ref, computed, watch, defineProps } from 'vue';
+import { ref, computed, watch} from 'vue';
 import Modal from '@/Components/Modal.vue';
 import SecondaryButton from '@/Components/SecondaryButton.vue';
 import DangerButton from '@/Components/DangerButton.vue';
@@ -124,6 +124,9 @@ watch(search, (value) => {
                                         Size
                                     </th>
                                     <th scope="col" class="px-6 py-3">
+                                       Pack Size
+                                    </th>
+                                    <th scope="col" class="px-6 py-3">
                                         Price (GH₵)
                                     </th>
                                     <th scope="col" class="px-6 py-3 flex justify-center">
@@ -147,6 +150,9 @@ watch(search, (value) => {
                                         </td>
                                         <!-- <pre>{{ product.product_images[0].image_path }}</pre> -->
                                         <td class="px-6 py-4" v-html="product.size">
+
+                                        </td>
+                                        <td class="px-6 py-4" v-html="product.pack_size">
 
                                         </td>
                                         <td class="px-6 py-4">

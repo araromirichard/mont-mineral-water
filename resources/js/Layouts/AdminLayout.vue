@@ -83,7 +83,7 @@
                 <ResponsiveNavLink :href="route('admin.products.index')" :active="route().current('admin.products.index')">
                     Products
                 </ResponsiveNavLink>
-                <ResponsiveNavLink href="#">
+                <ResponsiveNavLink :href="route('admin.orders.index')" :active="route().current('admin.orders.index')">
                     Orders
                 </ResponsiveNavLink>
             </div>
@@ -150,7 +150,7 @@
                 </svg>
                 <span class="mx-3">Products</span>
             </SideNavLinks>
-            <SideNavLinks href="#"
+            <SideNavLinks :href="route('admin.orders.index')" :active="route().current('admin.orders.index')"
                 class="flex items-center mt-4 py-2 px-6 text-gray-500 hover:bg-gray-700 hover:bg-opacity-25 hover:text-gray-100">
                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
                     stroke="currentColor" class="w-6 h-6">

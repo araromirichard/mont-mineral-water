@@ -14,10 +14,25 @@ const props = defineProps({
     product: Object
 });
 
+
+// Define the options for size and pack size
+const sizeOptions = ref([
+    { label: '330 ML', value: '330 ML' },
+    { label: '500 ML', value: '500 ML' },
+    { label: '1 Litre', value: '1 Litre' },
+]);
+
+const packSizeOptions = ref([
+    { label: 'Pack of 24 bottles', value: 'Pack of 24 bottles' },
+    { label: 'Pack of 15 bottles', value: 'Pack of 15 bottles' },
+    { label: 'Pack of 12 bottles', value: 'Pack of 12 bottles' },
+]);
+
 const form = useForm({
     name: props.product.name,
     description: props.product.description,
     size: props.product.size,
+    pack_size: props.product.pack_size,
     price: props.product.price,
     images: props.product.product_images,
 });
@@ -68,16 +83,12 @@ const previewImages = computed(() => {
 });
 
 const updatePreviewImages = (files) => {
-
-
     // Create a new array for merged images
     const mergedImages = [...form.images];
 
-    // Iterate over the newly selected files
-    for (let i = 0; i < files.length; i++) {
-        const file = files[i];
+    // Iterate over the newly selected files and add them to the mergedImages array
+    for (const file of files) {
         mergedImages.push('product_images/' + file.name);
-
     }
 
     // Update the form.images array with the mergedImages
@@ -88,14 +99,18 @@ const updatePreviewImages = (files) => {
 };
 
 
+
+
+
+
 const removeImage = (index) => {
     form.images.splice(index, 1);
 };
 
-const submitForm = () => {
+const updateForm = () => {
     form.put(route('admin.products.update', props.product.id), {
         onSuccess: () => {
-            console.log('Form submission succeeded');
+            // console.log('Form submission succeeded');
             // do something when the form submission succeeds
         },
         onError: (errors) => {
@@ -123,6 +138,7 @@ onMounted(() => {
     form.name = props.product.name;
     form.description = props.product.description;
     form.size = props.product.size;
+    form.pack_size = props.product.pack_size;
     form.price = props.product.price;
     form.images = props.product.product_images;
 });
@@ -147,7 +163,7 @@ onMounted(() => {
         <div class="py-6">
             <div class="max-w-2xl mx-auto sm:px-6 lg:px-8 space-y-6">
                 <div class="p-4 sm:p-8 bg-white shadow sm:rounded-lg">
-                    <form @submit.prevent="submitForm">
+                    <form @submit.prevent="updateForm">
                         <div class="space-y-4">
                             <div>
                                 <InputLabel for="name" value="Name" />
@@ -157,9 +173,31 @@ onMounted(() => {
                             </div>
                             <div>
                                 <InputLabel for="size" value="Size" />
-                                <TextInput id="size" type="text" class="mt-1 block w-full" v-model="form.size" autofocus
-                                    autocomplete="Product size" placeholder="Product Size" />
+                                <select id="size" v-model="form.size"
+                                    class="mt-1 block w-full border-gray-[#828282] focus:border-secondary-200 focus:ring-secondary-200 rounded-md shadow-sm placeholder:uppercase placeholder:text-sm placeholder:text-neutral-300 placeholder:tracking-widest">
+                                    <option
+                                        class="placeholder:text-sm placeholder:text-neutral-300 placeholder:tracking-widest"
+                                        value="">Select Size</option>
+                                    <option v-for="sizeOption in sizeOptions" :key="sizeOption.value"
+                                        :value="sizeOption.value">
+                                        {{ sizeOption.label }}
+                                    </option>
+                                </select>
                                 <InputError class="mt-2" :message="form.errors.size" />
+                            </div>
+                            <div>
+                                <InputLabel for="pack_size" value="Pack Size" />
+                                <select id="pack_size" v-model="form.pack_size"
+                                    class="mt-1 block w-full border-gray-[#828282] focus:border-secondary-200 focus:ring-secondary-200 rounded-md shadow-sm placeholder:uppercase placeholder:text-sm placeholder:text-neutral-300 placeholder:tracking-widest">
+                                    <option
+                                        class="placeholder:text-sm placeholder:text-neutral-300 placeholder:tracking-widest"
+                                        value="">Select Pack Size</option>
+                                    <option class="space-y-2" v-for="packSizeOption in packSizeOptions"
+                                        :key="packSizeOption.value" :value="packSizeOption.value">
+                                        {{ packSizeOption.label }}
+                                    </option>
+                                </select>
+                                <InputError class="mt-2" :message="form.errors.pack_size" />
                             </div>
                             <div>
                                 <InputLabel for="price" value="Price" />
@@ -174,31 +212,30 @@ onMounted(() => {
 
                                 <InputError class="mt-2" :message="form.errors.description" />
                             </div>
-
                             <div>
-                                <InputLabel for="image" value="Images" />
-                                <FileInput class="mt-1 focus:border-0 focus:ring-0" id="image"
-                                    @update:modelValue="updatePreviewImages($event)" accept="image/*" multiple autofocus
-                                    autocomplete="Product image" placeholder="Product Image" />
+                                <InputLabel for="images" value="Images" />
+                                <FileInput class="mt-1 focus:border-0 focus:ring-0" id="images" accept="image/*" multiple
+                                    autofocus autocomplete="Product image" placeholder="Product Image"
+                                    @update:modelValue="updatePreviewImages" />
 
-                                <InputError class="mt-2" :message="imageErrorMessage" v-if="hasImageError" />
-                                <InputError class="mt-2" :message="form.errors.image" v-else-if="hasGeneralError" />
+                                <InputError class="mt-2" :message="form.errors.images" v-if="hasGeneralError" />
                             </div>
+                            <!-- <pre>{{ form.images }} hehe</pre> -->
                             <!-- Image Preview section -->
                             <div v-if="previewImages.length > 0" class="mt-4">
                                 <h3 class="text-lg font-semibold">Preview:</h3>
-                                <div class="mt-2 grid gap-4 grid-cols-2 sm:grid-cols-4">
+                                <div class="mt-2 grid gap-4 grid-cols-2 sm:grid-cols-3">
                                     <template v-for="(image, index) in previewImages" :key="index">
                                         <div class="relative">
-                                            <img :src="'/storage/' + image" alt="Preview" class=" w-52 h-32 rounded-md" />
-                                            <button @click.stop="removeImage(index)"
-                                                class="absolute top-1 right-1 bg-red-500 text-white rounded-full w-6 h-6 flex items-center justify-center">
-                                                <svg class="w-4 h-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"
-                                                    fill="currentColor">
-                                                    <path fill-rule="evenodd"
-                                                        d="M3 3a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v1h4V3a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2a1 1 0 0 1-1 1h-1v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V7H2a1 1 0 0 1-1-1V3zm5 2H5v11h10V5h-2a1 1 0 1 0 0 2h2v4H5V7h3a1 1 0 0 1 0 2H7v2h6V9h2a1 1 0 1 0 0-2h-2V5z"
-                                                        clip-rule="evenodd"></path>
+                                            <img :src="'/storage/' + image" alt="Preview" class=" w-64 h-32 rounded-md" />
+                                            <button @click.stop.prevent="removeImage(index)"
+                                                class="absolute top-1 right-1 bg-secondary-500 text-white rounded-full w-6 h-6 flex items-center justify-center">
+                                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                                                    stroke-width="1.5" stroke="currentColor" class="w-4 h-4">
+                                                    <path stroke-linecap="round" stroke-linejoin="round"
+                                                        d="M6 18L18 6M6 6l12 12" />
                                                 </svg>
+
                                             </button>
                                         </div>
                                     </template>
