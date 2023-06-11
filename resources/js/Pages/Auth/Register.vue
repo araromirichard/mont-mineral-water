@@ -23,6 +23,7 @@ const submit = () => {
 </script>
 
 <template>
+    <Head title="Register" />
     <AppLayout>
         <div class="container mx-auto my-10 flex justify-center items-center  min-h-[70vh] ">
             <div class="bg-neutral-100 max-w-xl p-8 rounded-sm">
