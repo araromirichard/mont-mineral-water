@@ -3,7 +3,7 @@ import InputError from '@/Components/InputError.vue';
 import FormButton from '@/Components/FormButton.vue';
 import TextInput from '@/Components/TextInput.vue';
 import AppLayout from '@/Layouts/AppLayout.vue';
-import { Link, useForm } from '@inertiajs/vue3';
+import { Head, Link, useForm } from '@inertiajs/vue3';
 
 defineProps({
     canResetPassword: {
@@ -28,6 +28,7 @@ const submit = () => {
 </script>
 
 <template>
+    <Head title="Login" />
     <AppLayout>
         <div class="container mx-auto min-h-screen flex justify-center items-center">
             <div class="flex flex-col-reverse sm:flex-row py-6 sm:py-0 sm:space-x-16">
