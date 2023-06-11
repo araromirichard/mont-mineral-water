@@ -17,7 +17,7 @@
                     </div>
                     <div class="sm:grid sm:grid-cols-3 gap-3 hidden rounded-md px-8">
                         <div class="w-auto h-36 row-span-1 col-span-1 space-y-1">
-                            <div class="sm:grid sm:grid-rows-2" style="gap: 8px;">
+                            <div class="sm:grid sm:grid-rows-2" style="gap: 6px;">
                                 <img v-for="image in product.images.slice(1)" :key="image" :src="'/storage/' + image"
                                     :alt="'Product Image ' + (product.images.indexOf(image) + 2)"
                                     class="h-auto overflow-hidden" />
