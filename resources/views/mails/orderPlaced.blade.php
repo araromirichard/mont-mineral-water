@@ -9,9 +9,9 @@
 </head>
 
 <body class="bg-gray-100">
-    <div class="container mx-auto px-4 py-8">
+    <div class="container mx-auto px-4 py-8 w-full h-full">
         <div class="text-center mb-8">
-            <a href="{{ route('/') }}">
+            <a href="{{ route('homepage') }}">
                 <img src="{{ asset('/appLogo.png') }}" class="mx-auto max-w-xs" alt="Mont Logo">
             </a>
         </div>

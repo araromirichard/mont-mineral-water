@@ -1,7 +1,7 @@
 <template>
     <Head title="Home" />
-    
-    <AppLayout>
+
+    <AppLayout @scrollToContact="scrollToContact">
         <div>
             <section id="hero" ref="heroSection">
                 <HeroSection />
@@ -10,9 +10,9 @@
                 <OurValues />
             </section>
             <section id="montProducts" ref="montProductsSection">
-                <OurProduct />
+                <OurProduct :disableScrollEffect="isScrollingToContact" />
             </section>
-            <section id="contact-mont" ref="montContactSection">
+            <section id="montContact" ref="montContactSection">
                 <OurContacts />
             </section>
         </div>
@@ -20,56 +20,48 @@
 </template>
   
 <script setup>
-import HeroSection from '@/Frontend/HeroSection.vue';
-import OurValues from '@/Frontend/OurValues.vue';
-import OurProduct from '@/Frontend/OurProduct.vue';
-import OurContacts from '@/Frontend/OurContacts.vue';
-import AppLayout from '@/Layouts/AppLayout.vue';
-import { onBeforeUnmount, onMounted, nextTick, ref } from 'vue';
-import { Head } from '@inertiajs/vue3';
-
+import HeroSection from "@/Frontend/HeroSection.vue";
+import OurValues from "@/Frontend/OurValues.vue";
+import OurProduct from "@/Frontend/OurProduct.vue";
+import OurContacts from "@/Frontend/OurContacts.vue";
+import AppLayout from "@/Layouts/AppLayout.vue";
+import { onMounted, ref } from "vue";
+import { Head } from "@inertiajs/vue3";
 
 const props = defineProps({
     contact: Boolean,
-})
+});
 
-const scrollToTop = () => {
-    window.scrollTo({
-        top: 0,
-        behavior: 'smooth'
-    });
-};
+const montContactSection = ref(null);
+const isScrollingToContact = ref(false);
 
-const contactRef = ref(null);
-
-
-
-onMounted(async () => {
-    await nextTick();
-    if (props.contact) {
-        const element = contactRef.value;
-        if (element) {
-            element.scrollIntoView({ behavior: 'smooth', block: 'start' });
-            element.classList.add('scroll-into-view');
-            scrollToTop();
+function scrollToContact() {
+    const contactSection = document.getElementById("montContact");
+    if (contactSection) {
+        isScrollingToContact.value = true; // Disable scroll effect temporarily
+        const scrollTop = contactSection.offsetTop;
+        const scrollOptions = {
+            top: scrollTop,
+            behavior: "smooth",
+        };
+        if ('scrollBehavior' in document.documentElement.style) {
+            window.scrollTo(scrollOptions);
+        } else {
+            window.scrollTo(scrollOptions.top, 0);
         }
+        setTimeout(() => {
+            isScrollingToContact.value = false; // Enable scroll effect after scroll animation is complete
+        }, 1000); // Adjust the timeout duration as needed
+    }
+}
+
+
+onMounted(() => {
+    if (props.contact) {
+        scrollToContact();
     }
 });
-
-onBeforeUnmount(() => {
-    const element = contactRef.value;
-    if (element) {
-        element.classList.remove('scroll-into-view');
-        window.scrollTo(0, 0);
-    }
-});
-
-
 </script>
   
-<style scoped>
-.scroll-into-view {
-    scroll-margin-top: 100vh;
-}
-</style>
+<style scoped></style>
   

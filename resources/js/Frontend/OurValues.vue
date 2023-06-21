@@ -3,7 +3,7 @@
         <div class="container mx-auto block sm:flex justify-evenly items-center">
             <OurValuesIcons>
                 <template #icon>
-                    <img src="/storage/frontend/waterwave.png" alt="waterdrop and wave" class=" w-20 h-auto" />
+                    <img src="/storage/frontend/waterwave.png" alt="waterdrop and wave" class=" w-20 h-auto sm:w-auto sm:h-[90px]" />
                 </template>
                 <span class="text-primary-500 text-base sm:text-lg font-sans font-normal leading-5 py-4 sm:py-5">Natural
                     Minerals</span>

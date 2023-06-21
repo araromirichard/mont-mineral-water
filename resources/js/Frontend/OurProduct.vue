@@ -16,7 +16,7 @@
             schools and special occasions.
           </p>
 
-          <MontButtonOutline :has-icon="true">
+          <MontButtonOutline :href="route('shop')" :has-icon="true">
             <template #icon>
               <svg width="17" height="22" viewBox="0 0 17 22" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <path
@@ -44,7 +44,7 @@
             revitalised.
           </p>
 
-          <MontButtonOutline :has-icon="true">
+          <MontButtonOutline :href="route('shop')"  :has-icon="true">
             <template #icon>
               <svg width="17" height="22" viewBox="0 0 17 22" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <path
@@ -63,18 +63,14 @@
       </section>
       <section class="page flex flex-col-reverse sm:flex-row w-[100vw] ">
         <div
-          class="box flex flex-col justify-center items-center sm:items-start py-6 px-16 bg-primary-500 space-y-4 w-full sm:w-5/12 w ">
+          class="box flex flex-col justify-center items-center sm:items-start py-6 px-16 bg-primary-500 space-y-4 w-full sm:w-5/12">
           <p class=" hidden sm:flex text-white text-base font-semibold">SHOP MONT</p>
           <p class=" text-center sm:text-left sm:w-[70%] text-xl sm:text-2xl md:text-4xl text-secondary-400 font-bold ">
             The Family Size - 1L</p>
-          <p class=" text-neutral-100 font-normal text-lg text-center sm:text-left">Perfect for the go! Can be tossed
-            in your work bag or kids lunch bag.
-            Can be best enjoyed by both kids
-            and adults. Suitable for offices,
-            schools and special occasions.
+          <p class=" text-neutral-100 font-normal text-lg text-center sm:text-left">Where there is great company, there is refreshing water! The ideal size for sharing with friends, family and loved ones at home or in a restaurant.
           </p>
 
-          <MontButtonOutline :has-icon="true">
+          <MontButtonOutline :href="route('shop')"  :has-icon="true">
             <template #icon>
               <svg width="17" height="22" viewBox="0 0 17 22" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <path
@@ -88,7 +84,7 @@
 
         </div>
         <div class="box w-full sm:w-7/12">
-          <img src="/storage/frontend/familyslide.png" alt="pocket size bottle" class="w-full h-full object-cover">
+          <img src="/storage/frontend/FamilySlide.png" alt="pocket size bottle" class="w-full h-full object-cover ">
         </div>
       </section>
 
@@ -114,14 +110,14 @@ onMounted(() => {
     pages.value = gsap.utils.toArray(scrollContainer.value.getElementsByClassName("page"));
     gsap.to(scrollContainer.value, {
       xPercent: -33.3 * (pages.value.length - 1),
-      ease: "none",
+      ease: "power2.out",
       scrollTrigger: {
         trigger: scrollContainer.value,
         pin: true,
         scrub: 1,
-        start: "1rem top",
+        start: "top+=20px 13%",
         end: "+=3000",
-        snap: 1 / (pages.value.length - 1),
+        // snap: 1 / (pages.value.length - 1),
         // markers: true,
       },
     });
@@ -144,7 +140,7 @@ onMounted(() => {
 
 .page {
   width: 100vw;
-  height: 100vh;
+  height: 90vh;
 }
 
 .box {

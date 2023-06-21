@@ -1,6 +1,6 @@
 <script setup>
 import { gsap } from 'gsap';
-import { Head, Link, router, usePage, useForm } from '@inertiajs/vue3';
+import { Link, usePage, useForm } from '@inertiajs/vue3';
 import CartModal from '@/Components/CartModal.vue';
 import { computed, nextTick, ref, reactive, onMounted } from 'vue';
 import ApplicationLogo from '@/Components/ApplicationLogo.vue';
@@ -30,12 +30,13 @@ defineProps({
     }
 });
 
+const emit = defineEmits(['scrollToContact'])
+
 const user = reactive({
     auth: {
         user: usePage().props.auth.user,
     },
 });
-
 
 const dropdownRef = ref(null);
 const Products = ref(null);
@@ -78,15 +79,19 @@ const modalWidth = computed(() => {
 });
 
 function animateIn() {
-    showShopDropdown.value = true;
-    nextTick(() => {
-        gsap.from(shopDropdown.value, {
-            duration: 0.5,
-            y: -20,
-            opacity: 0,
-            ease: 'power2.out',
+
+    if (route().current('homepage')) {
+        showShopDropdown.value = true;
+        nextTick(() => {
+            gsap.from(shopDropdown.value, {
+                duration: 0.5,
+                y: -20,
+                opacity: 0,
+                ease: 'power2.out',
+            });
         });
-    });
+
+    }
 };
 
 function animateOut() {
@@ -123,8 +128,9 @@ const submit = () => {
     });
 };
 
+
+
 const fetchProducts = () => {
-    console.log("check");
     axios
         .get(`/api/shop`)
         .then(response => {
@@ -290,28 +296,28 @@ onMounted(() => {
                 <div class="hidden space-x-8 sm:flex">
 
                     <div>
-                        <NavLink :href="route('shop')" @mouseover="animateIn">
+                        <NavLink :href="route('shop')" :active="route().current('shop')" @mouseover="animateIn">
                             Shop
                         </NavLink>
-                        <div v-if="showShopDropdown"  ref="shopDropdown"
+                        <div v-if="showShopDropdown" ref="shopDropdown"
                             class="flex justify-evenly items-center absolute left-0 right-0 top-20 w-full h-80 bg-white rounded shadow-xs z-10">
                             <!-- Dropdown content -->
                             <!-- Dropdown content -->
                             <template v-for="product in Products" :key="product.id">
                                 <Link :href="route('show-product', { product: product.id })">
-                                    <div class="flex flex-col justify-center items-center">
-                                        <img :src="'/storage/' + product.image" :alt="product.name" class="w-56 h-auto" />
-                                        <p class="shopdropdown__txt pt-2">{{ product.name }} | {{ product.size }}</p>
-                                    </div>
+                                <div class="flex flex-col justify-center items-center">
+                                    <img :src="'/storage/' + product.image" :alt="product.name" class="w-56 h-auto" />
+                                    <p class="shopdropdown__txt pt-2">{{ product.name }} | {{ product.size }}</p>
+                                </div>
                                 </Link>
                             </template>
                         </div>
                     </div>
 
-                    <NavLink :href="route('contact.mont')">
+                    <NavLink :href="route('contact.mont')" :active="route().current('contact.mont')">
                         Contact Us
                     </NavLink>
-                    <NavLink :href="route('about.mont')">
+                    <NavLink :href="route('about.mont')" :active="route().current('about.mont')">
                         About Mont
                     </NavLink>
                 </div>
@@ -333,7 +339,8 @@ onMounted(() => {
                 <div v-if="showSublinks" class="">
                     <template v-for="product in Products" :key="product.id">
                         <MontMobileSublink :href="route('show-product', { product: product.id })">
-                            <div class="w-full h-[10vh] text-xl flex items-center px-16">{{ product.name }} | {{ product.size }}</div>
+                            <div class="w-full h-[10vh] text-xl flex items-center px-16">{{ product.name }} | {{
+                                product.size }}</div>
                         </MontMobileSublink>
                     </template>
                 </div>
@@ -363,7 +370,9 @@ onMounted(() => {
     <footer class="bg-primary-500 w-full h-[200px] flex justify-center items-center">
         <div class=" w-full flex flex-col justify-center items-center">
             <ApplicationLogo class="block h-12 sm:h-16 w-auto fill-current text-gray-800" />
+            <Link :href="route('shop')">
             <p class="footer__txt1 py-2 text-secondary-400 sm:text-neutral-100">Shop Mont</p>
+            </Link>
             <p class="footer__txt2">See what we are up to:</p>
             <div class="space-x-3 py-2">
                 <button>

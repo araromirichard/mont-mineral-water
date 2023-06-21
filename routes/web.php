@@ -8,6 +8,7 @@ use App\Http\Controllers\Auth\DashboardController;
 use App\Http\Controllers\Auth\GoogleController;
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\CheckoutController;
+use App\Http\Controllers\ContactUsController;
 use App\Http\Controllers\GoogleAuthController;
 use App\Http\Controllers\ProductController as ControllersProductController;
 use App\Http\Controllers\ProfileController;
@@ -35,9 +36,8 @@ Route::get('/', function () {
         'contact' => false
     ]);
 })->name('homepage');
-Route::get('/contact-mont', function () {
-    return Inertia::render('Welcome', ['contact' => true]);
-})->name('contact.mont');
+Route::get('/contact-mont', [ContactUsController::class, 'index'])->name('contact.mont');
+Route::post('/save-message', [ContactUsController::class, 'sendMessage'])->name('contact.store');
 Route::get('/shop', [ControllersProductController::class, 'index'])->name('shop');
 Route::get('/shop/{product}', [ControllersProductController::class, 'showproduct'])->name('show-product');
 Route::inertia('/about-mont', 'AboutMontMineralWater')->name('about.mont');
