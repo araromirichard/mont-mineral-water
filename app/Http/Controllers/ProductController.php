@@ -23,6 +23,7 @@ class ProductController extends Controller
                 'size' => $product->size,
                 'pack_size' => $product->pack_size,
                 'price' => $product->price,
+                'slug'=> $product->slug,
                 'image' => $firstImage ? $firstImage->image_path : null,
             ];
         });
@@ -30,9 +31,9 @@ class ProductController extends Controller
         return Inertia::render('Shop/Index', ['products' => $formattedProducts]);
     }
 
-    public function showproduct($id)
+    public function showproduct($slug)
     {
-        $product = Product::with('productImages')->findOrFail($id);
+        $product = Product::with('productImages')->where('slug', $slug)->firstOrFail();
 
         $formattedProduct = [
             'id' => $product->id,
@@ -40,11 +41,12 @@ class ProductController extends Controller
             'size' => $product->size,
             'pack_size' => $product->pack_size,
             'price' => $product->price,
+            'slug'=> $product->slug,
             'description' => $product->description,
             'images' => $product->productImages->pluck('image_path'),
         ];
 
-        $otherProducts = Product::where('id', '<>', $id)
+        $otherProducts = Product::where('slug', '<>', $slug)
             ->with('productImages')
             ->get();
 
@@ -57,6 +59,7 @@ class ProductController extends Controller
                 'size' => $product->size,
                 'pack_size' => $product->pack_size,
                 'price' => $product->price,
+                'slug'=> $product->slug,
                 'image' => $firstImage ? $firstImage->image_path : null,
             ];
         });
@@ -80,6 +83,7 @@ class ProductController extends Controller
                 'name' => $product->name,
                 'size' => $product->size,
                 'pack_size' => $product->pack_size,
+                'slug'=> $product->slug,
                 'price' => $product->price,
                 'image' => $firstImage ? $firstImage->image_path : null,
             ];

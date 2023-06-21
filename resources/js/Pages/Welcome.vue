@@ -1,7 +1,7 @@
 <template>
     <Head title="Home" />
 
-    <AppLayout @scrollToContact="scrollToContact">
+    <AppLayout>
         <div>
             <section id="hero" ref="heroSection">
                 <HeroSection />
@@ -10,7 +10,7 @@
                 <OurValues />
             </section>
             <section id="montProducts" ref="montProductsSection">
-                <OurProduct :disableScrollEffect="isScrollingToContact" />
+                <OurProduct :products="Products" />
             </section>
             <section id="montContact" ref="montContactSection">
                 <OurContacts />
@@ -25,41 +25,30 @@ import OurValues from "@/Frontend/OurValues.vue";
 import OurProduct from "@/Frontend/OurProduct.vue";
 import OurContacts from "@/Frontend/OurContacts.vue";
 import AppLayout from "@/Layouts/AppLayout.vue";
-import { onMounted, ref } from "vue";
 import { Head } from "@inertiajs/vue3";
+import { onMounted, ref } from "vue";
 
-const props = defineProps({
-    contact: Boolean,
-});
 
-const montContactSection = ref(null);
-const isScrollingToContact = ref(false);
+const Products = ref(null);
 
-function scrollToContact() {
-    const contactSection = document.getElementById("montContact");
-    if (contactSection) {
-        isScrollingToContact.value = true; // Disable scroll effect temporarily
-        const scrollTop = contactSection.offsetTop;
-        const scrollOptions = {
-            top: scrollTop,
-            behavior: "smooth",
-        };
-        if ('scrollBehavior' in document.documentElement.style) {
-            window.scrollTo(scrollOptions);
-        } else {
-            window.scrollTo(scrollOptions.top, 0);
-        }
-        setTimeout(() => {
-            isScrollingToContact.value = false; // Enable scroll effect after scroll animation is complete
-        }, 1000); // Adjust the timeout duration as needed
-    }
-}
 
+const fetchProducts = () => {
+    axios
+        .get(`/api/shop`)
+        .then(response => {
+            console.log(response.data);
+            Products.value = response.data;
+
+        })
+        .catch(error => {
+            // Handle error
+            console.log(error);
+
+        });
+};
 
 onMounted(() => {
-    if (props.contact) {
-        scrollToContact();
-    }
+    fetchProducts();
 });
 </script>
   

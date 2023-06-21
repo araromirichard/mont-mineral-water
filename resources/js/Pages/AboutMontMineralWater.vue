@@ -13,11 +13,8 @@
                         From the moment we savored the first sip, we knew we had stumbled upon something extraordinary. It
                         became our mission to bring this exquisite water from beneath the surface and share its pure essence
                         with the world.</p>
-                    <p class="flex sm:hidden text-center text-lg max-w-xs sm:w-2/3">Our journey started when we unearthed a
-                        hidden
-                        gem—a source of untouched water, naturally purified by the very essence of rocks. It became our
-                        mission to bring this exquisite water from beneath the surface and share its pure essence with the
-                        world.</p>
+                    <p class="flex sm:hidden text-center text-lg">It is our mission to share the pure
+                        essence of naturally purified water with the world.</p>
                 </div>
             </div>
             <div class="hero-section hero-2">
@@ -34,20 +31,16 @@
                             world
                             of pure refreshment and unbridled joy. Discover the taste
                             that transcends ordinary water.</p>
-                        <p class="flex sm:hidden text-center text-lg max-w-xs sm:w-2/3">Mont Mineral Water flows through
-                            layers of
-                            ancient sedimentary rocks, delicately and naturally purified. Our meticulous process of reverse
+                        <p class="flex sm:hidden text-center text-lg">Our meticulous process of reverse
                             osmosis and ozonization ensures the utmost purity while retaining the essence of minerals and
                             alkaline that grant Mont Mineral Water its signature velvety smoothness.
                         </p>
-                        <p class="flex sm:hidden text-center text-lg max-w-xs sm:w-2/3">
-                            Discover the taste that transcends ordinary water.</p>
                     </div>
                 </div>
             </div>
             <div class="hero-section hero-3 ">
                 <div
-                    class="hero-text flex flex-col items-center sm:items-start text-white px-6 sm:px-16 top-12 sm:top-24 space-y-4">
+                    class="hero-text flex flex-col items-center sm:items-start text-white px-6 sm:px-16 top-16 sm:top-24 space-y-4">
                     <p
                         class=" text-xl text-center sm:text-start sm:text-[40px] sm:leading-[49px] font-bold max-w-sm sm:w-[]">
                         Share the Joy of
@@ -60,12 +53,9 @@
                     <p class="hidden sm:flex text-secondary-500 text-lg w-[45%]">
                         Don't Drink Alone</p>
 
-                    <p class="flex sm:hidden text-center text-lg max-w-xs sm:w-2/3">Indulge in the moments that matter most
-                        – whether it's a delightful meal with loved ones, an invigorating day at the park, or a serene
-                        evening at home. Elevate every experience with Mont Mineral Water, the ultimate companion.
+                    <p class="flex sm:hidden text-center text-lg">Elevate every moment with Mont Mineral
+                        Water, your ultimate companion, best enjoyed with loved ones. Don't drink alone.
                     </p>
-                    <p class="flex sm:hidden text-center text-lg max-w-xs sm:w-2/3">
-                        Don't Drink Alone</p>
                 </div>
             </div>
         </div>
