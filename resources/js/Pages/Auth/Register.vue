@@ -5,6 +5,7 @@ import InputError from '@/Components/InputError.vue';
 import FormButton from '@/Components/FormButton.vue';
 import TextInput from '@/Components/TextInput.vue';
 import { Head, Link, useForm } from '@inertiajs/vue3';
+import ToastStore from '@/Stores/ToastStore';
 
 const form = useForm({
     first_name: '',
@@ -18,6 +19,9 @@ const form = useForm({
 const submit = () => {
     form.post(route('register'), {
         onFinish: () => form.reset('password', 'password_confirmation'),
+        onSuccess: () => {
+                ToastStore.add({ message: 'We Just sent you a email, Please click the Button included to verify your email address' })
+        },
     });
 };
 </script>

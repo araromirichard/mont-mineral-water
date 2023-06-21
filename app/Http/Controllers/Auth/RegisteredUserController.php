@@ -73,6 +73,6 @@ class RegisteredUserController extends Controller
         }
 
         return redirect(RouteServiceProvider::HOME)
-            ->with('success', 'The notification has been sent. Please check your email to verify your account.');
+            ->with('success', 'A notification has been sent. Please check your email to verify your account.');
     }
 }
