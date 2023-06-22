@@ -60,7 +60,7 @@ Route::middleware(['auth', 'verified', 'role:admin'])->prefix('admin')->name('ad
 
 Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
-    Route::get('/create-shipping', [DashboardController::class, 'createShippingAddress'])->name('creeate-address');
+    Route::get('/create-shipping', [DashboardController::class, 'createShippingAddress'])->name('create-address');
     Route::post('/save-address', [DashboardController::class, 'saveAddress'])->name('save-address');
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');

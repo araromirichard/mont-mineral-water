@@ -54,7 +54,10 @@ onClickOutside(dropdownRef, () => {
     showDropdown.value = false; // Close the dropdown
 });
 
-
+const cartCount = computed(() => {
+  const count = localStorage.getItem('cartCount');
+  return parseInt(count) || 0;
+});
 
 const openCart = ref(false);
 const shopDropdown = ref(null);
@@ -188,9 +191,9 @@ onMounted(() => {
                             d="M3.46535 1.67945C3.28832 0.870164 2.48875 0.357618 1.67945 0.53465C0.870164 0.711682 0.357618 1.51125 0.53465 2.32055L3.46535 1.67945ZM6.96535 17.6795L3.46535 1.67945L0.53465 2.32055L4.03465 18.3205L6.96535 17.6795Z"
                             fill="#051C2C" />
                     </svg>
-                    <span v-if="$page.props.totalItems > 0"
+                    <span v-if="cartCount > 0"
                         class="absolute top-2 right-1 -mt-1 -mr-1 px-[6px] text-xs font-normal text-white bg-secondary-400 rounded-full">{{
-                            $page.props.totalItems }}</span>
+                            cartCount }}</span>
                 </button>
 
                 <button @click="toggleDropdown"

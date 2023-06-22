@@ -23,9 +23,6 @@ const form = useForm({
 const submit = () => {
     form.post(route('login'), {
         onFinish: () => form.reset('password'),
-        onSuccess: () => {
-                ToastStore.add({ message: 'Welcome Back!' })
-        },
     });
 };
 </script>
@@ -40,13 +37,13 @@ const submit = () => {
                         <p class="text-primary-500 font-bold text-base py-2">Registered Customers</p>
                         <form @submit.prevent="submit" class="w-full">
                             <div>
-                                <TextInput id="email" type="email" class="mt-1 block w-full" v-model="form.email" required
-                                    autofocus autocomplete="username" placeholder="Email address" />
+                                <TextInput id="email" type="email" class="mt-1 block w-full" v-model="form.email"
+                                    placeholder="Email address" />
                                 <InputError class="mt-2" :message="form.errors.email" />
                             </div>
                             <div class="mt-4">
                                 <TextInput id="password" type="password" class="mt-1 block w-full" v-model="form.password"
-                                    required autocomplete="current-password" placeholder="password" />
+                                    placeholder="password" />
                                 <InputError class="mt-2" :message="form.errors.password" />
                             </div>
                             <div class="flex flex-col items-center mt-8 space-y-2">

@@ -19,12 +19,12 @@ import toast from '@/Stores/ToastStore.js';
 const page = usePage();
 
 let removeFinishEvenlListener = router.on('finish', () => {
-    if (page.props.flash.toast.info) {
-        toast.add({ message: page.props.flash.toast.info, type: 'info' });
-    } else if (page.props.flash.toast.error) {
-        toast.add({ message: page.props.flash.toast.error, type: 'error' });
-    } else if (page.props.flash.toast.success) {
-        toast.add({ message: page.props.flash.toast.success, type: 'success' });
+    if (page.props.toast.info) {
+        toast.add({ message: page.props.toast.info, type: 'info' });
+    } else if (page.props.toast.error) {
+        toast.add({ message: page.props.toast.error, type: 'error' });
+    } else if (page.props.toast.success) {
+        toast.add({ message: page.props.toast.success, type: 'success' });
     }
 });
 

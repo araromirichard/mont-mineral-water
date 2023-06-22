@@ -58,7 +58,7 @@ const props = defineProps({
     message: String,
     duration: {
         type: Number,
-        default: 2000,
+        default: 5000,
     },
 });
 

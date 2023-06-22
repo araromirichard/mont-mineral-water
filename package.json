@@ -22,14 +22,8 @@
         "@ckeditor/ckeditor5-build-classic": "^37.1.0",
         "@ckeditor/ckeditor5-vue": "^5.1.0",
         "@vueuse/core": "^10.1.2",
-        "filepond": "^4.30.4",
-        "filepond-plugin-file-poster": "^2.5.1",
-        "filepond-plugin-file-validate-type": "^1.2.8",
-        "filepond-plugin-image-preview": "^4.6.11",
         "gsap": "^3.11.5",
         "lodash": "^4.17.21",
-        "momentum-modal": "^0.2.1",
-        "swiper": "^9.3.2",
-        "vue-filepond": "^7.0.3"
+        "swiper": "^9.3.2"
     }
 }

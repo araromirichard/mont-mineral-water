@@ -31,15 +31,14 @@ class HandleInertiaRequests extends Middleware
      */
     public function share(Request $request): array
     {
-        $sharedData = parent::share($request);
-
-        $sharedData['csrf_token'] = csrf_token();
+       
 
         // Retrieve the orderNumber from the session
         $orderNumber = Session::get('orderNumber');
+        
+        $cartItems = Session::get('cart');
 
-        // Add the orderNumber to the shared data array
-        $sharedData['orderNumber'] = $orderNumber;
+        
 
         // Retrieve the default shipping address for the authenticated user
         $defaultShippingAddress = null;
@@ -49,34 +48,34 @@ class HandleInertiaRequests extends Middleware
                 ->first();
         }
 
-        // Add the user, default shipping address, and Ziggy data to the shared data array
-        $sharedData['auth'] = [
-            'user' => $request->user(),
-            'defaultShippingAddress' => $defaultShippingAddress,
-            'shippingAddresses' => $request->user() ? $request->user()->shippingAddresses : [],
-        ];
+        return array_merge(parent::share($request), [
+            'ziggy' => function () use ($request) {
+                return array_merge((new Ziggy)->toArray(), [
+                    'location' => $request->url(),
+                ]);
+            },
 
-
-        $sharedData['is_admin'] = [
             'is_admin' => $request->user() ? $request->user()->hasRole('admin') : false,
-        ];
 
-        $sharedData['ziggy'] = function () use ($request) {
-            return array_merge((new Ziggy)->toArray(), [
-                'location' => $request->url(),
-            ]);
-        };
-
-        // Add all types of flashed messages to the flash array
-        $sharedData['flash'] = [
+            // add all flash messages
             'toast' => [
                 'success' => $request->session()->get('success') ?? null,
                 'error' => $request->session()->get('error') ?? null,
                 'info' => $request->session()->get('info') ?? null,
             ],
-            'message' => $request->session()->get('message') ?? null,
-        ];
 
-        return $sharedData;
+            
+             // Add the user, default shipping address,
+            'auth' => [
+                'user' => $request->user(),
+                'defaultShippingAddress' => $defaultShippingAddress,
+                'shippingAddresses' => $request->user() ? $request->user()->shippingAddresses : [],
+            ],
+            
+            "csrf" => csrf_token(),
+            
+            'orderNumber' => $orderNumber,
+            'cartItems' => $cartItems
+        ]);
     }
 }

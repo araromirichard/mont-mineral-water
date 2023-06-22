@@ -48,7 +48,7 @@ const ShippingAddresses = usePage().props.auth.shippingAddresses
                 </div>
                 <div
                     class="space-y-0 space-x-2 sm:space-x-0 sm:space-y-1 flex items-center sm:flex-col sm:items-start container mx-auto">
-                    <Link :href="route('creeate-address')" class="flex text-secondary-500">
+                    <Link :href="route('create-address')" class="flex text-secondary-500">
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
                         stroke="currentColor" class="w-6 h-6 mr-2">
                         <path stroke-linecap="round" stroke-linejoin="round"

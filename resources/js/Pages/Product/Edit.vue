@@ -227,7 +227,7 @@ onMounted(() => {
                                 <div class="mt-2 grid gap-4 grid-cols-2 sm:grid-cols-3">
                                     <template v-for="(image, index) in previewImages" :key="index">
                                         <div class="relative">
-                                            <img :src="'/storage/' + image" alt="Preview" class=" w-64 h-32 rounded-md" />
+                                            <img :src="'/storage/' + image.image_path" alt="Preview" class=" w-64 h-32 rounded-md" />
                                             <button @click.stop.prevent="removeImage(index)"
                                                 class="absolute top-1 right-1 bg-secondary-500 text-white rounded-full w-6 h-6 flex items-center justify-center">
                                                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"

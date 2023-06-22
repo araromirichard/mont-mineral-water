@@ -3,9 +3,11 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\StoreProductRequest;
 use App\Models\Product;
 use App\Models\ProductImage;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 use Illuminate\Validation\Rule;
@@ -45,11 +47,14 @@ class ProductController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(StoreProductRequest $request)
     {
-        $validatedData = $request->validate($this->getValidationRules());
+        // dd($request);
+        $validatedData = $request->validated();
 
-        $product = Product::create($validatedData);
+        $product = new Product($validatedData);
+        $product->user()->associate(Auth::user());
+        $product->save();
         $this->updateSlug($product);
 
         $this->processProductImages($product, $request->file('images'));
@@ -72,22 +77,48 @@ class ProductController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+
+
+    public function update(StoreProductRequest $request, string $id)
     {
         $product = Product::with('productImages')->findOrFail($id);
 
-        $validatedData = $request->validate($this->getValidationRules($product->id));
+        $validatedData = $request->validated();
 
-        $product->update($validatedData);
+        $product->fill($validatedData);
         $this->updateSlug($product);
 
         if ($request->hasFile('images')) {
             $this->processProductImages($product, $request->file('images'));
         }
 
+        $product->save();
+
         return redirect()->route('admin.products.show', ['product' => $product->id])
             ->with('success', 'Product updated successfully.');
     }
+
+    public function show(string $id)
+    {
+        $product = Product::with('productImages')->findOrFail($id);
+
+        $productImages = $product->productImages->map(function ($image) {
+            return $image->image_path;
+        });
+
+        return Inertia::render('Product/show', [
+            'product' => [
+                'id' => $product->id,
+                'name' => $product->name,
+                'description' => $product->description,
+                'size' => $product->size,
+                'pack_size' => $product->pack_size,
+                'price' => $product->price,
+                'product_images' => $productImages,
+            ],
+        ]);
+    }
+
 
     /**
      * Remove the specified resource from storage.
@@ -105,27 +136,6 @@ class ProductController extends Controller
 
         return redirect()->route('admin.products.index')
             ->with('success', 'Product deleted successfully.');
-    }
-
-    private function getValidationRules($productId = null)
-    {
-        $rules = [
-            'name' => 'required|string',
-            'size' => 'required|string',
-            'pack_size' => 'required|string',
-            'description' => 'required|string',
-            'price' => 'required|numeric',
-            'images' => 'nullable|array',
-            'images.*' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
-        ];
-
-        if ($productId) {
-            $rules['slug'] = ['required', 'string', Rule::unique('products')->ignore($productId)];
-        } else {
-            $rules['slug'] = 'required|string|unique:products';
-        }
-
-        return $rules;
     }
 
     private function updateSlug(Product $product)

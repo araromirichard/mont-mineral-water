@@ -29,9 +29,9 @@ Route::middleware('web')->group(function () {
     Route::get('/cart', [CartController::class, 'getCartItems'])->name('cart.items');
     Route::get('/cart/total', [CartController::class, 'getTotalItems']);
 });
-Route::post('/cart/add', [CartController::class, 'addToCart'])->name('cart.add')->middleware(\App\Http\Middleware\ShareCartItems::class);
+Route::post('/cart/add', [CartController::class, 'addToCart'])->name('cart.add');
 // Remove a product from the cart
-Route::delete('/cart/{product_id}', [CartController::class, 'deleteCartItem'])->middleware(\App\Http\Middleware\ShareCartItems::class)->name('cart.delete');
+Route::delete('/cart/{product_id}', [CartController::class, 'deleteCartItem'])->name('cart.delete');
 // update cart
 Route::patch('/cart/{product_id}', [CartController::class, 'updateCart']);
 // check if the email exists in the db
@@ -43,6 +43,3 @@ Route::get('/shipping-address/{id}', [ShippingAddressController::class, 'getShip
 
 // fetch products
 Route::get('/shop', [ProductController::class, 'fetchAllProducts'])->name('shop-products');
-
-
-

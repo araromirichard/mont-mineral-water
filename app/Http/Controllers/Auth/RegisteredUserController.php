@@ -30,6 +30,7 @@ class RegisteredUserController extends Controller
      */
     public function store(Request $request): RedirectResponse
     {
+
         $request->validate([
             'first_name' => 'required|string|max:255',
             'last_name' => 'required|string|max:255',
@@ -37,7 +38,6 @@ class RegisteredUserController extends Controller
             'phone' => 'required|string|max:20', // add phone validation rule here
             'password' => ['required', 'confirmed', Rules\Password::defaults()],
         ]);
-
         $user = User::create([
             'first_name' => $request->first_name,
             'last_name' => $request->last_name,
@@ -49,8 +49,8 @@ class RegisteredUserController extends Controller
         $adminEmail = 'krobotechies@gmail.com';
         $userRole = Role::where('name', 'user')->first();
         $adminRole = Role::where('name', 'admin')->first();
-        
-        
+
+
         // check to see if the auth user has an admin email and then assign role
 
         if ($user->email === $adminEmail && $adminRole) {
@@ -62,17 +62,16 @@ class RegisteredUserController extends Controller
         event(new Registered($user));
         $user->sendEmailVerificationNotification();
 
+
         Auth::login($user);
-        $firstName = $user->first_name;
 
         // Flash a success message to display after the redirect
-        session()->flash('success', 'Welcome, ' . $firstName . '!');
+        session()->flash('success', 'A notification has been sent. Please check your email to verify your account.');
 
         if ($user->hasRole('admin')) {
             return redirect()->intended(RouteServiceProvider::HOME_ADMIN);
         }
 
-        return redirect(RouteServiceProvider::HOME)
-            ->with('success', 'A notification has been sent. Please check your email to verify your account.');
+        return redirect(RouteServiceProvider::HOME);
     }
 }

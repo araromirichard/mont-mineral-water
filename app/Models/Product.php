@@ -12,6 +12,7 @@ class Product extends Model
     use HasRoles;
 
     protected $fillable = [
+        'user_id',
         'name',
         'description',
         'price',
