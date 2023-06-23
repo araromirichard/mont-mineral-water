@@ -11,6 +11,7 @@
     <div class="flex justify-center items-center text-primary-500 font-bold text-2xl">
       Your cart
     </div>
+    
     <div v-if="cartItems.length > 0">
       <CartItem v-for="item in cartItems" :key="item.productId" :item="item"
         @cart-updated="updateCart(item.productId, item.quantity)" @item-deleted="deleteCartItem(item.productId)"
@@ -61,18 +62,24 @@
 </template>
   
 <script setup>
+import { computed, onMounted, defineEmits } from 'vue';
+import store from '@/Stores/simpleStore';
 import CartItem from '@/Components/CartItem.vue';
 import IconButton from '@/Components/IconButton.vue';
-import { onMounted, computed } from 'vue';
-import ToastStore from '@/Stores/ToastStore';
-import simpleStore from '@/Stores/simpleStore';
 
 
-const cartItems = simpleStore.state.cart;
-const subtotal = computed(() => {
-  return simpleStore.state.subtotal;
+
+const cartItems = computed(() => {
+  return store.getters.getCartItems();
 });
 
+const subtotal = computed(() => {
+  return store.getters.getSubtotal();
+});
+
+const totalQuantity = computed(() => {
+  return cartItems.value.reduce((total, item) => total + item.quantity, 0);
+});
 
 const emit = defineEmits(['close-modal']);
 
@@ -80,52 +87,20 @@ const closeModal = () => {
   emit('close-modal');
 };
 
-const totalQuantity = computed(() => {
-  return cartItems.value.reduce((total, item) => total + item.quantity, 0);
+const updateCart = (productId, quantity) => {
+  store.actions.updateCart(productId, quantity);
+  store.actions.fetchCartItems();
+};
+
+const deleteCartItem = (productId) => {
+  store.actions.deleteCartItem(productId);
+  // store.actions.fetchCartItems();
+  // store.actions.getTotalItems();
+};
+
+onMounted(() => {
+  store.actions.fetchCartItems();
 });
 
-const fetchCartItems = async () => {
-  try {
-    await simpleStore.actions.fetchCartItems();
-    console.log(simpleStore.state.cart);
-  } catch (error) {
-    console.error('Error fetching cart data:', error);
-  }
-};
-const updateCart = async (productId, quantity) => {
-  try {
-    await simpleStore.actions.updateCart(productId, quantity);
-    // console.log(JSON.stringify(data.message, null, 2));
-    ToastStore.add({ message: data.message });
-    fetchCartItems();
-  } catch (error) {
-    console.error('Error updating cart:', error);
-  }
-};
-
-const deleteCartItem = async (productId) => {
-  try {
-    await simpleStore.actions.deleteCartItem(productId);
-    ToastStore.add({ message: data.message });
-    fetchCartItems();
-    simpleStore.actions.getTotalItems();
-  } catch (error) {
-    console.error('Error deleting item from cart:', error);
-  }
-};
-
-
-const getTotalItems = async () => {
-  try {
-    await simpleStore.actions.getTotalItems();
-    const totalItems = simpleStore.state.cartCount;
-    // You can update your component's data or perform other actions with the totalItems value
-  } catch (error) {
-    console.error('Error fetching total items:', error);
-  }
-};
-
-onMounted(fetchCartItems);
 </script>
-
 <style lang="scss" scoped></style>

@@ -46,9 +46,10 @@ class ProductController extends Controller
             'images' => $product->productImages->pluck('image_path'),
         ];
 
-        $otherProducts = Product::where('slug', '<>', $product)
+        $otherProducts = Product::where('id', '!=', $product->id)
             ->with('productImages')
             ->get();
+
 
         $formattedOtherProducts = $otherProducts->map(function ($product) {
             $firstImage = $product->productImages->first();

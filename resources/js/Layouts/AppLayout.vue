@@ -5,7 +5,7 @@ import CartModal from '@/Components/CartModal.vue';
 import { computed, nextTick, ref, reactive, onMounted } from 'vue';
 import ApplicationLogo from '@/Components/ApplicationLogo.vue';
 import ShopCart from '@/Components/ShopCart.vue';
-import simpleStore from '@/Stores/simpleStore';
+import store from '@/Stores/simpleStore';
 import NavLink from '@/Components/NavLink.vue';
 import MontMobileNavLink from '@/Components/MontMobileNavLink.vue';
 import MontMobileSublink from '@/Components/MontMobileSublink.vue';
@@ -52,7 +52,7 @@ const toggleDropdown = () => {
 
 // getters from my simple store
 const cartCount = computed(() => {
-  return simpleStore.getters.getCartCount();
+  return store.getters.getCartCount();
 });
 
 // vueUse on ClickOutside..
@@ -374,6 +374,8 @@ onMounted(() => {
         </div>
     </header>
     <main :class="{ 'mt-[88px]': hasAppPages }">
+        
+        <!-- <pre>{{ cartCount }}</pre> -->
         <slot></slot>
     </main>
     <footer class="bg-primary-500 w-full h-[200px] flex justify-center items-center">

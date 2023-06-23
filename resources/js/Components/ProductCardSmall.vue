@@ -8,7 +8,7 @@
     <div class="product-actions pt-2 pb-3 space-x-2">
       <QuantitySelector :quantity="quantity" @minus.stop.prevent="decreaseqty" @add.stop.prevent="increaseqty" />
       <button @click.prevent="handleAddToCart"
-        class="inline-flex items-center px-3 py-3 bg-primary-500 border border-transparent rounded-full font-semibold text-sm text-white capitalize tracking-normal hover:bg-gray-700 focus:bg-gray-700 active:bg-gray-900 focus:outline-none transition ease-in-out duration-150 space-x-1">
+        class="inline-flex items-center px-6 py-3 bg-primary-500 border border-transparent rounded-full font-semibold text-sm text-white capitalize tracking-normal hover:bg-gray-700 focus:bg-gray-700 active:bg-gray-900 focus:outline-none transition ease-in-out duration-150 space-x-1">
         <svg width="16" height="21" viewBox="0 0 16 21" fill="none" xmlns="http://www.w3.org/2000/svg">
           <path
             d="M4.66668 7.99992V4.66658C4.66668 2.82492 6.16251 1.33325 8.00001 1.33325C9.84168 1.33325 11.3333 2.82909 11.3333 4.66658V7.99992M1.33334 6.33325H14.6667V19.6666H1.33334V6.33325Z"
@@ -24,28 +24,29 @@
 
 <script setup>
 import { computed, ref } from 'vue';
-import { addToCart } from '@/Stores/cart'
+import { defineProps } from 'vue';
+import store from '@/Stores/simpleStore';
 import QuantitySelector from './QuantitySelector.vue';
+
 const props = defineProps({
   product: Object,
 });
 const quantity = ref(10);
 
 function increaseqty() {
-    quantity.value++;
+  quantity.value++;
 }
+
 function decreaseqty() {
-    if (quantity.value > 10) {
-        quantity.value--;
-    }
+  if (quantity.value > 10) {
+    quantity.value--;
+  }
 }
 
-
-// add product to cart...
 const handleAddToCart = () => {
-  let productId = props.product.id;
-  addToCart(productId, quantity.value);
-  disableBtn.value = true;
+  const productId = props.product.id;
+  store.actions.addItemToCart(productId, quantity.value);
+  store.actions.getTotalItems();
 };
 
 const packSize = computed(() => {
@@ -60,14 +61,6 @@ const packSize = computed(() => {
       return '';
   }
 });
-
-
-
-
-
-
-
-
 </script>
 
 <style scoped>
