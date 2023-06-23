@@ -5,6 +5,7 @@ import CartModal from '@/Components/CartModal.vue';
 import { computed, nextTick, ref, reactive, onMounted } from 'vue';
 import ApplicationLogo from '@/Components/ApplicationLogo.vue';
 import ShopCart from '@/Components/ShopCart.vue';
+import simpleStore from '@/Stores/simpleStore';
 import NavLink from '@/Components/NavLink.vue';
 import MontMobileNavLink from '@/Components/MontMobileNavLink.vue';
 import MontMobileSublink from '@/Components/MontMobileSublink.vue';
@@ -49,15 +50,16 @@ const toggleDropdown = () => {
     showDropdown.value = !showDropdown.value;
 };
 
+// getters from my simple store
+const cartCount = computed(() => {
+  return simpleStore.getters.getCartCount();
+});
+
 // vueUse on ClickOutside..
 onClickOutside(dropdownRef, () => {
     showDropdown.value = false; // Close the dropdown
 });
 
-const cartCount = computed(() => {
-  const count = localStorage.getItem('cartCount');
-  return parseInt(count) || 0;
-});
 
 const openCart = ref(false);
 const shopDropdown = ref(null);
@@ -139,7 +141,7 @@ const fetchProducts = () => {
         .then(response => {
             console.log(response.data);
             Products.value = response.data;
-
+            console.log(JSON.stringify(Products.value, null, 2));
         })
         .catch(error => {
             // Handle error
@@ -239,7 +241,7 @@ onMounted(() => {
                                         Profile
                                     </DropdownLink>
                                     <DropdownLink :href="route('admin.index')" v-if="$page.props.is_admin.is_admin">
-                                       Admin Dashboard
+                                        Admin Dashboard
                                     </DropdownLink>
                                     <DropdownLink v-else>
                                         Purchase History
@@ -257,15 +259,15 @@ onMounted(() => {
                                     <div>
                                         <InputLabel for="email" value="Email" class="font-bold" />
                                         <TextInput id="email" type="email"
-                                            class="mt-1 rounded-xs bg-neutral-300 w-full border-none" v-model="form.email"
-                                            required />
+                                            class="mt-1 rounded-xs bg-neutral-300 w-full border-none"
+                                            v-model="form.email" />
                                         <InputError class="mt-2" :message="form.errors.email" />
                                     </div>
                                     <div class="mt-4">
                                         <InputLabel for="password" value="Password" class="font-bold" />
                                         <TextInput id="password" type="password"
                                             class="mt-1 rounded-xs bg-neutral-300 w-full border-none"
-                                            v-model="form.password" required />
+                                            v-model="form.password" />
                                         <InputError class="mt-2" :message="form.errors.password" />
                                     </div>
                                     <div class="flex flex-col items-center mt-8 space-y-2 pb-3 border-b-2">
@@ -300,7 +302,7 @@ onMounted(() => {
             <div class="items-center justify-between hidden w-full sm:flex sm:w-auto sm:order-1">
 
                 <div class="hidden space-x-8 sm:flex">
-
+                  
                     <div>
                         <NavLink :href="route('shop')" :active="route().current('shop')" @mouseover="animateIn">
                             Shop
@@ -310,7 +312,7 @@ onMounted(() => {
                             <!-- Dropdown content -->
                             <!-- Dropdown content -->
                             <template v-for="product in Products" :key="product.id">
-                                <Link :href="route('show-product', { product: product.id })">
+                                <Link :href="route('show-product', { product: product.slug })">
                                 <div class="flex flex-col justify-center items-center">
                                     <img :src="'/storage/' + product.image" :alt="product.name" class="w-56 h-auto" />
                                     <p class="shopdropdown__txt pt-2">{{ product.name }} | {{ product.size }}</p>
@@ -343,8 +345,9 @@ onMounted(() => {
                     </div>
                 </MontMobileNavLink>
                 <div v-if="showSublinks" class="">
+
                     <template v-for="product in Products" :key="product.id">
-                        <MontMobileSublink :href="route('show-product', { product: product.id })">
+                        <MontMobileSublink :href="route('show-product', { product: product.slug })">
                             <div class="w-full h-[10vh] text-xl flex items-center px-16">{{ product.name }} | {{
                                 product.size }}</div>
                         </MontMobileSublink>

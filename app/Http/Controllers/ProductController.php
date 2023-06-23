@@ -23,7 +23,7 @@ class ProductController extends Controller
                 'size' => $product->size,
                 'pack_size' => $product->pack_size,
                 'price' => $product->price,
-                'slug'=> $product->slug,
+                'slug' => $product->slug,
                 'image' => $firstImage ? $firstImage->image_path : null,
             ];
         });
@@ -31,9 +31,9 @@ class ProductController extends Controller
         return Inertia::render('Shop/Index', ['products' => $formattedProducts]);
     }
 
-    public function showproduct($slug)
+    public function showproduct($product)
     {
-        $product = Product::with('productImages')->where('slug', $slug)->firstOrFail();
+        $product = Product::with('productImages')->where('slug', $product)->firstOrFail();
 
         $formattedProduct = [
             'id' => $product->id,
@@ -41,12 +41,12 @@ class ProductController extends Controller
             'size' => $product->size,
             'pack_size' => $product->pack_size,
             'price' => $product->price,
-            'slug'=> $product->slug,
+            'slug' => $product->slug,
             'description' => $product->description,
             'images' => $product->productImages->pluck('image_path'),
         ];
 
-        $otherProducts = Product::where('slug', '<>', $slug)
+        $otherProducts = Product::where('slug', '<>', $product)
             ->with('productImages')
             ->get();
 
@@ -59,7 +59,7 @@ class ProductController extends Controller
                 'size' => $product->size,
                 'pack_size' => $product->pack_size,
                 'price' => $product->price,
-                'slug'=> $product->slug,
+                'slug' => $product->slug,
                 'image' => $firstImage ? $firstImage->image_path : null,
             ];
         });
@@ -83,7 +83,7 @@ class ProductController extends Controller
                 'name' => $product->name,
                 'size' => $product->size,
                 'pack_size' => $product->pack_size,
-                'slug'=> $product->slug,
+                'slug' => $product->slug,
                 'price' => $product->price,
                 'image' => $firstImage ? $firstImage->image_path : null,
             ];

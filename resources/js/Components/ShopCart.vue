@@ -63,12 +63,16 @@
 <script setup>
 import CartItem from '@/Components/CartItem.vue';
 import IconButton from '@/Components/IconButton.vue';
-import axios from 'axios';
-import { ref, onMounted, computed } from 'vue';
+import { onMounted, computed } from 'vue';
 import ToastStore from '@/Stores/ToastStore';
+import simpleStore from '@/Stores/simpleStore';
 
-const cartItems = ref([]);
-const subtotal = ref(0);
+
+const cartItems = simpleStore.state.cart;
+const subtotal = computed(() => {
+  return simpleStore.state.subtotal;
+});
+
 
 const emit = defineEmits(['close-modal']);
 
@@ -82,20 +86,16 @@ const totalQuantity = computed(() => {
 
 const fetchCartItems = async () => {
   try {
-    const response = await axios.get('/api/cart');
-    const { cartItems: items, subtotal: subTotal } = response.data;
-    cartItems.value = items;
-    subtotal.value = subTotal;
-    console.log(cartItems.value);
+    await simpleStore.actions.fetchCartItems();
+    console.log(simpleStore.state.cart);
   } catch (error) {
     console.error('Error fetching cart data:', error);
   }
 };
-
 const updateCart = async (productId, quantity) => {
   try {
-    const { data } = await axios.patch('/api/cart/update', { product_id: productId, quantity });
-    //  console.log(JSON.stringify(data.message, null, 2));
+    await simpleStore.actions.updateCart(productId, quantity);
+    // console.log(JSON.stringify(data.message, null, 2));
     ToastStore.add({ message: data.message });
     fetchCartItems();
   } catch (error) {
@@ -105,21 +105,20 @@ const updateCart = async (productId, quantity) => {
 
 const deleteCartItem = async (productId) => {
   try {
-    const { data } = await axios.delete(`/api/cart/${productId}`);
+    await simpleStore.actions.deleteCartItem(productId);
     ToastStore.add({ message: data.message });
     fetchCartItems();
-    getTotalItems();
+    simpleStore.actions.getTotalItems();
   } catch (error) {
     console.error('Error deleting item from cart:', error);
   }
 };
 
+
 const getTotalItems = async () => {
   try {
-    const response = await axios.get('api/cart/total');
-    const totalItems = response.data.totalItems;
-    localStorage.setItem('cartCount', totalItems);
-    console.log('Total items:', totalItems);
+    await simpleStore.actions.getTotalItems();
+    const totalItems = simpleStore.state.cartCount;
     // You can update your component's data or perform other actions with the totalItems value
   } catch (error) {
     console.error('Error fetching total items:', error);

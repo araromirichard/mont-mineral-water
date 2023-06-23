@@ -1,5 +1,5 @@
 <template>
-  <Link :href="route('show-product', { product: product.id })"
+  <Link :href="route('show-product', { product: product.slug })"
     class="product-card border border-neutral-100 text-center space-y-2">
 
   <div class="product-card border border-neutral-100 text-center space-y-2">
