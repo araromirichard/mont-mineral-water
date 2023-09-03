@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Admin\AdminController;
 use App\Http\Controllers\Auth\AuthenticatedSessionController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -21,6 +22,14 @@ use App\Http\Controllers\ShippingAddressController;
 
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
+});
+
+// get all dashboard metrics for admin dashboard
+
+Route::middleware(['auth:sanctum', 'verified', 'role:admin'])->group(function () {
+    // Get all dashboard metrics for admin dashboard
+    Route::get('/admin-dashboard-metrics', [AdminController::class, 'getMetrics'])->name('admin-dashboard');
+    Route::get('/sales-data', [AdminController::class, 'getSalesData'])->name('admin-sales');
 });
 
 

@@ -33,6 +33,23 @@ watch(search, (value) => {
     })
 });
 
+const statusChipClass = computed(() => (status) => {
+    let baseClass = 'px-4 inline-flex text-xs leading-5 font-semibold rounded-full shadow-sm';
+
+    switch (status) {
+        case 'pending':
+            return `${baseClass} bg-amber-100 text-amber-800`;
+        case 'cancelled':
+            return `${baseClass} bg-red-100 text-red-800`;
+        case 'approved':
+            return `${baseClass} bg-green-100 text-green-800`;
+        case 'fulfilled':
+            return `${baseClass} bg-blue-100 text-blue-800`;
+        default:
+            return `${baseClass} bg-gray-100 text-gray-800`;
+    }
+});
+
 </script>
 
 <template>
@@ -89,6 +106,9 @@ watch(search, (value) => {
                                     <th scope="col" class="px-6 py-3">
                                         Status
                                     </th>
+                                    <th scope="col" class="px-4 py-3">
+                                        Created At
+                                    </th>
                                     <th scope="col" class="px-6 py-3 flex justify-center">
                                         Actions
                                         <span class="sr-only">Actions</span>
@@ -110,11 +130,15 @@ watch(search, (value) => {
                                             {{ order.total }}
                                         </td>
                                         <td class="px-6 py-4">
-                                            {{ order.status }}
+                                            <span :class="statusChipClass(order.status)">
+                                                {{ order.status }}
+                                            </span>
+                                        </td>
+                                        <td class="px-4 py-4">
+                                            {{ order.created_at }}
                                         </td>
                                         <td class="px-6 py-4 flex justify-center items-center space-x-2">
-                                            <button
-                                            @click="showOrderDetails(order.id)"
+                                            <button @click="showOrderDetails(order.id)"
                                                 class="p-1 rounded-full bg-neutral-100 hover:bg-blue-100 hover:text-secondary-300 hover:font-semibold">
                                                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
                                                     stroke-width="1.5" stroke="currentColor" class="w-6 h-6">

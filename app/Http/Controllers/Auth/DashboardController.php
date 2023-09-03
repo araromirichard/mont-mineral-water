@@ -15,11 +15,13 @@ class DashboardController extends Controller
     {
         $perPage = $request->input('perPage') ?: 5;
         $search = $request->input('search');
+        $user = $request->user();
 
-        $orders = Order::query()
+        $orders = Order::where('user_id', $user->id)
             ->when($search, function ($query, $search) {
                 $query->where('order_number', 'like', "%{$search}%");
             })
+            ->latest()
             ->with('user') // Include the user information using the relationship
             ->paginate($perPage)
             ->appends(['search' => $search, 'perPage' => $perPage]);

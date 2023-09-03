@@ -94,6 +94,7 @@ class CheckoutController extends Controller
             'subtotal' => $subtotal,
             'delivery' => $deliveryFee,
             'total' => $total,
+            'shipping_address' => $shippingAddress,
         ]);
 
         $orderItems = [];

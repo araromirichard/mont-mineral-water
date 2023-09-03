@@ -52,6 +52,7 @@ Route::middleware(['auth', 'verified', 'role:admin'])->prefix('admin')->name('ad
     Route::resource('/orders', OrderController::class);
     Route::post('upload-products', [ProductController::class, 'upload'])->name('product-image.upload');
     Route::delete('/revert/{link}', [ProductController::class, 'revertImage'])->name('product-image.delete');
+    // Route::put('/orders/{order}', [OrderController::class, 'updateStatus'])->name('orders.updateStatus');
 });
 
 

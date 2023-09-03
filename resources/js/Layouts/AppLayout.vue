@@ -240,7 +240,7 @@ onMounted(() => {
                                     <DropdownLink :href="route('dashboard')">
                                         Profile
                                     </DropdownLink>
-                                    <DropdownLink :href="route('admin.index')" v-if="$page.props.is_admin.is_admin">
+                                    <DropdownLink :href="route('admin.index')" v-if="$page.props.is_admin">
                                         Admin Dashboard
                                     </DropdownLink>
                                     <DropdownLink v-else>
