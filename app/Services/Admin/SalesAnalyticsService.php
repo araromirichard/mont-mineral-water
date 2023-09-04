@@ -39,12 +39,13 @@ class SalesAnalyticsService
                 'products.name as product_name', // Include product name in the select statement
                 DB::raw('SUM(order_items.quantity) AS total_quantity_sold')
             )
-            ->groupBy('month', 'order_items.product_id', 'product_name') // Group by product name as well
+            ->groupBy('month', 'order_items.product_id', 'products.name') // Group by product name as well
             ->orderBy('month')
             ->get();
-
+    
         return $monthlyProductSalesData;
     }
+    
 
 
     public function getTotalQuantitySoldPerProduct()
