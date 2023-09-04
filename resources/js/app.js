@@ -6,7 +6,7 @@ import { createInertiaApp } from '@inertiajs/vue3';
 import { resolvePageComponent } from 'laravel-vite-plugin/inertia-helpers';
 import { ZiggyVue } from '../../vendor/tightenco/ziggy/dist/vue.m';
 import CKEditor from '@ckeditor/ckeditor5-vue';
-import VueApexCharts from "./vue3-apexcharts";
+import VueApexCharts from "vue3-apexcharts";
 // import { pinia } from './pinia';
 
 const appName = window.document.getElementsByTagName('title')[0]?.innerText || 'Mont';
