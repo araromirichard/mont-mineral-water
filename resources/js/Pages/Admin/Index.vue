@@ -6,6 +6,7 @@ import AdminLayout from '@/Layouts/AdminLayout.vue';
 import { computed, onMounted, ref } from 'vue';
 import { Head } from '@inertiajs/vue3';
 import axios from 'axios';
+import VueApexCharts from "vue3-apexcharts";
 
 const props = defineProps({
     monthlySalesChart: Object,
@@ -156,14 +157,14 @@ onMounted(() => {
                 <div class="grid gap-4 grid-auto-fit bg-neutral-50 overflow-hidden shadow-sm sm:rounded-lg">
 
                     <div class="p-3 bg-white">
-                        <apexchart :width="monthlySalesChart.width" :height="monthlySalesChart.height"
+                        <VueApexCharts :width="monthlySalesChart.width" :height="monthlySalesChart.height"
                             :type="monthlySalesChart.type" :options="monthlySalesChart.options"
-                            :series="monthlySalesChart.series"></apexchart>
+                            :series="monthlySalesChart.series"></VueApexCharts>
                     </div>
                     <div class="p-3 bg-white">
-                        <apexchart :width="percentageSoldChart.width" :height="percentageSoldChart.height"
+                        <VueApexCharts :width="percentageSoldChart.width" :height="percentageSoldChart.height"
                             :type="percentageSoldChart.type" :options="percentageSoldChart.options"
-                            :series="percentageSoldChart.series"></apexchart>
+                            :series="percentageSoldChart.series"></VueApexCharts>
                     </div>
                 </div>
                 <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg pt-6">
