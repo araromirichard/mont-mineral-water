@@ -33,7 +33,7 @@ class ContactUsController extends Controller
         
         // dd($message->name);
         // Send email notification to admin
-        Mail::to('krobotechies@gmail.com')->send(new MessageNotification($message));
+        Mail::to('mont@montwater.com')->send(new MessageNotification($message));
 
     
         return redirect()->back()->with('message', 'Message sent successfully!');

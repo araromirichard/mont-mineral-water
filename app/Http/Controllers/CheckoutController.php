@@ -147,7 +147,7 @@ class CheckoutController extends Controller
     private function sendOrderPlacedEmailToAdmin($mailObj)
     {
 
-        Mail::to('krobotechies@gmail.com')->send(new OrderPlacedEmail($mailObj));
+        Mail::to('mont@montwater.com')->send(new OrderPlacedEmail($mailObj));
     }
 
     private function sendOrderReceivedEmailToUser($mailObj)
