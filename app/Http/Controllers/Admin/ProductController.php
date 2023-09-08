@@ -49,18 +49,11 @@ class ProductController extends Controller
      */
     public function store(StoreProductRequest $request)
     {
-        // dd($request);
         $validatedData = $request->validated();
 
-        $product = new Product($validatedData);
-        $product->user()->associate(Auth::user());
-        $product->save();
-        $this->updateSlug($product);
+        $product = $this->createProduct($validatedData);
 
-        $this->processProductImages($product, $request->file('images'));
-
-        return redirect()->route('admin.products.index')
-            ->with('success', 'Product created successfully.');
+        return redirect()->route('admin.products.index')->with('success', 'Product created successfully.');
     }
 
     /**
@@ -68,7 +61,7 @@ class ProductController extends Controller
      */
     public function edit(string $id)
     {
-        $product = Product::with('productImages')->findOrFail($id);
+        $product = $this->findProductById($id);
         $productImages = $product->productImages->pluck('image_path')->all();
 
         return Inertia::render('Product/Edit', compact('product', 'productImages'));
@@ -77,31 +70,22 @@ class ProductController extends Controller
     /**
      * Update the specified resource in storage.
      */
-
-
     public function update(StoreProductRequest $request, string $id)
     {
-        $product = Product::with('productImages')->findOrFail($id);
-
+        $product = $this->findProductById($id);
         $validatedData = $request->validated();
 
-        $product->fill($validatedData);
-        $this->updateSlug($product);
+        $this->updateProduct($product, $validatedData, $request->file('images'));
 
-        if ($request->hasFile('images')) {
-            $this->processProductImages($product, $request->file('images'));
-        }
-
-        $product->save();
-
-        return redirect()->route('admin.products.show', ['product' => $product->id])
-            ->with('success', 'Product updated successfully.');
+        return redirect()->route('admin.products.show', ['product' => $product->id])->with('success', 'Product updated successfully.');
     }
 
+    /**
+     * Show the specified resource.
+     */
     public function show(string $id)
     {
-        $product = Product::with('productImages')->findOrFail($id);
-
+        $product = $this->findProductById($id);
         $productImages = $product->productImages->map(function ($image) {
             return $image->image_path;
         });
@@ -119,23 +103,52 @@ class ProductController extends Controller
         ]);
     }
 
-
     /**
      * Remove the specified resource from storage.
      */
     public function destroy(string $id)
     {
-        $product = Product::findOrFail($id);
+        $product = $this->findProductById($id);
+        $this->deleteProduct($product);
 
+        return redirect()->route('admin.products.index')->with('success', 'Product deleted successfully.');
+    }
+
+    private function createProduct(array $data)
+    {
+        $product = new Product($data);
+        $product->user()->associate(Auth::user());
+        $product->save();
+        $this->updateSlug($product);
+        $this->processProductImages($product, request()->file('images'));
+        return $product;
+    }
+
+    private function updateProduct(Product $product, array $data, $newImageFiles)
+    {
+        $product->fill($data);
+        $this->updateSlug($product);
+
+        if ($newImageFiles) {
+            $this->updateProductImages($product, $newImageFiles);
+        }
+
+        $product->save();
+    }
+
+    private function findProductById(string $id)
+    {
+        return Product::with('productImages')->findOrFail($id);
+    }
+
+    private function deleteProduct(Product $product)
+    {
         foreach ($product->productImages as $image) {
             Storage::disk('public')->delete($image->image_path);
             $image->delete();
         }
 
         $product->delete();
-
-        return redirect()->route('admin.products.index')
-            ->with('success', 'Product deleted successfully.');
     }
 
     private function updateSlug(Product $product)
@@ -145,15 +158,25 @@ class ProductController extends Controller
         $product->save();
     }
 
+    private function updateProductImages(Product $product, $newImageFiles)
+    {
+        foreach ($product->productImages as $image) {
+            Storage::disk('public')->delete($image->image_path);
+            $image->delete();
+        }
+
+        $this->processProductImages($product, $newImageFiles);
+    }
+
     private function processProductImages(Product $product, $imageFiles)
     {
         if ($imageFiles) {
             foreach ($imageFiles as $file) {
-                $path = $file->store('products', 'public');
-
+                $uniqueFileName = 'product_' . time() . '_' . Str::random(10) . '.' . $file->getClientOriginalExtension();
+                $file->storeAs('public/products', $uniqueFileName);
                 $productImage = new ProductImage();
                 $productImage->product_id = $product->id;
-                $productImage->image_path = $path;
+                $productImage->image_path = 'products/' . $uniqueFileName;
                 $productImage->save();
             }
         }

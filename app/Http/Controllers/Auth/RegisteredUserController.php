@@ -46,8 +46,8 @@ class RegisteredUserController extends Controller
             'password' => Hash::make($request->password),
         ]);
 
-        $adminEmail = 'krobotechies@gmail.com';
-        $userRole = Role::where('name', 'user')->first();
+        $adminEmail = 'mont@montwater.com';
+        $userRole = Role::where('name', 'customer')->first();
         $adminRole = Role::where('name', 'admin')->first();
 
 
