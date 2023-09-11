@@ -1,17 +1,20 @@
 <template>
     <Head title="About" />
     <AppLayout>
-        <div class="page-wrapper">
-            <div class="hero-section hero-1">
-                <div class="hero-text px-6 sm:px-12 top-14 space-y-4">
-                    <p class=" text-xl sm:text-3xl md:text-4xl text-primary-500 font-bold w-[55%] sm:w-[33%]">From Pristine
-                        Springs to Your Table</p>
-                    <p class="hidden sm:flex text-primary-500 text-base w-[45%]">Our journey began when we discovered a
-                        source
-                        of pristine water purified by rocks. We knew from the first sip that this water was something
-                        special, and we had to share it with the world.</p>
-                    <p class="flex sm:hidden tracking-wider text-lg w-2/3">Our journey began when we discovered a source of
-                        pristine water purified by rocks.</p>
+        <div class="page-wrapper ">
+            <div class="hero-section hero-1 flex justify-center">
+                <div class="hero-text text-center sm:text-left px-6 sm:px-8 top-14 space-y-4">
+                    <p class=" text-xl sm:text-[40px] sm:leading-[49px] text-primary-500 font-bold max-w-sm sm:w-[37%]">
+                        Nature’s Gift,
+                        bottled
+                        for your pleasure</p>
+                    <p class="hidden sm:flex text-primary-500 text-lg leading-6 w-[45%]">Our journey started when we
+                        unearthed a hidden gem—a source of untouched water, naturally purified by the very essence of rocks.
+                        From the moment we savored the first sip, we knew we had stumbled upon something extraordinary. It
+                        became our mission to bring this exquisite water from beneath the surface and share its pure essence
+                        with the world.</p>
+                    <p class="flex sm:hidden text-center text-lg">It is our mission to share the pure
+                        essence of naturally purified water with the world.</p>
                 </div>
             </div>
             <div class="hero-section hero-2">
@@ -188,4 +191,3 @@ const handleNavLinkClick = (event) => {
     }
 }
 </style>
-  
