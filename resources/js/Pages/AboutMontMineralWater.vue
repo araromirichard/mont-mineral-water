@@ -191,4 +191,3 @@ const handleNavLinkClick = (event) => {
     }
 }
 </style>
-  
