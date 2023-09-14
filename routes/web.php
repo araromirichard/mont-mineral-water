@@ -53,6 +53,14 @@ Route::middleware(['auth', 'verified', 'role:admin'])->prefix('admin')->name('ad
     Route::post('upload-products', [ProductController::class, 'upload'])->name('product-image.upload');
     Route::delete('/revert/{link}', [ProductController::class, 'revertImage'])->name('product-image.delete');
     // Route::put('/orders/{order}', [OrderController::class, 'updateStatus'])->name('orders.updateStatus');
+
+    Route::get('/invoice', function () {
+        // $invoiceData = [
+        //     // Your invoice data here...
+        // ];
+
+        return view('mails.invoicePDF');
+    });
 });
 
 

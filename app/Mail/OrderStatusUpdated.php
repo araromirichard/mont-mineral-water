@@ -3,30 +3,29 @@
 namespace App\Mail;
 
 use App\Models\Order;
+use Barryvdh\DomPDF\Facade\Pdf as FacadePdf;
+
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Mail\Mailables\Content;
 use Illuminate\Mail\Mailables\Envelope;
+use Illuminate\Mail\Mailables\Attachment;
 
 class OrderStatusUpdated extends Mailable
 {
     use Queueable, SerializesModels;
 
     public $order;
+    public $invoiceData;
 
-    /**
-     * Create a new message instance.
-     */
-    public function __construct(Order $order)
+    public function __construct(Order $order, $invoiceData = null)
     {
         $this->order = $order;
+        $this->invoiceData = $invoiceData;
     }
 
-    /**
-     * Get the message envelope.
-     */
     public function envelope(): Envelope
     {
         return new Envelope(
@@ -34,9 +33,6 @@ class OrderStatusUpdated extends Mailable
         );
     }
 
-    /**
-     * Get the message content definition.
-     */
     public function content(): Content
     {
         return new Content(
@@ -48,13 +44,20 @@ class OrderStatusUpdated extends Mailable
         );
     }
 
-    /**
-     * Get the attachments for the message.
-     *
-     * @return array<int, \Illuminate\Mail\Mailables\Attachment>
-     */
-    public function attachments(): array
+    public function build()
     {
-        return [];
+        // Generate the PDF from your invoice template with invoiceData
+        $pdf = FacadePdf::loadView('mails.invoicePDF', [
+            'order' => $this->order,
+            'invoiceData' => $this->invoiceData,
+        ]);
+
+        // Convert the PDF to binary data
+        $pdfData = $pdf->output();
+
+        return $this->subject('Order Status Updated')
+            ->attachData($pdfData, 'invoice.pdf', [
+                'mime' => 'application/pdf',
+            ]);
     }
 }
