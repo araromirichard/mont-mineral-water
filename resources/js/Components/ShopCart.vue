@@ -88,7 +88,7 @@ const closeModal = () => {
 };
 
 const updateCart = (productId, quantity) => {
-  store.actions.updateCart(productId, quantity);
+  store.actions.updateCartItem(productId, quantity);
   store.actions.fetchCartItems();
 };
 
