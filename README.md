@@ -1,67 +1,60 @@
-<p align="center"><a href="https://www.montwater.com" target="_blank"></a></p>
+##Mont E-Commerce Application
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+Overview
 
-## About Laravel
+Mont is an e-commerce application built using Laravel Inertia and Vue.js. It provides a platform for users to browse and purchase products online.
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+Features
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+User Authentication: Allows users to sign up, log in, and manage their account.
+Product Catalog: Displays a list of available products with details such as name, price, description, and images.
+Shopping Cart: Enables users to add products to their cart, update quantities, and proceed to checkout.
+Checkout Process: Guides users through the checkout process, including address entry, shipping options, and payment.
+Order Management: Allows users to view their order history and track the status of their orders.
+Admin Panel: Provides administrators with access to manage products, orders, and users.
+Roles and Permissions: Implements role-based access control (RBAC) using Spatie's Laravel Permissions package.
+Installation
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+Clone the repository: git clone https://github.com/your-username/mont.git
+Install dependencies: composer install && npm install
+Set up your environment variables: Rename .env.example to .env and configure database settings.
+Generate application key: php artisan key:generate
+Migrate and seed the database: php artisan migrate --seed
+Compile assets: npm run dev (or npm run prod for production)
+Usage
 
-## Learning Laravel
+Start the development server: php artisan serve
+Access the application in your web browser at http://localhost:8000
+Log in as an admin using the default credentials:
+Email: admin@example.com
+Password: password
+Explore the application, add products, place orders, etc.
+Use the admin panel to manage roles and permissions for users.
+Roles and Permissions
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+Roles: Define roles such as Admin, User, and Moderator using php artisan permission:create-role role-name.
+Example: php artisan permission:create-role admin
+Example: php artisan permission:create-role user
+Permissions: Assign permissions to roles, such as managing products, orders, and users.
+Middleware: Protect routes using Spatie's middleware to ensure only authorized users can access them.
+Contributing
 
-You may also try the [Laravel Bootcamp](https://bootcamp.laravel.com), where you will be guided through building a modern Laravel application from scratch.
+Fork the repository.
+Create a new branch: git checkout -b feature/new-feature
+Make your changes and commit them: git commit -m 'Add new feature'
+Push to the branch: git push origin feature/new-feature
+Submit a pull request.
+Credits
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains over 2000 video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+Laravel: https://laravel.com/
+Inertia.js: https://inertiajs.com/
+Vue.js: https://vuejs.org/
+Spatie Laravel Permissions: https://spatie.be/docs/laravel-permission
+License
 
-## Laravel Sponsors
+This project is licensed under the MIT License.
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the Laravel [Patreon page](https://patreon.com/taylorotwell).
 
-### Premium Partners
 
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Cubet Techno Labs](https://cubettech.com)**
-- **[Cyber-Duck](https://cyber-duck.co.uk)**
-- **[Many](https://www.many.co.uk)**
-- **[Webdock, Fast VPS Hosting](https://www.webdock.io/en)**
-- **[DevSquad](https://devsquad.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel/)**
-- **[OP.GG](https://op.gg)**
-- **[WebReinvent](https://webreinvent.com/?utm_source=laravel&utm_medium=github&utm_campaign=patreon-sponsors)**
-- **[Lendio](https://lendio.com)**
-
-## Contributing
-
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
-
-## Code of Conduct
-
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
-
-## Security Vulnerabilities
-
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
-
-## License
-
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+(https://opensource.org/licenses/MIT).
 # mont-mineral-water
