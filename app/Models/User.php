@@ -61,10 +61,10 @@ class User extends Authenticatable implements MustVerifyEmail
     {
         return $this->hasOne(ShippingAddress::class, 'user_id')->where('is_default', true);
     }
-    
-        // access the created_at attribute of an instance of the Order model in a human formatted value
-        public function getCreatedAtAttribute($value)
-        {
-            return \Carbon\Carbon::parse($value)->diffForHumans();
-        }
+
+    // access the created_at attribute of an instance of the Order model in a human formatted value
+    public function getCreatedAtAttribute($value)
+    {
+        return \Carbon\Carbon::parse($value)->diffForHumans();
+    }
 }
