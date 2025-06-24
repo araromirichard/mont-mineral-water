@@ -23,7 +23,7 @@
                     <img src="/storage/frontend/phone.png" alt="phone icon" class="w-10 sm:w-12 h-auto" />
                 </template>
                 <span class="text-primary-500 text-sm sm:text-lg font-sans font-normal leading-5 py-4 sm:py-5">
-                    +233 067 908 4409
+                    +233 059 990 4409
                 </span>
             </OurValuesIcons>
             <OurValuesIcons>
