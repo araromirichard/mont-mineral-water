@@ -35,6 +35,12 @@ class ProductController extends Controller
             ->paginate($perPage)
             ->appends(['search' => $search, 'perPage' => $perPage]);
 
+
+        // Transform each product to add product_images
+        foreach ($products as $product) {
+            $product->product_images = $product->productImages;
+        }
+
         $filters = compact('search', 'perPage');
 
         return Inertia::render('Product/Index', compact('products', 'filters'));
