@@ -79,7 +79,7 @@ watch(search, (value) => {
                 Create</Link>
             </div>
         </template>
-        <!-- <pre>{{ filteredUsers }}</pre> -->
+        <!-- <pre>{{ products.data[0].product_images }}</pre> -->
         <div class="py-12">
             <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
                 <div class="bg-white overflow-hidden shadow-md sm:rounded-lg">
