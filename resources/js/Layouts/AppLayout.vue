@@ -197,11 +197,12 @@
                             d="M3.46535 1.67945C3.28832 0.870164 2.48875 0.357618 1.67945 0.53465C0.870164 0.711682 0.357618 1.51125 0.53465 2.32055L3.46535 1.67945ZM6.96535 17.6795L3.46535 1.67945L0.53465 2.32055L4.03465 18.3205L6.96535 17.6795Z"
                             fill="#051C2C" />
                     </svg>
+                    
                     <span v-if="cartCount > 0"
                         class="absolute top-2 right-1 -mt-1 -mr-1 px-[6px] text-xs font-normal text-white bg-secondary-400 rounded-full">{{
                             cartCount }}</span>
                 </button>
-
+<!-- <pre>{{cartCount}}</pre> -->
                 <button @click="toggleDropdown"
                     class="p-2 hover:bg-neutral-100 rounded-full transition duration-75 ease-in">
                     <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
