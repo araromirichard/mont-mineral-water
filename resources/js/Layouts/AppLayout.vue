@@ -1,158 +1,162 @@
 <script setup>
-import { gsap } from 'gsap';
-import { Link, usePage, useForm } from '@inertiajs/vue3';
-import CartModal from '@/Components/CartModal.vue';
-import { computed, nextTick, ref, reactive, onMounted } from 'vue';
-import ApplicationLogo from '@/Components/ApplicationLogo.vue';
-import ShopCart from '@/Components/ShopCart.vue';
-import store from '@/Stores/simpleStore';
-import NavLink from '@/Components/NavLink.vue';
-import MontMobileNavLink from '@/Components/MontMobileNavLink.vue';
-import MontMobileSublink from '@/Components/MontMobileSublink.vue';
-import ToastMessageList from '@/Components/ToastMessageList.vue';
-import DropdownLink from '@/Components/DropdownLink.vue';
-import InputLabel from '@/Components/InputLabel.vue';
-import TextInput from '@/Components/TextInput.vue';
-import FormButton from '@/Components/FormButton.vue';
-import { onClickOutside } from '@vueuse/core';
-import InputError from '@/Components/InputError.vue';
+    import { gsap } from 'gsap';
+    import { Link, usePage, useForm } from '@inertiajs/vue3';
+    import CartModal from '@/Components/CartModal.vue';
+    import { computed, nextTick, ref, reactive, onMounted } from 'vue';
+    import ApplicationLogo from '@/Components/ApplicationLogo.vue';
+    import ShopCart from '@/Components/ShopCart.vue';
+    import store from '@/Stores/simpleStore';
+    import NavLink from '@/Components/NavLink.vue';
+    import MontMobileNavLink from '@/Components/MontMobileNavLink.vue';
+    import MontMobileSublink from '@/Components/MontMobileSublink.vue';
+    import ToastMessageList from '@/Components/ToastMessageList.vue';
+    import DropdownLink from '@/Components/DropdownLink.vue';
+    import InputLabel from '@/Components/InputLabel.vue';
+    import TextInput from '@/Components/TextInput.vue';
+    import FormButton from '@/Components/FormButton.vue';
+    import { onClickOutside } from '@vueuse/core';
+    import InputError from '@/Components/InputError.vue';
 
 
-defineProps({
-    canResetPassword: {
-        type: Boolean,
-    },
-    status: {
-        type: String,
-    },
-    hasAppPages: {
-        type: Boolean,
-        default: true,
-    }
-});
+    defineProps({
+        canResetPassword: {
+            type: Boolean,
+        },
+        status: {
+            type: String,
+        },
+        hasAppPages: {
+            type: Boolean,
+            default: true,
+        }
+    });
 
-const emit = defineEmits(['scrollToContact'])
+    const emit = defineEmits(['scrollToContact'])
 
-const user = reactive({
-    auth: {
-        user: usePage().props.auth.user,
-    },
-});
+    const user = reactive({
+        auth: {
+            user: usePage().props.auth.user,
+        },
+    });
 
-const dropdownRef = ref(null);
-const Products = ref(null);
+    const dropdownRef = ref(null);
+    const Products = ref(null);
 
-const showingNavigationDropdown = ref(false);
-const showDropdown = ref(false);
-const showSublinks = ref(false);
-const showShopDropdown = ref(false);
-const toggleDropdown = () => {
-    showDropdown.value = !showDropdown.value;
-};
+    const showingNavigationDropdown = ref(false);
+    const showDropdown = ref(false);
+    const showSublinks = ref(false);
+    const showShopDropdown = ref(false);
+    const toggleDropdown = () => {
+        showDropdown.value = !showDropdown.value;
+    };
 
-// getters from my simple store
-const cartCount = computed(() => {
-  return store.getters.getCartCount();
-});
+    // getters from my simple store
+    const cartCount = computed(() => {
+        return store.getters.getCartCount();
+    });
 
-// vueUse on ClickOutside..
-onClickOutside(dropdownRef, () => {
-    showDropdown.value = false; // Close the dropdown
-});
+    const productLength = computed(() => {
+        return Products.value.length
+    })
+
+    // vueUse on ClickOutside..
+    onClickOutside(dropdownRef, () => {
+        showDropdown.value = false; // Close the dropdown
+    });
 
 
-const openCart = ref(false);
-const shopDropdown = ref(null);
+    const openCart = ref(false);
+    const shopDropdown = ref(null);
 
-const handleOpenCart = () => {
-    openCart.value = true;
-};
+    const handleOpenCart = () => {
+        openCart.value = true;
+    };
 
-const closeModal = () => {
-    openCart.value = false;
+    const closeModal = () => {
+        openCart.value = false;
 
-};
+    };
 
-// vueUse onClickOutside for the shop dropdown
-onClickOutside(shopDropdown, () => {
-    showShopDropdown.value = false; // Close the shop dropdown
-});
+    // vueUse onClickOutside for the shop dropdown
+    onClickOutside(shopDropdown, () => {
+        showShopDropdown.value = false; // Close the shop dropdown
+    });
 
-const modalWidth = computed(() => {
-    const isMobile = window.innerWidth <= 768;
-    return isMobile ? 'mobile' : 'lg';
-});
+    const modalWidth = computed(() => {
+        const isMobile = window.innerWidth <= 768;
+        return isMobile ? 'mobile' : 'lg';
+    });
 
-function animateIn() {
+    function animateIn() {
 
-    if (route().current('homepage')) {
-        showShopDropdown.value = true;
-        nextTick(() => {
-            gsap.from(shopDropdown.value, {
-                duration: 0.5,
-                y: -20,
-                opacity: 0,
-                ease: 'power2.out',
+        if (route().current('homepage') && productLength.value > 0) {
+            showShopDropdown.value = true;
+            nextTick(() => {
+                gsap.from(shopDropdown.value, {
+                    duration: 0.5,
+                    y: -20,
+                    opacity: 0,
+                    ease: 'power2.out',
+                });
             });
-        });
 
+        }
+    };
+
+    function animateOut() {
+        gsap.to(shopDropdown.value, {
+            duration: 0.3,
+            y: 20,
+            opacity: 0,
+            ease: 'power2.in',
+            onComplete: () => {
+                showShopDropdown.value = false;
+            },
+        });
+    };
+
+
+    function toggleSublinks() {
+        showSublinks.value = !showSublinks.value;
     }
-};
 
-function animateOut() {
-    gsap.to(shopDropdown.value, {
-        duration: 0.3,
-        y: 20,
-        opacity: 0,
-        ease: 'power2.in',
-        onComplete: () => {
-            showShopDropdown.value = false;
-        },
+
+
+    const form = useForm({
+        email: '',
+        password: '',
+        remember: false,
     });
-};
 
-
-function toggleSublinks() {
-    showSublinks.value = !showSublinks.value;
-}
-
-
-
-const form = useForm({
-    email: '',
-    password: '',
-    remember: false,
-});
-
-const submit = () => {
-    form.post(route('login'), {
-        onFinish: () => {
-            form.reset('password');
-            location.reload();
-        },
-    });
-};
-
-
-
-const fetchProducts = () => {
-    axios
-        .get(`/api/shop`)
-        .then(response => {
-            console.log(response.data);
-            Products.value = response.data;
-            console.log(JSON.stringify(Products.value, null, 2));
-        })
-        .catch(error => {
-            // Handle error
-            console.log(error);
-
+    const submit = () => {
+        form.post(route('login'), {
+            onFinish: () => {
+                form.reset('password');
+                location.reload();
+            },
         });
-};
+    };
 
-onMounted(() => {
-    fetchProducts();
-});
+
+
+    const fetchProducts = () => {
+        axios
+            .get(`/api/shop`)
+            .then(response => {
+                console.log(response.data);
+                Products.value = response.data;
+                console.log(JSON.stringify(Products.value, null, 2));
+            })
+            .catch(error => {
+                // Handle error
+                console.log(error);
+
+            });
+    };
+
+    onMounted(() => {
+        fetchProducts();
+    });
 
 </script>
 
@@ -185,8 +189,8 @@ onMounted(() => {
                 <button @click="handleOpenCart"
                     class="relative p-2 hover:bg-neutral-100 rounded-full transition duration-75 ease-in">
                     <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <path d="M5.28052 17.5L3.80251 9.5H21.1975L19.7195 17.5H5.28052Z" stroke="#051C2C" stroke-width="3"
-                            stroke-linejoin="round" />
+                        <path d="M5.28052 17.5L3.80251 9.5H21.1975L19.7195 17.5H5.28052Z" stroke="#051C2C"
+                            stroke-width="3" stroke-linejoin="round" />
                         <circle cx="6.94937" cy="21.8798" r="1.94937" fill="#051C2C" />
                         <circle cx="17.9874" cy="21.8798" r="1.94937" fill="#051C2C" />
                         <path
@@ -204,7 +208,8 @@ onMounted(() => {
                         <path
                             d="M17.4006 6.47619C17.4006 9.16494 15.1074 11.4524 12.1428 11.4524C9.17825 11.4524 6.88507 9.16494 6.88507 6.47619C6.88507 3.78744 9.17825 1.5 12.1428 1.5C15.1074 1.5 17.4006 3.78744 17.4006 6.47619Z"
                             stroke="#051C2C" stroke-width="3" />
-                        <path d="M21.2857 24C21.2857 19.1609 17.1923 15.2381 12.1429 15.2381C7.0934 15.2381 3 19.1609 3 24"
+                        <path
+                            d="M21.2857 24C21.2857 19.1609 17.1923 15.2381 12.1429 15.2381C7.0934 15.2381 3 19.1609 3 24"
                             stroke="#051C2C" stroke-width="3" />
                     </svg>
 
@@ -224,7 +229,8 @@ onMounted(() => {
 
                                 <button @click="toggleDropdown"
                                     class="p-2 hover:bg-neutral-100 rounded-full transition duration-75 ease-in">
-                                    <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none"
+                                        xmlns="http://www.w3.org/2000/svg">
                                         <path
                                             d="M17.4006 6.47619C17.4006 9.16494 15.1074 11.4524 12.1428 11.4524C9.17825 11.4524 6.88507 9.16494 6.88507 6.47619C6.88507 3.78744 9.17825 1.5 12.1428 1.5C15.1074 1.5 17.4006 3.78744 17.4006 6.47619Z"
                                             stroke="#051C2C" stroke-width="3" />
@@ -283,7 +289,8 @@ onMounted(() => {
 
                                     <div class="text-center text-neutral-700 text-base py-2">
                                         Don’t have an account?
-                                        <Link :href="route('register')" class="text-secondary-400">Sign up here </Link> <br>
+                                        <Link :href="route('register')" class="text-secondary-400">Sign up here </Link>
+                                        <br>
                                         <span class="pt-2">OR</span>
                                     </div>
                                 </form>
@@ -302,7 +309,7 @@ onMounted(() => {
             <div class="items-center justify-between hidden w-full sm:flex sm:w-auto sm:order-1">
 
                 <div class="hidden space-x-8 sm:flex">
-                  
+
                     <div>
                         <NavLink :href="route('shop')" :active="route().current('shop')" @mouseover="animateIn">
                             Shop
@@ -374,7 +381,7 @@ onMounted(() => {
         </div>
     </header>
     <main :class="{ 'mt-[88px]': hasAppPages }">
-        
+
         <!-- <pre>{{ cartCount }}</pre> -->
         <slot></slot>
     </main>
@@ -413,84 +420,84 @@ onMounted(() => {
 </template>
 
 <style>
-.slide-down-enter-active {
-    transition-delay: 50ms;
-    transition: all 0.3s ease;
-}
+    .slide-down-enter-active {
+        transition-delay: 50ms;
+        transition: all 0.3s ease;
+    }
 
-.slide-down-leave-active {
-    transition: all 0.5s ease;
-}
+    .slide-down-leave-active {
+        transition: all 0.5s ease;
+    }
 
-.slide-down-enter {
-    opacity: 0;
-    transform: translateY(-20px);
-}
+    .slide-down-enter {
+        opacity: 0;
+        transform: translateY(-20px);
+    }
 
-.slide-down-enter-to {
-    opacity: 1;
-    transform: translateY(0);
-}
+    .slide-down-enter-to {
+        opacity: 1;
+        transform: translateY(0);
+    }
 
-.slide-down-leave {
-    opacity: 1;
-    transform: translateY(0);
-}
+    .slide-down-leave {
+        opacity: 1;
+        transform: translateY(0);
+    }
 
-.slide-down-leave-to {
-    opacity: 0;
-    transform: translateY(-20px);
-}
+    .slide-down-leave-to {
+        opacity: 0;
+        transform: translateY(-20px);
+    }
 
-.dropdown {
-    left: 0;
-    right: auto;
-    top: 3rem;
-}
+    .dropdown {
+        left: 0;
+        right: auto;
+        top: 3rem;
+    }
 
-.shopdropdown__txt {
-    font-family: 'Montserrat';
-    font-style: normal;
-    font-weight: 600;
-    font-size: 18px;
-    line-height: 22px;
-    color: #051C2C;
-}
+    .shopdropdown__txt {
+        font-family: 'Montserrat';
+        font-style: normal;
+        font-weight: 600;
+        font-size: 18px;
+        line-height: 22px;
+        color: #051C2C;
+    }
 
-#linkDropdown .absolute.left-0 {
-    left: 0;
-    top: 100%;
-    /* Add this line to position the sublinks below the "Shop" link */
-}
+    #linkDropdown .absolute.left-0 {
+        left: 0;
+        top: 100%;
+        /* Add this line to position the sublinks below the "Shop" link */
+    }
 
-#linkDropdown .absolute.mt-2 {
-    margin-top: 0.5rem;
-}
+    #linkDropdown .absolute.mt-2 {
+        margin-top: 0.5rem;
+    }
 
 
-/* Add the following styles to push the subsequent links downward */
-.push-downward {
-    position: relative;
-    top: 2rem;
-    /* Adjust this value as needed */
-}
+    /* Add the following styles to push the subsequent links downward */
+    .push-downward {
+        position: relative;
+        top: 2rem;
+        /* Adjust this value as needed */
+    }
 
-.footer__txt1 {
-    font-family: 'Montserrat';
-    font-style: normal;
-    font-weight: 600;
-}
+    .footer__txt1 {
+        font-family: 'Montserrat';
+        font-style: normal;
+        font-weight: 600;
+    }
 
-.footer__txt2 {
-    font-family: 'Montserrat';
-    font-style: normal;
-    font-weight: 600;
-    font-size: 12px;
-    line-height: 17px;
-    color: #FFFFFF;
-}
+    .footer__txt2 {
+        font-family: 'Montserrat';
+        font-style: normal;
+        font-weight: 600;
+        font-size: 12px;
+        line-height: 17px;
+        color: #FFFFFF;
+    }
 
-.badge {
-    @apply absolute top-0 right-0 -mt-1 -mr-1 px-1 text-xs font-semibold text-white bg-red-500 rounded-full;
-}
+    .badge {
+        @apply absolute top-0 right-0 -mt-1 -mr-1 px-1 text-xs font-semibold text-white bg-red-500 rounded-full;
+    }
 </style>
