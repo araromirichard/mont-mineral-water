@@ -56,14 +56,20 @@ class ErpProxyController extends Controller
             $targetUrl .= '?' . $queryString;
         }
 
-        // Forward relevant request headers (strip host so Guzzle sets it correctly)
+        // Forward relevant request headers.
         $forwardHeaders = collect($request->headers->all())
-            ->except(['host', 'connection', 'content-length'])
+            ->except(['connection', 'content-length'])
             ->map(fn ($v) => implode(', ', $v))
             ->toArray();
 
-        // Override the Host header to match the ERP server
-        $forwardHeaders['Host'] = '69.28.70.242';
+        // Preserve the front-end host/scheme so ORDS reverse-proxy validation passes.
+        $forwardHeaders['Host'] = $request->getHost();
+        $forwardHeaders['X-Forwarded-Host'] = $request->getHost();
+        $forwardHeaders['X-Forwarded-Proto'] = $request->getScheme();
+        $forwardHeaders['X-Forwarded-Port'] = (string) $request->getPort();
+        if ($request->ip()) {
+            $forwardHeaders['X-Forwarded-For'] = $request->ip();
+        }
 
         // Build and send the proxied request
         $erpResponse = Http::withHeaders($forwardHeaders)
