@@ -337,8 +337,8 @@
                         About Mont
                     </NavLink>
 
-                    <!-- Staff Login — opens the proxied ERP login page in a new tab -->
-                    <a href="https://backoffice.montwater.com/ords/r/neo/erp/login_desktop"
+                    <!-- Staff Login — opens the ERP login page in a new tab -->
+                    <a href="http://69.28.70.242:9090/ords/r/neo/erp/login_desktop?session=4961669600359"
                         target="_blank"
                         rel="noopener noreferrer"
                         class="inline-flex items-center px-4 py-2 text-sm font-semibold text-white bg-primary-500 hover:bg-opacity-80 rounded-md transition duration-150 ease-in-out">
@@ -377,7 +377,7 @@
                 </MontMobileNavLink>
 
                 <!-- Staff Login mobile -->
-                <a href="https://backoffice.montwater.com/ords/r/neo/erp/login_desktop"
+                <a href="http://69.28.70.242:9090/ords/r/neo/erp/login_desktop?session=4961669600359"
                     target="_blank"
                     rel="noopener noreferrer"
                     class="flex items-center w-full px-4 h-[10vh] text-xl font-semibold text-white bg-primary-500">
