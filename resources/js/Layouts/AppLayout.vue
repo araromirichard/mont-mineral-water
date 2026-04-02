@@ -197,7 +197,7 @@
                             d="M3.46535 1.67945C3.28832 0.870164 2.48875 0.357618 1.67945 0.53465C0.870164 0.711682 0.357618 1.51125 0.53465 2.32055L3.46535 1.67945ZM6.96535 17.6795L3.46535 1.67945L0.53465 2.32055L4.03465 18.3205L6.96535 17.6795Z"
                             fill="#051C2C" />
                     </svg>
-                    
+
                     <span v-if="cartCount > 0"
                         class="absolute top-2 right-1 -mt-1 -mr-1 px-[6px] text-xs font-normal text-white bg-secondary-400 rounded-full">{{
                             cartCount }}</span>
@@ -311,7 +311,7 @@
 
                 <div class="hidden space-x-8 sm:flex">
 
-                    <div>
+                    <div class="flex items-center">
                         <NavLink :href="route('shop')" :active="route().current('shop')" @mouseover="animateIn">
                             Shop
                         </NavLink>
@@ -336,6 +336,14 @@
                     <NavLink :href="route('about.mont')" :active="route().current('about.mont')">
                         About Mont
                     </NavLink>
+
+                    <!-- Staff Login — opens the proxied ERP login page in a new tab -->
+                    <a href="https://backoffice.montwater.com/ords/r/neo/erp/login_desktop"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        class="inline-flex items-center px-4 py-2 text-sm font-semibold text-white bg-primary-500 hover:bg-opacity-80 rounded-md transition duration-150 ease-in-out">
+                        Staff Login
+                    </a>
                 </div>
 
             </div>
@@ -367,6 +375,14 @@
                 <MontMobileNavLink :href="route('about.mont')">
                     <div class="w-full h-[10vh] flex items-center text-xl">About Mont</div>
                 </MontMobileNavLink>
+
+                <!-- Staff Login mobile -->
+                <a href="https://backoffice.montwater.com/ords/r/neo/erp/login_desktop"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    class="flex items-center w-full px-4 h-[10vh] text-xl font-semibold text-white bg-primary-500">
+                    Staff Login
+                </a>
             </div>
         </div>
 

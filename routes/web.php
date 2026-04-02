@@ -9,6 +9,7 @@ use App\Http\Controllers\Auth\GoogleController;
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\CheckoutController;
 use App\Http\Controllers\ContactUsController;
+use App\Http\Controllers\ErpProxyController;
 use App\Http\Controllers\GoogleAuthController;
 use App\Http\Controllers\ProductController as ControllersProductController;
 use App\Http\Controllers\ProfileController;
@@ -43,7 +44,6 @@ Route::get('/shop/{product}', [ControllersProductController::class, 'showproduct
 Route::inertia('/about-mont', 'AboutMontMineralWater')->name('about.mont');
 
 
-
 // Admin Routes....
 Route::middleware(['auth', 'verified', 'role:admin'])->prefix('admin')->name('admin.')->group(function () {
     Route::get('/', [AdminController::class, 'index'])->name('index');
@@ -64,7 +64,6 @@ Route::middleware(['auth', 'verified', 'role:admin'])->prefix('admin')->name('ad
 });
 
 
-
 // Authenticated Routes....
 
 Route::middleware(['auth', 'verified'])->group(function () {
@@ -82,3 +81,21 @@ Route::get('auth/redirect', [GoogleAuthController::class, 'redirect'])->name('go
 Route::get('auth/google/callback', [GoogleAuthController::class, 'callback'])->name('google-callback');
 
 require __DIR__ . '/auth.php';
+
+/*
+|--------------------------------------------------------------------------
+| ERP (ORDS) Reverse Proxy — backoffice.montwater.com
+|--------------------------------------------------------------------------
+| All requests to backoffice.montwater.com/ords/* are transparently
+| forwarded to the internal ERP server at http://69.28.70.242:9090/ords/*
+|
+| DNS requirement : A record  backoffice → <this server's IP>
+| Web-server      : Make sure backoffice.montwater.com is a valid
+|                   ServerName / server_name so the request reaches Laravel.
+*/
+Route::domain('backoffice.montwater.com')->group(function () {
+    Route::any('/ords/{path?}', [ErpProxyController::class, 'handle'])
+        ->where('path', '.*')
+        ->name('erp.proxy');
+});
+
