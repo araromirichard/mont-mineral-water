@@ -30,8 +30,25 @@ class ErpProxyController extends Controller
      */
     public function handle(Request $request, string $path = ''): \Illuminate\Http\Response
     {
-        // Build the target URL
-        $targetUrl = self::ERP_BASE_URL . '/ords/' . $path;
+        return $this->forward($request, 'ords', $path);
+    }
+
+    /**
+     * Forward ORDS static assets under /i/*.
+     */
+    public function handleAssets(Request $request, string $path = ''): \Illuminate\Http\Response
+    {
+        return $this->forward($request, 'i', $path);
+    }
+
+    private function forward(Request $request, string $basePath, string $path = ''): \Illuminate\Http\Response
+    {
+        $normalizedPath = ltrim($path, '/');
+        $targetUrl = self::ERP_BASE_URL . '/' . $basePath;
+
+        if ($normalizedPath !== '') {
+            $targetUrl .= '/' . $normalizedPath;
+        }
 
         // Append any original query string
         $queryString = $request->getQueryString();

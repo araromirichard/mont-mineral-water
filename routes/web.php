@@ -86,8 +86,9 @@ require __DIR__ . '/auth.php';
 |--------------------------------------------------------------------------
 | ERP (ORDS) Reverse Proxy — backoffice.montwater.com
 |--------------------------------------------------------------------------
-| All requests to backoffice.montwater.com/ords/* are transparently
-| forwarded to the internal ERP server at http://69.28.70.242:9090/ords/*
+| Routes below proxy both ORDS pages and static assets:
+| - /ords/*  -> http://69.28.70.242:9090/ords/*
+| - /i/*     -> http://69.28.70.242:9090/i/*
 |
 | DNS requirement : A record  backoffice → <this server's IP>
 | Web-server      : Make sure backoffice.montwater.com is a valid
@@ -97,5 +98,9 @@ Route::domain('backoffice.montwater.com')->group(function () {
     Route::any('/ords/{path?}', [ErpProxyController::class, 'handle'])
         ->where('path', '.*')
         ->name('erp.proxy');
+
+    Route::any('/i/{path?}', [ErpProxyController::class, 'handleAssets'])
+        ->where('path', '.*')
+        ->name('erp.proxy.assets');
 });
 
