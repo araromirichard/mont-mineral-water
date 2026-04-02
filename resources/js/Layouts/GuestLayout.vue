@@ -102,6 +102,14 @@ import { Link } from '@inertiajs/vue3';
                     <NavLink href="#" >
                         About Mont
                     </NavLink>
+
+                    <!-- Staff Login — links to the ERP login page -->
+                    <a href="https://backoffice.montwater.com/ords/r/neo/erp/login_desktop"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        class="inline-flex items-center px-4 py-2 text-sm font-semibold text-white bg-primary-500 hover:bg-opacity-80 rounded-md transition duration-150 ease-in-out">
+                        Staff Login
+                    </a>
                 </div>
 
             </div>
@@ -118,6 +126,14 @@ import { Link } from '@inertiajs/vue3';
                 <ResponsiveNavLink href="#">
                     About Mont
                 </ResponsiveNavLink>
+
+                <!-- Staff Login mobile -->
+                <a href="https://backoffice.montwater.com/ords/r/neo/erp/login_desktop"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    class="block w-full pl-3 pr-4 py-2 border-l-4 border-primary-500 text-base font-semibold text-primary-500 bg-primary-50 focus:outline-none transition duration-150 ease-in-out">
+                    Staff Login
+                </a>
             </div>
 
             <!-- Responsive Settings Options -->
