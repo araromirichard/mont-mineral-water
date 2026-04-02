@@ -94,7 +94,9 @@ require __DIR__ . '/auth.php';
 | Web-server      : Make sure backoffice.montwater.com is a valid
 |                   ServerName / server_name so the request reaches Laravel.
 */
-Route::domain('backoffice.montwater.com')->group(function () {
+Route::domain('backoffice.montwater.com')
+    ->withoutMiddleware([\App\Http\Middleware\VerifyCsrfToken::class])
+    ->group(function () {
     Route::any('/ords/{path?}', [ErpProxyController::class, 'handle'])
         ->where('path', '.*')
         ->name('erp.proxy');
