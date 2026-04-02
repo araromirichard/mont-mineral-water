@@ -84,16 +84,11 @@ require __DIR__ . '/auth.php';
 
 /*
 |--------------------------------------------------------------------------
-| ERP (ORDS) Reverse Proxy — backoffice.montwater.com
+| ERP (ORDS) Reverse Proxy — backoffice.montwater.com [DISABLED]
 |--------------------------------------------------------------------------
-| Routes below proxy both ORDS pages and static assets:
-| - /ords/*  -> http://69.28.70.242:9090/ords/*
-| - /i/*     -> http://69.28.70.242:9090/i/*
+| Routes below are DISABLED as we're linking directly to the ERP URL:
+| http://69.28.70.242:9090/ords/r/neo/erp/login_desktop?session=4961669600359
 |
-| DNS requirement : A record  backoffice → <this server's IP>
-| Web-server      : Make sure backoffice.montwater.com is a valid
-|                   ServerName / server_name so the request reaches Laravel.
-*/
 Route::domain('backoffice.montwater.com')
     ->withoutMiddleware([\App\Http\Middleware\VerifyCsrfToken::class])
     ->group(function () {
@@ -105,4 +100,5 @@ Route::domain('backoffice.montwater.com')
         ->where('path', '.*')
         ->name('erp.proxy.assets');
 });
+*/
 
