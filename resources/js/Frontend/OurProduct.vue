@@ -6,80 +6,84 @@
     <div id="default-carousel" class="relative w-full" data-carousel="slide">
       
       <!-- Carousel wrapper -->
-      <div class="relative h-[100vh] overflow-hidden ">
-        <!-- Item 1 -->
-        <div v-show="activeSlideIndex === 0" class="duration-700 ease-in-out " data-carousel-item>
-          <img src="/storage/frontend/mobileSlide1.png"
-            class="absolute block w-full h-full object-cover -translate-x-1/2 -translate-y-1/2 top-1/2 left-1/2"
-            alt="...">
-          <div class="absolute inset-0 flex pt-24 justify-center backdrop-brightness-50">
-            <div class="text-white text-center space-y-8">
-              <h2 class="text-xl font-bold">The Pocket Size - 330 ML</h2>
-              <p class="text-[16px] leading-5 px-14">Perfect for the go! Can be tossed
-                in your work bag or kids lunch bag.
-                Can be best enjoyed by both kids
-                and adults. Suitable for offices,
-                schools and special occasions.</p>
-              <MontButtonOutline :href="route('shop')" :has-icon="true">
-                <template #icon>
-                  <svg width="17" height="22" viewBox="0 0 17 22" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <path
-                      d="M5.16671 8.49992V5.16658C5.16671 3.32492 6.66254 1.83325 8.50004 1.83325C10.3417 1.83325 11.8334 3.32909 11.8334 5.16658V8.49992M1.83337 6.83325H15.1667V20.1666H1.83337V6.83325Z"
-                      stroke="white" stroke-width="2" stroke-linecap="round" />
-                  </svg>
-                </template>
-                Shop Now
-              </MontButtonOutline>
+      <div class="relative h-[100vh] overflow-hidden">
+        <div
+          class="flex h-full transition-transform duration-700 ease-in-out"
+          :style="{ transform: `translateX(-${activeSlideIndex * 100}%)` }"
+        >
+          <!-- Item 1 -->
+          <div class="relative min-w-full h-full">
+            <img src="/storage/frontend/mobileSlide1.png"
+              class="absolute block w-full h-full object-cover"
+              alt="The Pocket Size">
+            <div class="absolute inset-0 flex pt-24 justify-center backdrop-brightness-50">
+              <div class="text-white text-center space-y-8">
+                <h2 class="text-xl font-bold">The Pocket Size - 330 ML</h2>
+                <p class="text-[16px] leading-5 px-14">Perfect for the go! Can be tossed
+                  in your work bag or kids lunch bag.
+                  Can be best enjoyed by both kids
+                  and adults. Suitable for offices,
+                  schools and special occasions.</p>
+                <MontButtonOutline :href="route('shop')" :has-icon="true">
+                  <template #icon>
+                    <svg width="17" height="22" viewBox="0 0 17 22" fill="none" xmlns="http://www.w3.org/2000/svg">
+                      <path
+                        d="M5.16671 8.49992V5.16658C5.16671 3.32492 6.66254 1.83325 8.50004 1.83325C10.3417 1.83325 11.8334 3.32909 11.8334 5.16658V8.49992M1.83337 6.83325H15.1667V20.1666H1.83337V6.83325Z"
+                        stroke="white" stroke-width="2" stroke-linecap="round" />
+                    </svg>
+                  </template>
+                  Shop Now
+                </MontButtonOutline>
+              </div>
             </div>
           </div>
-        </div>
-        <!-- Item 2 -->
-        <div v-show="activeSlideIndex === 1" class="duration-700 ease-in-out" data-carousel-item>
-          <img src="/storage/frontend/FamilySlide.png"
-            class="absolute block w-full h-full object-cover -translate-x-1/2 -translate-y-1/2 top-1/2 left-1/2"
-            alt="...">
-          <div class="absolute inset-0 flex pt-24 justify-center backdrop-brightness-50">
-            <div class="text-white text-center space-y-8">
-              <h2 class="text-xl font-bold">The Fun Size - 500 ML</h2>
-              <p class="text-[16px] leading-5 px-14">Perfect for everyday hydration!
-                Our best-selling pack can change the mood of an impromptu meal at home, or a work out, keeping you
-                refreshed and revitalised.</p>
-              <MontButtonOutline :href="route('shop')" :has-icon="true">
-                <template #icon>
-                  <svg width="17" height="22" viewBox="0 0 17 22" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <path
-                      d="M5.16671 8.49992V5.16658C5.16671 3.32492 6.66254 1.83325 8.50004 1.83325C10.3417 1.83325 11.8334 3.32909 11.8334 5.16658V8.49992M1.83337 6.83325H15.1667V20.1666H1.83337V6.83325Z"
-                      stroke="white" stroke-width="2" stroke-linecap="round" />
-                  </svg>
-                </template>
-                Shop Now
-              </MontButtonOutline>
+          <!-- Item 2 -->
+          <div class="relative min-w-full h-full">
+            <img src="/storage/frontend/funslide.png"
+              class="absolute block w-full h-full object-cover"
+              alt="The Fun Size">
+            <div class="absolute inset-0 flex pt-24 justify-center backdrop-brightness-50">
+              <div class="text-white text-center space-y-8">
+                <h2 class="text-xl font-bold">The Fun Size - 500 ML</h2>
+                <p class="text-[16px] leading-5 px-14">Perfect for everyday hydration!
+                  Our best-selling pack can change the mood of an impromptu meal at home, or a work out, keeping you
+                  refreshed and revitalised.</p>
+                <MontButtonOutline :href="route('shop')" :has-icon="true">
+                  <template #icon>
+                    <svg width="17" height="22" viewBox="0 0 17 22" fill="none" xmlns="http://www.w3.org/2000/svg">
+                      <path
+                        d="M5.16671 8.49992V5.16658C5.16671 3.32492 6.66254 1.83325 8.50004 1.83325C10.3417 1.83325 11.8334 3.32909 11.8334 5.16658V8.49992M1.83337 6.83325H15.1667V20.1666H1.83337V6.83325Z"
+                        stroke="white" stroke-width="2" stroke-linecap="round" />
+                    </svg>
+                  </template>
+                  Shop Now
+                </MontButtonOutline>
+              </div>
             </div>
           </div>
-        </div>
-        <!-- Item 3 -->
-        <div v-show="activeSlideIndex === 2" class="duration-700 ease-in-out" data-carousel-item>
-          <img src="/storage/frontend/FamilySlide.png"
-            class="absolute block w-full h-full object-cover -translate-x-1/2 -translate-y-1/2 top-1/2 left-1/2"
-            alt="...">
-          <div class="absolute inset-0 flex pt-24 justify-center backdrop-brightness-50">
-            <div class="text-white text-center space-y-8">
-              <h2 class="text-xl font-bold">The Family Size - 1L</h2>
-              <p class="text-[16px] leading-5 px-14">Where there is great company, there
-                is
-                refreshing water! The ideal size for sharing with friends, family and loved ones at home or in a
-                restaurant.
-              </p>
-              <MontButtonOutline :href="route('shop')" :has-icon="true">
-                <template #icon>
-                  <svg width="17" height="22" viewBox="0 0 17 22" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <path
-                      d="M5.16671 8.49992V5.16658C5.16671 3.32492 6.66254 1.83325 8.50004 1.83325C10.3417 1.83325 11.8334 3.32909 11.8334 5.16658V8.49992M1.83337 6.83325H15.1667V20.1666H1.83337V6.83325Z"
-                      stroke="white" stroke-width="2" stroke-linecap="round" />
-                  </svg>
-                </template>
-                Shop Now
-              </MontButtonOutline>
+          <!-- Item 3 -->
+          <div class="relative min-w-full h-full">
+            <img src="/storage/frontend/FamilySlide.png"
+              class="absolute block w-full h-full object-cover"
+              alt="The Family Size">
+            <div class="absolute inset-0 flex pt-24 justify-center backdrop-brightness-50">
+              <div class="text-white text-center space-y-8">
+                <h2 class="text-xl font-bold">The Family Size - 1L</h2>
+                <p class="text-[16px] leading-5 px-14">Where there is great company, there
+                  is refreshing water! The ideal size for sharing with friends, family and loved ones at home or in a
+                  restaurant.
+                </p>
+                <MontButtonOutline :href="route('shop')" :has-icon="true">
+                  <template #icon>
+                    <svg width="17" height="22" viewBox="0 0 17 22" fill="none" xmlns="http://www.w3.org/2000/svg">
+                      <path
+                        d="M5.16671 8.49992V5.16658C5.16671 3.32492 6.66254 1.83325 8.50004 1.83325C10.3417 1.83325 11.8334 3.32909 11.8334 5.16658V8.49992M1.83337 6.83325H15.1667V20.1666H1.83337V6.83325Z"
+                        stroke="white" stroke-width="2" stroke-linecap="round" />
+                    </svg>
+                  </template>
+                  Shop Now
+                </MontButtonOutline>
+              </div>
             </div>
           </div>
         </div>
