@@ -1,8 +1,10 @@
 /.phpunit.cache
-/bootstrap/ssr
 /node_modules
 /public/build
 /public/hot
+/public/storage/*
+!/public/storage/serve.php
+!/public/storage/.htaccess
 /storage/*.key
 /vendor
 .env
