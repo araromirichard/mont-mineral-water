@@ -56,7 +56,7 @@
     });
 
     const productLength = computed(() => {
-        return Products.value.length
+        return Products.value?.length ?? 0
     })
 
     // vueUse on ClickOutside..
@@ -88,25 +88,24 @@
     });
 
     function animateIn() {
-
-        if (route().current('homepage') && productLength.value > 0) {
-            showShopDropdown.value = true;
-            nextTick(() => {
-                gsap.from(shopDropdown.value, {
-                    duration: 0.5,
-                    y: -20,
-                    opacity: 0,
-                    ease: 'power2.out',
-                });
+        if (!route().current('homepage') || productLength.value === 0) return;
+        showShopDropdown.value = true;
+        nextTick(() => {
+            if (!shopDropdown.value) return;
+            gsap.from(shopDropdown.value, {
+                duration: 0.4,
+                y: -10,
+                opacity: 0,
+                ease: 'power2.out',
             });
-
-        }
+        });
     };
 
     function animateOut() {
+        if (!showShopDropdown.value || !shopDropdown.value) return;
         gsap.to(shopDropdown.value, {
-            duration: 0.3,
-            y: 20,
+            duration: 0.25,
+            y: -10,
             opacity: 0,
             ease: 'power2.in',
             onComplete: () => {
@@ -143,14 +142,10 @@
         axios
             .get(`/api/shop`)
             .then(response => {
-                console.log(response.data);
                 Products.value = response.data;
-                console.log(JSON.stringify(Products.value, null, 2));
             })
-            .catch(error => {
-                // Handle error
-                console.log(error);
-
+            .catch(() => {
+                Products.value = [];
             });
     };
 
@@ -311,20 +306,25 @@
 
                 <div class="hidden space-x-8 sm:flex">
 
-                    <div class="flex items-center">
-                        <NavLink :href="route('shop')" :active="route().current('shop')" @mouseover="animateIn">
+                    <div class="flex items-center" @mouseenter="animateIn" @mouseleave="animateOut">
+                        <NavLink :href="route('shop')" :active="route().current('shop')">
                             Shop
                         </NavLink>
                         <div v-if="showShopDropdown" ref="shopDropdown"
-                            class="flex justify-evenly items-center absolute left-0 right-0 top-20 w-full h-80 bg-white rounded shadow-xs z-10">
-                            <!-- Dropdown content -->
-                            <!-- Dropdown content -->
+                            class="flex justify-evenly items-center absolute left-0 right-0 top-20 w-full h-80 bg-white rounded shadow-md z-10">
                             <template v-for="product in Products" :key="product.id">
                                 <Link :href="route('show-product', { product: product.slug })">
-                                <div class="flex flex-col justify-center items-center">
-                                    <img :src="'/storage/' + product.image" :alt="product.name" class="w-56 h-auto" />
-                                    <p class="shopdropdown__txt pt-2">{{ product.name }} | {{ product.size }}</p>
-                                </div>
+                                    <div class="flex flex-col justify-center items-center">
+                                        <img
+                                            :src="'/storage/' + product.image"
+                                            :alt="product.name"
+                                            class="w-56 h-auto"
+                                            loading="lazy"
+                                            width="224"
+                                            height="224"
+                                        />
+                                        <p class="shopdropdown__txt pt-2">{{ product.name }} | {{ product.size }}</p>
+                                    </div>
                                 </Link>
                             </template>
                         </div>

@@ -5,10 +5,10 @@
     import PrimaryButton from '@/Components/PrimaryButton.vue';
     import TextInput from '@/Components/TextInput.vue';
     import AdminLayout from '@/Layouts/AdminLayout.vue';
-    import { Head, Link, router, useForm } from '@inertiajs/vue3';
+    import { Head, Link, useForm } from '@inertiajs/vue3';
     import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
     import CKEditor from '@ckeditor/ckeditor5-vue';
-    import { ref, onMounted, computed } from 'vue';
+    import { ref, onMounted, onUnmounted, computed } from 'vue';
 
     const props = defineProps({
         product: Object
@@ -39,8 +39,9 @@
 
     // Separate reactive arrays for managing images
     const existingImages = ref([...props.product.product_images]);
-    const newImageFiles = ref([]);
-    const loadingProgress = ref(0);
+    // Each entry: { id, file, preview (data URL), name, size }
+    const newImagePreviews = ref([]);
+    const uploadErrors = ref([]);
 
     const editor = ref(ClassicEditor);
     const editorConfig = ref({
@@ -61,161 +62,152 @@
         mediaEmbed: { previewsInData: true },
     });
 
-    // Computed property for all images (existing + new)
     const allImages = computed(() => {
         const existing = existingImages.value.map(img => ({
             type: 'existing',
             id: img.id,
             src: `/storage/${img.image_path}`,
             name: img.image_path.split('/').pop(),
-            data: img
+            data: img,
         }));
 
-        const newImages = newImageFiles.value.map((file, index) => ({
+        const newImages = newImagePreviews.value.map(item => ({
             type: 'new',
-            id: `new_${index}`,
-            src: URL.createObjectURL(file),
-            name: file.name,
-            size: file.size,
-            data: file
+            id: item.id,
+            src: item.preview,
+            name: item.name,
+            size: item.size,
+            data: item,
         }));
 
         return [...existing, ...newImages];
     });
 
-    // Handle new image files
     const updatePreviewImages = (files) => {
         if (!files || files.length === 0) return;
+        uploadErrors.value = [];
 
         Array.from(files).forEach(file => {
-            // Validate file type
             if (!file.type.startsWith('image/')) {
-                alert(`${file.name} is not a valid image file.`);
+                uploadErrors.value.push(`"${file.name}" is not a valid image file.`);
                 return;
             }
-
-            // Validate file size (max 5MB)
             if (file.size > 5 * 1024 * 1024) {
-                alert(`${file.name} is too large. Maximum file size is 5MB.`);
+                uploadErrors.value.push(`"${file.name}" exceeds the 5MB limit.`);
                 return;
             }
-
-            // Check if file is already added
-            const existingFile = newImageFiles.value.find(existingFile =>
-                existingFile.name === file.name &&
-                existingFile.size === file.size &&
-                existingFile.lastModified === file.lastModified
+            const duplicate = newImagePreviews.value.find(item =>
+                item.file.name === file.name &&
+                item.file.size === file.size &&
+                item.file.lastModified === file.lastModified
             );
-
-            if (existingFile) {
-                alert(`${file.name} is already selected.`);
+            if (duplicate) {
+                uploadErrors.value.push(`"${file.name}" is already selected.`);
                 return;
             }
 
-            newImageFiles.value.push(file);
+            const reader = new FileReader();
+            reader.onload = (e) => {
+                newImagePreviews.value.push({
+                    id: `new_${Date.now()}_${Math.random()}`,
+                    file,
+                    preview: e.target.result,
+                    name: file.name,
+                    size: file.size,
+                });
+                form.new_images = newImagePreviews.value.map(i => i.file);
+            };
+            reader.readAsDataURL(file);
         });
-
-        // Update form data
-        form.new_images = newImageFiles.value;
     };
 
-    // Remove image (existing or new)
     const removeImage = (imageId, imageType) => {
         if (imageType === 'existing') {
-            // Find the image in existing images
-            const imageIndex = existingImages.value.findIndex(img => img.id === imageId);
-            if (imageIndex !== -1) {
-                const removedImage = existingImages.value[imageIndex];
-
-                // Add to removed images list
-                if (!form.removed_images.includes(removedImage.id)) {
-                    form.removed_images.push(removedImage.id);
+            const index = existingImages.value.findIndex(img => img.id === imageId);
+            if (index !== -1) {
+                const removed = existingImages.value[index];
+                if (!form.removed_images.includes(removed.id)) {
+                    form.removed_images.push(removed.id);
                 }
-
-                // Remove from existing images display
-                existingImages.value.splice(imageIndex, 1);
+                existingImages.value.splice(index, 1);
             }
         } else {
-            // Remove new image
-            const imageIndex = newImageFiles.value.findIndex((_, index) => `new_${index}` === imageId);
-            if (imageIndex !== -1) {
-                // Revoke object URL to free memory
-                const file = newImageFiles.value[imageIndex];
-                const objectUrl = allImages.value.find(img => img.data === file)?.src;
-                if (objectUrl) URL.revokeObjectURL(objectUrl);
-
-                newImageFiles.value.splice(imageIndex, 1);
-                form.new_images = newImageFiles.value;
+            const index = newImagePreviews.value.findIndex(item => item.id === imageId);
+            if (index !== -1) {
+                newImagePreviews.value.splice(index, 1);
+                form.new_images = newImagePreviews.value.map(i => i.file);
             }
         }
     };
 
-    // Replace existing image with new one
     const replaceImage = (imageId, imageType) => {
         const input = document.createElement('input');
         input.type = 'file';
         input.accept = 'image/*';
+        input.style.display = 'none';
+        document.body.appendChild(input);
         input.onchange = (e) => {
+            document.body.removeChild(input);
             const file = e.target.files[0];
-            if (file) {
-                // Validate file
-                if (!file.type.startsWith('image/')) {
-                    alert(`${file.name} is not a valid image file.`);
-                    return;
-                }
+            if (!file) return;
+            uploadErrors.value = [];
+            if (!file.type.startsWith('image/')) {
+                uploadErrors.value.push(`"${file.name}" is not a valid image file.`);
+                return;
+            }
+            if (file.size > 5 * 1024 * 1024) {
+                uploadErrors.value.push(`"${file.name}" exceeds the 5MB limit.`);
+                return;
+            }
 
-                if (file.size > 5 * 1024 * 1024) {
-                    alert(`${file.name} is too large. Maximum file size is 5MB.`);
-                    return;
-                }
-
+            const reader = new FileReader();
+            reader.onload = (ev) => {
                 if (imageType === 'existing') {
-                    // Remove the existing image and add new one
                     removeImage(imageId, 'existing');
-                    newImageFiles.value.push(file);
-                    form.new_images = newImageFiles.value;
+                    newImagePreviews.value.push({
+                        id: `new_${Date.now()}_${Math.random()}`,
+                        file,
+                        preview: ev.target.result,
+                        name: file.name,
+                        size: file.size,
+                    });
                 } else {
-                    // Replace new image
-                    const imageIndex = newImageFiles.value.findIndex((_, index) => `new_${index}` === imageId);
-                    if (imageIndex !== -1) {
-                        // Revoke old object URL
-                        const oldFile = newImageFiles.value[imageIndex];
-                        const oldObjectUrl = allImages.value.find(img => img.data === oldFile)?.src;
-                        if (oldObjectUrl) URL.revokeObjectURL(oldObjectUrl);
-
-                        newImageFiles.value[imageIndex] = file;
-                        form.new_images = newImageFiles.value;
+                    const index = newImagePreviews.value.findIndex(item => item.id === imageId);
+                    if (index !== -1) {
+                        newImagePreviews.value[index] = {
+                            id: imageId,
+                            file,
+                            preview: ev.target.result,
+                            name: file.name,
+                            size: file.size,
+                        };
                     }
                 }
-            }
+                form.new_images = newImagePreviews.value.map(i => i.file);
+            };
+            reader.readAsDataURL(file);
         };
         input.click();
     };
 
-    // Add more images
     const addMoreImages = () => {
         const input = document.createElement('input');
         input.type = 'file';
         input.accept = 'image/*';
         input.multiple = true;
+        input.style.display = 'none';
+        document.body.appendChild(input);
         input.onchange = (e) => {
+            document.body.removeChild(input);
             updatePreviewImages(e.target.files);
         };
         input.click();
     };
 
-    // Clear all new images
     const clearAllNewImages = () => {
-        if (confirm('Are you sure you want to remove all new images?')) {
-            // Revoke all object URLs
-            newImageFiles.value.forEach(file => {
-                const objectUrl = allImages.value.find(img => img.data === file)?.src;
-                if (objectUrl) URL.revokeObjectURL(objectUrl);
-            });
-
-            newImageFiles.value = [];
-            form.new_images = [];
-        }
+        newImagePreviews.value = [];
+        form.new_images = [];
+        uploadErrors.value = [];
     };
 
     // Format file size
@@ -227,44 +219,17 @@
         return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
     };
 
-    // Submit form
     const updateForm = () => {
-        // Create FormData for file upload
-        const formData = new FormData();
-
-        // Append regular form fields
-        formData.append('name', form.name);
-        formData.append('description', form.description);
-        formData.append('size', form.size);
-        formData.append('pack_size', form.pack_size);
-        formData.append('price', form.price);
-        formData.append('_method', 'PUT');
-
-        // Append new image files
-        newImageFiles.value.forEach((file, index) => {
-            formData.append(`new_images[${index}]`, file);
-        });
-
-        // Append removed image IDs
-        form.removed_images.forEach((id, index) => {
-            formData.append(`removed_images[${index}]`, id);
-        });
-
-        // Use router.post with FormData for file upload
-        router.post(route('admin.products.update', props.product.id), formData, {
+        form.new_images = newImagePreviews.value.map(i => i.file);
+        form.transform(data => ({
+            ...data,
+            _method: 'PUT',
+        })).post(route('admin.products.update', props.product.id), {
             forceFormData: true,
             onSuccess: () => {
-                // Clean up object URLs
-                newImageFiles.value.forEach(file => {
-                    const url = allImages.value.find(img => img.data === file)?.src;
-                    if (url && url.startsWith('blob:')) URL.revokeObjectURL(url);
-                });
-                newImageFiles.value = [];
+                newImagePreviews.value = [];
                 form.new_images = [];
                 form.removed_images = [];
-            },
-            onError: (errors) => {
-                console.log('Update errors:', JSON.stringify(errors, null, 2));
             },
         });
     };
@@ -279,15 +244,8 @@
     const hasGeneralError = computed(() => !!form.errors.new_images);
     const pageTitle = computed(() => 'Edit Product');
 
-    // Cleanup on unmount
-    onMounted(() => {
-        return () => {
-            // Clean up any remaining object URLs
-            newImageFiles.value.forEach(file => {
-                const url = allImages.value.find(img => img.data === file)?.src;
-                if (url && url.startsWith('blob:')) URL.revokeObjectURL(url);
-            });
-        };
+    onUnmounted(() => {
+        newImagePreviews.value = [];
     });
 </script>
 
@@ -371,7 +329,7 @@
                                             class="text-sm bg-blue-500 hover:bg-blue-600 text-white px-3 py-1 rounded-md transition-colors">
                                             Add Images
                                         </button>
-                                        <button v-if="newImageFiles.length > 0" @click.prevent="clearAllNewImages"
+                                        <button v-if="newImagePreviews.length > 0" @click.prevent="clearAllNewImages"
                                             type="button"
                                             class="text-sm bg-red-500 hover:bg-red-600 text-white px-3 py-1 rounded-md transition-colors">
                                             Clear New
@@ -385,6 +343,9 @@
 
                                 <InputError class="mt-2" :message="form.errors.new_images" v-if="hasGeneralError" />
                                 <InputError class="mt-2" :message="imageErrorMessage" v-if="hasImageError" />
+                                <ul v-if="uploadErrors.length" class="mt-2 space-y-1">
+                                    <li v-for="err in uploadErrors" :key="err" class="text-sm text-red-600">{{ err }}</li>
+                                </ul>
                             </div>
 
                             <!-- Image Preview Section -->
@@ -395,8 +356,8 @@
                                     </h4>
                                     <div class="text-sm text-gray-500">
                                         <span class="text-green-600">{{ existingImages.length }} existing</span>
-                                        <span v-if="newImageFiles.length > 0" class="ml-2 text-blue-600">
-                                            {{ newImageFiles.length }} new
+                                        <span v-if="newImagePreviews.length > 0" class="ml-2 text-blue-600">
+                                            {{ newImagePreviews.length }} new
                                         </span>
                                         <span v-if="form.removed_images.length > 0" class="ml-2 text-red-600">
                                             {{ form.removed_images.length }} to remove
@@ -476,19 +437,6 @@
                                     </div>
                                 </div>
 
-                                <!-- Loading Progress -->
-                                <div v-if="loadingProgress > 0" class="mt-6">
-                                    <div class="flex items-center justify-between mb-2">
-                                        <h3 class="text-sm font-medium text-gray-700">Updating...</h3>
-                                        <span class="text-sm text-gray-500">{{ loadingProgress }}%</span>
-                                    </div>
-                                    <div class="w-full bg-gray-200 rounded-full h-2">
-                                        <div :style="{ width: loadingProgress + '%' }"
-                                            class="bg-blue-500 h-2 rounded-full transition-all duration-300 ease-out">
-                                        </div>
-                                    </div>
-                                </div>
-
                                 <!-- Tips -->
                                 <div class="mt-4 p-3 bg-blue-50 rounded-lg">
                                     <h4 class="text-sm font-medium text-blue-800 mb-1">Image Management Tips:</h4>
@@ -511,8 +459,8 @@
                                     <span v-if="form.removed_images.length > 0" class="text-red-600">
                                         {{ form.removed_images.length }} image(s) will be removed
                                     </span>
-                                    <span v-if="newImageFiles.length > 0" class="text-blue-600 ml-4">
-                                        {{ newImageFiles.length }} new image(s) will be added
+                                    <span v-if="newImagePreviews.length > 0" class="text-blue-600 ml-4">
+                                        {{ newImagePreviews.length }} new image(s) will be added
                                     </span>
                                 </div>
 
