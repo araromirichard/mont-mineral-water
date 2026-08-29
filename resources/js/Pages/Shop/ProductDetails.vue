@@ -4,12 +4,12 @@
         <div>
             <section id="SingleProduct" ref="SingleProduct" class="grid grid-cols-1 sm:grid-cols-2 py-8">
                 <div class="product-images container mx-auto px-0">
-                    <div class="image-slider ">
-                        <div class="swiper-container flex sm:hidden">
-                            <div class="swiper-wrapper  flex flex-1">
-                                <div class="swiper-slide flex flex-1" v-for="image in product.images" :key="image">
+                    <div class="image-slider sm:hidden">
+                        <div class="swiper">
+                            <div class="swiper-wrapper">
+                                <div class="swiper-slide" v-for="image in product.images" :key="image">
                                     <img :src="'/storage/' + image"
-                                        :alt="'Product Image ' + (product.images.indexOf(image) + 1)" class="" />
+                                        :alt="'Product Image ' + (product.images.indexOf(image) + 1)" />
                                 </div>
                             </div>
                             <div class="swiper-pagination"></div>
@@ -108,7 +108,7 @@ const handleAddToCart = () => {
 // Initialize Swiper when the component is mounted
 onMounted(() => {
     if (isMobile) {
-        new Swiper('.swiper-container', {
+        new Swiper('.swiper', {
             modules: [Pagination],
             slidesPerView: 1,
             spaceBetween: 0,
@@ -122,7 +122,7 @@ onMounted(() => {
 </script>
   
 <style scoped>
-.swiper-container {
+.swiper {
     width: 100%;
     overflow: hidden;
 }
