@@ -87,8 +87,12 @@
         return isMobile ? 'mobile' : 'lg';
     });
 
+    let closeTimer = null;
+
     function animateIn() {
         if (!route().current('homepage') || productLength.value === 0) return;
+        cancelClose();
+        if (showShopDropdown.value) return;
         showShopDropdown.value = true;
         nextTick(() => {
             if (!shopDropdown.value) return;
@@ -99,7 +103,15 @@
                 ease: 'power2.out',
             });
         });
-    };
+    }
+
+    function scheduleClose() {
+        closeTimer = setTimeout(() => animateOut(), 150);
+    }
+
+    function cancelClose() {
+        clearTimeout(closeTimer);
+    }
 
     function animateOut() {
         if (!showShopDropdown.value || !shopDropdown.value) return;
@@ -112,7 +124,7 @@
                 showShopDropdown.value = false;
             },
         });
-    };
+    }
 
 
     function toggleSublinks() {
@@ -306,11 +318,12 @@
 
                 <div class="hidden space-x-8 sm:flex">
 
-                    <div class="flex items-center" @mouseenter="animateIn" @mouseleave="animateOut">
+                    <div class="flex items-center" @mouseenter="animateIn" @mouseleave="scheduleClose">
                         <NavLink :href="route('shop')" :active="route().current('shop')">
                             Shop
                         </NavLink>
                         <div v-if="showShopDropdown" ref="shopDropdown"
+                            @mouseenter="cancelClose" @mouseleave="scheduleClose"
                             class="flex justify-evenly items-center absolute left-0 right-0 top-20 w-full h-80 bg-white rounded shadow-md z-10">
                             <template v-for="product in Products" :key="product.id">
                                 <Link :href="route('show-product', { product: product.slug })">
