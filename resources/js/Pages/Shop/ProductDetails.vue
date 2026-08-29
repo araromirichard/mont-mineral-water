@@ -68,6 +68,9 @@
 import AppLayout from '@/Layouts/AppLayout.vue';
 import QuantitySelector from '@/Components/QuantitySelector.vue';
 import Swiper from 'swiper';
+import { Pagination } from 'swiper/modules';
+import 'swiper/css';
+import 'swiper/css/pagination';
 import { onMounted, ref } from 'vue';
 import ProductCardSmall from '@/Components/ProductCardSmall.vue';
 import { addToCart } from '@/Stores/cart';
@@ -106,8 +109,9 @@ const handleAddToCart = () => {
 onMounted(() => {
     if (isMobile) {
         new Swiper('.swiper-container', {
-            slidesPerView: 1, // Show only one slide per view
-            spaceBetween: 0, // Remove any spacing between slides
+            modules: [Pagination],
+            slidesPerView: 1,
+            spaceBetween: 0,
             pagination: {
                 el: '.swiper-pagination',
             },

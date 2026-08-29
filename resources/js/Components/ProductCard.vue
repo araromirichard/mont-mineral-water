@@ -3,7 +3,7 @@
     class="product-card border border-neutral-100 text-center space-y-2">
 
   <div class="product-card border border-neutral-100 text-center space-y-2">
-    <img :src="'/storage/' + product.image" alt="Dummy Product" class="product-image">
+    <img :src="'/storage/' + product.image" :alt="product.name" class="product-image" loading="lazy" width="350" height="350">
     <p class="product-name text-lg font-bold">{{ product.name }} - {{ product.size }}</p>
     <p class="pack-size">{{ packSize }}</p>
     <p class="product-price ">GHS {{ product.price }}</p>

@@ -1,6 +1,6 @@
 <template>
   <div class="product-card border border-neutral-100 text-center space-y-2">
-    <img :src="'/storage/' + product.image" alt="Mont Water" class="product-image">
+    <img :src="'/storage/' + product.image" :alt="product.name" class="product-image" loading="lazy" width="300" height="300">
     <p class="product-name text-lg font-bold">{{ product.name }} - {{ product.size }}</p>
     <p class="pack-size">{{ packSize }}</p>
     <p class="product-price">{{ product.price }}</p>

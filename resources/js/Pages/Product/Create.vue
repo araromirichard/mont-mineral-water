@@ -36,9 +36,8 @@
         images: [],
     });
 
-    // Separate reactive array for image previews with metadata
     const imagePreviewData = ref([]);
-    const loadingProgress = ref(0);
+    const uploadErrors = ref([]);
 
     const editor = ref(ClassicEditor);
     const editorConfig = ref({
@@ -75,43 +74,37 @@
         });
     };
 
-    // Improved image preview handling
     const updatePreviewImages = (files) => {
         if (!files || files.length === 0) return;
+        uploadErrors.value = [];
 
         Array.from(files).forEach(file => {
-            // Validate file type
             if (!file.type.startsWith('image/')) {
-                alert(`${file.name} is not a valid image file.`);
+                uploadErrors.value.push(`"${file.name}" is not a valid image file.`);
                 return;
             }
-
-            // Validate file size (max 5MB)
             if (file.size > 5 * 1024 * 1024) {
-                alert(`${file.name} is too large. Maximum file size is 5MB.`);
+                uploadErrors.value.push(`"${file.name}" exceeds the 5MB limit.`);
                 return;
             }
-
-            // Check if file is already added
-            const existingFile = imagePreviewData.value.find(item =>
+            const duplicate = imagePreviewData.value.find(item =>
                 item.file.name === file.name &&
                 item.file.size === file.size &&
                 item.file.lastModified === file.lastModified
             );
-
-            if (existingFile) {
-                alert(`${file.name} is already selected.`);
+            if (duplicate) {
+                uploadErrors.value.push(`"${file.name}" is already selected.`);
                 return;
             }
 
             const reader = new FileReader();
             reader.onload = (e) => {
                 imagePreviewData.value.push({
-                    id: Date.now() + Math.random(), // Unique ID for tracking
-                    file: file,
+                    id: Date.now() + Math.random(),
+                    file,
                     preview: e.target.result,
                     name: file.name,
-                    size: file.size
+                    size: file.size,
                 });
             };
             reader.readAsDataURL(file);
@@ -123,51 +116,44 @@
         imagePreviewData.value = imagePreviewData.value.filter(item => item.id !== imageId);
     };
 
-    // Replace specific image
     const replaceImage = (imageId) => {
         const input = document.createElement('input');
         input.type = 'file';
         input.accept = 'image/*';
         input.onchange = (e) => {
             const file = e.target.files[0];
-            if (file) {
-                // Validate file type
-                if (!file.type.startsWith('image/')) {
-                    alert(`${file.name} is not a valid image file.`);
-                    return;
-                }
-
-                // Validate file size (max 5MB)
-                if (file.size > 5 * 1024 * 1024) {
-                    alert(`${file.name} is too large. Maximum file size is 5MB.`);
-                    return;
-                }
-
-                const reader = new FileReader();
-                reader.onload = (event) => {
-                    const index = imagePreviewData.value.findIndex(item => item.id === imageId);
-                    if (index !== -1) {
-                        imagePreviewData.value[index] = {
-                            id: imageId, // Keep same ID
-                            file: file,
-                            preview: event.target.result,
-                            name: file.name,
-                            size: file.size
-                        };
-                    }
-                };
-                reader.readAsDataURL(file);
+            if (!file) return;
+            uploadErrors.value = [];
+            if (!file.type.startsWith('image/')) {
+                uploadErrors.value.push(`"${file.name}" is not a valid image file.`);
+                return;
             }
+            if (file.size > 5 * 1024 * 1024) {
+                uploadErrors.value.push(`"${file.name}" exceeds the 5MB limit.`);
+                return;
+            }
+            const reader = new FileReader();
+            reader.onload = (event) => {
+                const index = imagePreviewData.value.findIndex(item => item.id === imageId);
+                if (index !== -1) {
+                    imagePreviewData.value[index] = {
+                        id: imageId,
+                        file,
+                        preview: event.target.result,
+                        name: file.name,
+                        size: file.size,
+                    };
+                }
+            };
+            reader.readAsDataURL(file);
         };
         input.click();
     };
 
-    // Clear all images
     const clearAllImages = () => {
-        if (confirm('Are you sure you want to remove all images?')) {
-            imagePreviewData.value = [];
-            form.images = [];
-        }
+        imagePreviewData.value = [];
+        form.images = [];
+        uploadErrors.value = [];
     };
 
     // Add more images
@@ -303,6 +289,9 @@
 
                                 <InputError class="mt-2" :message="imageErrorMessage" v-if="hasImageError" />
                                 <InputError class="mt-2" :message="form.errors.images" v-else-if="hasGeneralError" />
+                                <ul v-if="uploadErrors.length" class="mt-2 space-y-1">
+                                    <li v-for="err in uploadErrors" :key="err" class="text-sm text-red-600">{{ err }}</li>
+                                </ul>
                             </div>
 
                             <!-- Enhanced Image Preview section -->
@@ -377,19 +366,6 @@
                                                     {{ imageData.file.type.split('/')[1].toUpperCase() }}
                                                 </span>
                                             </div>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <!-- Loading Progress -->
-                                <div v-if="loadingProgress > 0" class="mt-6">
-                                    <div class="flex items-center justify-between mb-2">
-                                        <h3 class="text-sm font-medium text-gray-700">Uploading...</h3>
-                                        <span class="text-sm text-gray-500">{{ loadingProgress }}%</span>
-                                    </div>
-                                    <div class="w-full bg-gray-200 rounded-full h-2">
-                                        <div :style="{ width: loadingProgress + '%' }"
-                                            class="bg-blue-500 h-2 rounded-full transition-all duration-300 ease-out">
                                         </div>
                                     </div>
                                 </div>
