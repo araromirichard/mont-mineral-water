@@ -14,12 +14,10 @@ class SalesAnalyticsService
     public function getSalesAnalytics()
     {
         // Assuming 'price' is the item price.
-        $fulfilledOrderItemsQuery = OrderItem::whereHas('order', function ($query) {
-            $query->where('status', 'fulfilled');
-        });
+        $base = fn() => OrderItem::whereHas('order', fn($q) => $q->where('status', 'fulfilled'));
 
-        $totalFulfilledQuantity = $fulfilledOrderItemsQuery->sum('quantity');
-        $totalFulfilledAmount = $fulfilledOrderItemsQuery->sum('price');
+        $totalFulfilledQuantity = $base()->sum('quantity');
+        $totalFulfilledAmount = $base()->sum(DB::raw('price * quantity'));
 
         return [
             'totalFulfilledQuantity' => $totalFulfilledQuantity,

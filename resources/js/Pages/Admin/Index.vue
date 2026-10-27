@@ -19,6 +19,8 @@ const last5Users = ref(null);
 const orderMetrics = ref(null);
 const userMetrics = ref(null);
 const salesMetrics = ref(null);
+const metricsLoading = ref(false);
+const metricsError = ref(null);
 
 const statusChipClass = computed(() => (status) => {
     let baseClass = 'px-4 inline-flex text-xs leading-5 font-semibold rounded-full shadow-sm';
@@ -38,9 +40,10 @@ const statusChipClass = computed(() => (status) => {
 });
 
 const fetchDashboardMetrics = () => {
+    metricsLoading.value = true;
+    metricsError.value = null;
     axios.get(`/api/admin-dashboard-metrics`)
         .then(response => {
-            console.log(response.data);
             dashboardMetrics.value = response.data.data;
             last5Orders.value = response.data.data.last5Orders;
             last5Users.value = response.data.data.last5Users;
@@ -48,10 +51,11 @@ const fetchDashboardMetrics = () => {
             userMetrics.value = response.data.data.userMetrics;
             salesMetrics.value = response.data.data.salesMetrics;
         })
-        .catch(error => {
-            // Handle error
-            console.log(error);
-
+        .catch(() => {
+            metricsError.value = 'Failed to load dashboard metrics. Please refresh the page.';
+        })
+        .finally(() => {
+            metricsLoading.value = false;
         });
 };
 onMounted(() => {
@@ -64,95 +68,85 @@ onMounted(() => {
 
     <AdminLayout>
         <template #header>
-            <h2 class="font-semibold text-xl text-gray-800 leading-tight">Dashboard</h2>
+            <h2 class="font-semibold text-lg text-gray-800 leading-tight">Dashboard</h2>
         </template>
 
-        <div class="py-8">
-            <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
+        <div class="py-8 px-4 sm:px-6 lg:px-8">
+            <div class="max-w-7xl mx-auto">
 
+                <div v-if="metricsLoading" class="py-4 text-center text-gray-500 text-sm">Loading metrics...</div>
+                <div v-if="metricsError" class="py-4 px-4 bg-red-50 border border-red-200 rounded-md text-red-700 text-sm">{{ metricsError }}</div>
                 <div class="grid gap-4 grid-auto-fit py-4" v-if="dashboardMetrics">
+                    <!-- Users card -->
                     <BaseCardComponent>
-                        <div>
-                            <div class="super__text flex items-center justify-between">
-                                <p class="text-primary-500 font-medium">{{ userMetrics.unverifiedUsersCount || '--' }} <span
-                                        class="suffix__text">unverified</span></p>
-
-                                <div class=" rounded-full p-2 bg-white shadow-md border border-teal-50">
-                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
-                                        stroke-width="1.5" stroke="currentColor" class="w-7 h-7 text-teal-200">
-                                        <path stroke-linecap="round" stroke-linejoin="round"
-                                            d="M15 19.128a9.38 9.38 0 002.625.372 9.337 9.337 0 004.121-.952 4.125 4.125 0 00-7.533-2.493M15 19.128v-.003c0-1.113-.285-2.16-.786-3.07M15 19.128v.106A12.318 12.318 0 018.624 21c-2.331 0-4.512-.645-6.374-1.766l-.001-.109a6.375 6.375 0 0111.964-3.07M12 6.375a3.375 3.375 0 11-6.75 0 3.375 3.375 0 016.75 0zm8.25 2.25a2.625 2.625 0 11-5.25 0 2.625 2.625 0 015.25 0z" />
-                                    </svg>
+                        <div class="flex items-start justify-between">
+                            <div>
+                                <p class="text-xs font-semibold uppercase tracking-widest text-gray-400">Total Users</p>
+                                <p class="text-4xl font-bold text-primary-500 mt-2">{{ userMetrics.totalUsersCount }}</p>
+                                <div class="flex items-center gap-3 mt-3">
+                                    <span class="inline-flex items-center gap-1 text-xs font-medium text-emerald-700 bg-emerald-50 rounded-full px-2 py-0.5">
+                                        <span class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span>
+                                        {{ userMetrics.verifiedUsersCount }} verified
+                                    </span>
+                                    <span class="inline-flex items-center gap-1 text-xs font-medium text-amber-700 bg-amber-50 rounded-full px-2 py-0.5">
+                                        <span class="w-1.5 h-1.5 rounded-full bg-amber-400"></span>
+                                        {{ userMetrics.unverifiedUsersCount || 0 }} unverified
+                                    </span>
                                 </div>
                             </div>
-                            <div class="main__text flex items-center justify-between">
-                                <p>USERS</p>
-                                <p class="text-4xl">
-
-                                    {{ userMetrics.totalUsersCount }}
-                                </p>
-                            </div>
-                            <div class="sub__text flex items-center justify-end">
-                                <p class="text-primary-500 font-medium">{{ userMetrics.verifiedUsersCount }}<span
-                                        class="suffix__text px-1 tracking-wider">verified</span></p>
-                            </div>
-                        </div>
-                    </BaseCardComponent>
-                    <BaseCardComponent>
-                        <div>
-                            <div class="super__text flex items-center justify-between">
-                                <p class="text-primary-500 font-medium">{{ orderMetrics.pendingOrdersCount }} <span
-                                        class="suffix__text">pending</span></p>
-
-                                <div class=" rounded-full p-2 bg-white shadow-md border border-indigo-50">
-                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
-                                        stroke-width="1.5" stroke="currentColor" class="w-7 h-7 text-indigo-200">
-                                        <path stroke-linecap="round" stroke-linejoin="round"
-                                            d="M21 11.25v8.25a1.5 1.5 0 01-1.5 1.5H5.25a1.5 1.5 0 01-1.5-1.5v-8.25M12 4.875A2.625 2.625 0 109.375 7.5H12m0-2.625V7.5m0-2.625A2.625 2.625 0 1114.625 7.5H12m0 0V21m-8.625-9.75h18c.621 0 1.125-.504 1.125-1.125v-1.5c0-.621-.504-1.125-1.125-1.125h-18c-.621 0-1.125.504-1.125 1.125v1.5c0 .621.504 1.125 1.125 1.125z" />
-                                    </svg>
-
-                                </div>
-                            </div>
-                            <div class="main__text flex items-center justify-between  font-sans">
-                                <p class=" font-sans">ORDERS</p>
-                                <p class="text-4xl font-sans">
-
-                                    {{ orderMetrics.totalOrdersCount }}
-                                </p>
-                            </div>
-                            <div class="sub__text flex items-center justify-end">
-                                <p class="text-primary-500 font-medium">{{ orderMetrics.fulfilledOrdersCount }}<span
-                                        class="suffix__text px-1 tracking-wider">completed</span></p>
-                            </div>
-                        </div>
-                    </BaseCardComponent>
-                    <BaseCardComponent>
-                        <div>
-                            <div class="super__text flex items-center justify-between">
-                                <p class="suffix__text">Total</p>
-
-                                <div class=" rounded-full p-2 bg-white shadow-md border border-rose-50">
-                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
-                                        stroke-width="1.5" stroke="currentColor" class="w-7 h-7 text-rose-200">
-                                        <path stroke-linecap="round" stroke-linejoin="round"
-                                            d="M2.25 18L9 11.25l4.306 4.307a11.95 11.95 0 015.814-5.519l2.74-1.22m0 0l-5.94-2.28m5.94 2.28l-2.28 5.941" />
-                                    </svg>
-
-                                </div>
-                            </div>
-                            <div class="main__text flex items-center justify-between">
-                                <p>SALES</p>
-                                <p class="text-4xl">
-
-                                    {{ salesMetrics.totalFulfilledQuantity }}
-                                </p>
-                            </div>
-                            <div class="sub__text flex items-center justify-end">
-                                <p> <span class="suffix__text px-1">GH₵</span>{{ salesMetrics.totalFulfilledAmount }}</p>
+                            <div class="rounded-xl p-3 bg-teal-50 flex-shrink-0">
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6 text-teal-500">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M15 19.128a9.38 9.38 0 002.625.372 9.337 9.337 0 004.121-.952 4.125 4.125 0 00-7.533-2.493M15 19.128v-.003c0-1.113-.285-2.16-.786-3.07M15 19.128v.106A12.318 12.318 0 018.624 21c-2.331 0-4.512-.645-6.374-1.766l-.001-.109a6.375 6.375 0 0111.964-3.07M12 6.375a3.375 3.375 0 11-6.75 0 3.375 3.375 0 016.75 0zm8.25 2.25a2.625 2.625 0 11-5.25 0 2.625 2.625 0 015.25 0z" />
+                                </svg>
                             </div>
                         </div>
                     </BaseCardComponent>
 
+                    <!-- Orders card -->
+                    <BaseCardComponent>
+                        <div class="flex items-start justify-between">
+                            <div>
+                                <p class="text-xs font-semibold uppercase tracking-widest text-gray-400">Total Orders</p>
+                                <p class="text-4xl font-bold text-primary-500 mt-2">{{ orderMetrics.totalOrdersCount }}</p>
+                                <div class="flex items-center gap-3 mt-3">
+                                    <span class="inline-flex items-center gap-1 text-xs font-medium text-blue-700 bg-blue-50 rounded-full px-2 py-0.5">
+                                        <span class="w-1.5 h-1.5 rounded-full bg-blue-500"></span>
+                                        {{ orderMetrics.fulfilledOrdersCount }} fulfilled
+                                    </span>
+                                    <span class="inline-flex items-center gap-1 text-xs font-medium text-amber-700 bg-amber-50 rounded-full px-2 py-0.5">
+                                        <span class="w-1.5 h-1.5 rounded-full bg-amber-400"></span>
+                                        {{ orderMetrics.pendingOrdersCount }} pending
+                                    </span>
+                                </div>
+                            </div>
+                            <div class="rounded-xl p-3 bg-indigo-50 flex-shrink-0">
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6 text-indigo-500">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M21 11.25v8.25a1.5 1.5 0 01-1.5 1.5H5.25a1.5 1.5 0 01-1.5-1.5v-8.25M12 4.875A2.625 2.625 0 109.375 7.5H12m0-2.625V7.5m0-2.625A2.625 2.625 0 1114.625 7.5H12m0 0V21m-8.625-9.75h18c.621 0 1.125-.504 1.125-1.125v-1.5c0-.621-.504-1.125-1.125-1.125h-18c-.621 0-1.125.504-1.125 1.125v1.5c0 .621.504 1.125 1.125 1.125z" />
+                                </svg>
+                            </div>
+                        </div>
+                    </BaseCardComponent>
+
+                    <!-- Sales card -->
+                    <BaseCardComponent>
+                        <div class="flex items-start justify-between">
+                            <div>
+                                <p class="text-xs font-semibold uppercase tracking-widest text-gray-400">Revenue (Fulfilled)</p>
+                                <p class="text-4xl font-bold text-primary-500 mt-2">GH₵ {{ salesMetrics.totalFulfilledAmount }}</p>
+                                <div class="flex items-center gap-3 mt-3">
+                                    <span class="inline-flex items-center gap-1 text-xs font-medium text-rose-700 bg-rose-50 rounded-full px-2 py-0.5">
+                                        <span class="w-1.5 h-1.5 rounded-full bg-rose-500"></span>
+                                        {{ salesMetrics.totalFulfilledQuantity }} units sold
+                                    </span>
+                                </div>
+                            </div>
+                            <div class="rounded-xl p-3 bg-rose-50 flex-shrink-0">
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6 text-rose-500">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 18L9 11.25l4.306 4.307a11.95 11.95 0 015.814-5.519l2.74-1.22m0 0l-5.94-2.28m5.94 2.28l-2.28 5.941" />
+                                </svg>
+                            </div>
+                        </div>
+                    </BaseCardComponent>
                 </div>
                 <div class="grid gap-4 grid-auto-fit bg-neutral-50 overflow-hidden shadow-sm sm:rounded-lg">
 

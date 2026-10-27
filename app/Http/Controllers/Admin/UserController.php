@@ -23,7 +23,7 @@ class UserController extends Controller
                     ->orWhere('email', 'like', "%{$search}%");
             })
             ->whereDoesntHave('roles', function ($query) {
-                $query->where('name', '<>', 'admin');
+                $query->where('name', 'admin');
             })
             ->paginate($perPage)
             ->appends(['search' => $request->input('search'), 'perPage' => $perPage]);
