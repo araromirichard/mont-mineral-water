@@ -12,7 +12,7 @@ const props = defineProps({
 
 const pageTitle = ref('Orders');
 const search = ref(props.filters.search);
-const perPage = ref(5);
+const perPage = ref(props.filters.perPage || 5);
 
 
 const fetchOrders = () => {
@@ -26,11 +26,15 @@ function showOrderDetails(orderId) {
     router.get(route('admin.orders.show', { id: orderId }));
 };
 
+let searchTimer = null;
 watch(search, (value) => {
-    router.get('/admin/orders', { search: value, perPage: perPage.value }, {
-        preserveState: true,
-        replace: true,
-    })
+    clearTimeout(searchTimer);
+    searchTimer = setTimeout(() => {
+        router.get('/admin/orders', { search: value, perPage: perPage.value }, {
+            preserveState: true,
+            replace: true,
+        });
+    }, 350);
 });
 
 const statusChipClass = computed(() => (status) => {
@@ -57,16 +61,15 @@ const statusChipClass = computed(() => (status) => {
 
     <AdminLayout>
         <template #header>
-            <h2 class="font-semibold text-xl text-gray-800 leading-tight">Orders</h2>
+            <h2 class="font-semibold text-lg text-gray-800 leading-tight">Orders</h2>
         </template>
-        <!-- <pre>{{ filteredUsers }}</pre> -->
-        <div class="py-12">
-            <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
+        <div class="py-8 px-4 sm:px-6 lg:px-8">
+            <div class="max-w-7xl mx-auto">
                 <div class="bg-white overflow-hidden shadow-md sm:rounded-lg">
 
                     <div class="p-2 rounded-sm relative overflow-x-auto">
                         <div class="flex justify-between items-center">
-                            <div class="pb-4 bg-white dark:bg-gray-900">
+                            <div class="pb-4 bg-white">
                                 <label for="table-search" class="sr-only">Search</label>
                                 <div class="relative mt-1">
                                     <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">

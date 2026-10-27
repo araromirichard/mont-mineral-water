@@ -13,30 +13,7 @@ class StoreProductRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        try {
-            $user = Auth::user();
-            
-            Log::info('Authorization check', [
-                'user_id' => $user ? $user->id : null,
-                'user_authenticated' => Auth::check(),
-                'has_role_method' => $user ? method_exists($user, 'hasRole') : false
-            ]);
-
-            // Temporarily bypass role check for debugging
-            // return Auth::check() && Auth::user()->hasRole('admin');
-            
-            // Use this simpler check for now
-            return Auth::check();
-            
-        } catch (\Exception $e) {
-            Log::error('Authorization error in StoreProductRequest', [
-                'error' => $e->getMessage(),
-                'file' => $e->getFile(),
-                'line' => $e->getLine()
-            ]);
-            
-            return false;
-        }
+        return Auth::check() && Auth::user()->hasRole('admin');
     }
 
     /**

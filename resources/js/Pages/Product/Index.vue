@@ -15,7 +15,7 @@ const props = defineProps({
 
 // const pageTitle = ref('Users');
 const search = ref(props.filters.search);
-const perPage = ref(5);
+const perPage = ref(props.filters.perPage || 5);
 const confirmingProductDeletion = ref(false);
 const productIdToDelete = ref(null);
 
@@ -35,10 +35,10 @@ function editProductDetails(productId) {
 }
 const deleteProduct = () => {
     if (!productIdToDelete.value) return;
-    router.delete(route('admin.products.destroy', { id: productIdToDelete.value }));
-
-    closeModal();
-
+    router.delete(route('admin.products.destroy', { id: productIdToDelete.value }), {
+        onSuccess: () => closeModal(),
+        onError: () => closeModal(),
+    });
 }
 
 const confirmProductDeletion = (productId) => {
@@ -46,23 +46,20 @@ const confirmProductDeletion = (productId) => {
     confirmingProductDeletion.value = true;
 };
 
-const deleteUser = () => {
-    route('profile.destroy'), {
-        preserveScroll: true,
-        onSuccess: () => closeModal(),
-    };
-};
-
 const closeModal = () => {
     confirmingProductDeletion.value = false;
     productIdToDelete.value = null;
 };
 
+let searchTimer = null;
 watch(search, (value) => {
-    router.get('/admin/products', { search: value, perPage: perPage.value }, {
-        preserveState: true,
-        replace: true,
-    })
+    clearTimeout(searchTimer);
+    searchTimer = setTimeout(() => {
+        router.get('/admin/products', { search: value, perPage: perPage.value }, {
+            preserveState: true,
+            replace: true,
+        });
+    }, 350);
 });
 
 </script>
@@ -73,20 +70,20 @@ watch(search, (value) => {
     <AdminLayout>
         <template #header>
             <div class="flex justify-between items-center">
-                <h2 class="font-semibold text-xl text-gray-800 leading-tight">Products</h2>
+                <h2 class="font-semibold text-lg text-gray-800 leading-tight">Products</h2>
                 <Link :href="route('admin.products.create')"
                     class="py-2 px-4 bg-primary-500 hover:bg-primary-300 text-neutral-50 transition ease-in duration-150 focus:ring-0 rounded-md">
                 Create</Link>
             </div>
         </template>
         <!-- <pre>{{ products.data[0].product_images }}</pre> -->
-        <div class="py-12">
-            <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
+        <div class="py-8 px-4 sm:px-6 lg:px-8">
+            <div class="max-w-7xl mx-auto">
                 <div class="bg-white overflow-hidden shadow-md sm:rounded-lg">
 
                     <div class="p-2 rounded-sm relative overflow-x-auto">
                         <div class="flex justify-between items-center">
-                            <div class="pb-4 bg-white dark:bg-gray-900">
+                            <div class="pb-4 bg-white">
                                 <label for="table-search" class="sr-only">Search</label>
                                 <div class="relative mt-1">
                                     <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
@@ -97,7 +94,7 @@ watch(search, (value) => {
                                                 clip-rule="evenodd"></path>
                                         </svg>
                                     </div>
-                                    <input type="text" id="table-search"
+                                    <input type="text" id="table-search" v-model="search"
                                         class="block p-2 pl-10 text-sm text-gray-900 border border-gray-300 rounded-lg w-80 bg-gray-50 focus:ring-secondary-500 focus:border-blue-500"
                                         placeholder="Search for a Product">
                                 </div>
@@ -146,15 +143,11 @@ watch(search, (value) => {
                                         </th>
                                         <td class="px-6 py-4" v-if="product.product_images.length > 0">
                                             <img :src="'/storage/' + product.product_images[0].image_path"
-                                                alt="Product Image" class=" w-10 h-auto">
+                                                alt="Product Image" class="w-10 h-auto">
                                         </td>
-                                        <!-- <pre>{{ product.product_images[0].image_path }}</pre> -->
-                                        <td class="px-6 py-4" v-html="product.size">
-
-                                        </td>
-                                        <td class="px-6 py-4" v-html="product.pack_size">
-
-                                        </td>
+                                        <td v-else class="px-6 py-4 text-gray-400 text-xs">No image</td>
+                                        <td class="px-6 py-4">{{ product.size }}</td>
+                                        <td class="px-6 py-4">{{ product.pack_size }}</td>
                                         <td class="px-6 py-4">
                                             {{ product.price }}
                                         </td>
