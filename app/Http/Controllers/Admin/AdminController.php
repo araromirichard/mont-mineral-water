@@ -13,6 +13,7 @@ use App\Services\Admin\UserService;
 
 use Illuminate\Database\QueryException;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 use Inertia\Inertia;
 
 class AdminController extends Controller
@@ -86,10 +87,10 @@ class AdminController extends Controller
 
     protected function handleException(QueryException $e)
     {
+        Log::error('Admin metrics query error', ['error' => $e->getMessage()]);
         return response()->json([
             'status' => 'error',
             'message' => 'An error occurred while retrieving metrics.',
-            'error' => $e->getMessage(),
         ], 500);
     }
 }
