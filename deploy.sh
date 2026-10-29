@@ -9,6 +9,6 @@ echo "Building assets..."
 npm run build
 
 echo "Uploading build to production..."
-rsync -avz --delete "$LOCAL_BUILD" "$SERVER:$REMOTE_BUILD"
+rsync -avz --delete --omit-dir-times "$LOCAL_BUILD" "$SERVER:$REMOTE_BUILD"
 
 echo "Done. Remember to pull from Cloudways UI if you pushed new code."

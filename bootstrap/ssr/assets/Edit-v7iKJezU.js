@@ -1,9 +1,9 @@
 import { t as _plugin_vue_export_helper_default } from "./_plugin-vue_export-helper-BOaGB7Aw.js";
 import { t as _sfc_main$1 } from "./InputLabel-CznyKaCe.js";
 import { n as _sfc_main$2, t as _sfc_main$3 } from "./InputError-BUHLoSfJ.js";
-import { t as _sfc_main$4 } from "./AdminLayout-ChNnk7U6.js";
+import { t as AdminLayout_default } from "./AdminLayout-C8vXYz0r.js";
 import { t as PrimaryButton_default } from "./PrimaryButton-BJ03_ftZ.js";
-import { t as _sfc_main$5 } from "./FileInput-Buv3iyFk.js";
+import { t as _sfc_main$4 } from "./FileInput-Buv3iyFk.js";
 import { Fragment, computed, createBlock, createCommentVNode, createTextVNode, createVNode, onUnmounted, openBlock, ref, renderList, resolveComponent, toDisplayString, unref, useSSRContext, vModelSelect, withCtx, withDirectives, withModifiers } from "vue";
 import { Head, Link, useForm } from "@inertiajs/vue3";
 import { ssrIncludeBooleanAttr, ssrInterpolate, ssrLooseContain, ssrLooseEqual, ssrRenderAttr, ssrRenderClass, ssrRenderComponent, ssrRenderList } from "vue/server-renderer";
@@ -278,7 +278,7 @@ var _sfc_main = {
 			const _component_ckeditor = resolveComponent("ckeditor");
 			_push(`<!--[-->`);
 			_push(ssrRenderComponent(unref(Head), { title: "Edit Product" }, null, _parent));
-			_push(ssrRenderComponent(_sfc_main$4, null, {
+			_push(ssrRenderComponent(AdminLayout_default, null, {
 				header: withCtx((_, _push, _parent, _scopeId) => {
 					if (_push) {
 						_push(`<div class="" data-v-2621922b${_scopeId}>`);
@@ -388,7 +388,7 @@ var _sfc_main = {
 						if (newImagePreviews.value.length > 0) _push(`<button type="button" class="text-sm bg-red-500 hover:bg-red-600 text-white px-3 py-1 rounded-md transition-colors" data-v-2621922b${_scopeId}> Clear New </button>`);
 						else _push(`<!---->`);
 						_push(`</div></div>`);
-						_push(ssrRenderComponent(_sfc_main$5, {
+						_push(ssrRenderComponent(_sfc_main$4, {
 							class: "hidden",
 							id: "images",
 							accept: "image/*",
@@ -577,7 +577,7 @@ var _sfc_main = {
 								type: "button",
 								class: "text-sm bg-red-500 hover:bg-red-600 text-white px-3 py-1 rounded-md transition-colors"
 							}, " Clear New ")) : createCommentVNode("", true)])]),
-							createVNode(_sfc_main$5, {
+							createVNode(_sfc_main$4, {
 								class: "hidden",
 								id: "images",
 								accept: "image/*",

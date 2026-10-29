@@ -1,4 +1,4 @@
-import { t as _sfc_main$1 } from "./AdminLayout-ChNnk7U6.js";
+import { t as AdminLayout_default } from "./AdminLayout-C8vXYz0r.js";
 import { computed, createTextVNode, createVNode, toDisplayString, unref, useSSRContext, withCtx } from "vue";
 import { Head, Link } from "@inertiajs/vue3";
 import { ssrInterpolate, ssrRenderComponent } from "vue/server-renderer";
@@ -24,7 +24,7 @@ var _sfc_main = {
 		return (_ctx, _push, _parent, _attrs) => {
 			_push(`<!--[-->`);
 			_push(ssrRenderComponent(unref(Head), { title: pagename.value }, null, _parent));
-			_push(ssrRenderComponent(_sfc_main$1, null, {
+			_push(ssrRenderComponent(AdminLayout_default, null, {
 				header: withCtx((_, _push, _parent, _scopeId) => {
 					if (_push) {
 						_push(ssrRenderComponent(unref(Link), {
