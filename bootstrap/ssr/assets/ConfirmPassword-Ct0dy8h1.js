@@ -1,12 +1,46 @@
 import { t as ApplicationLogo_default } from "./ApplicationLogo-De7nLcr7.js";
-import { t as _sfc_main$2 } from "./NavLink-Bz8QwDgc.js";
-import { t as _sfc_main$3 } from "./InputLabel-CznyKaCe.js";
-import { n as _sfc_main$4, t as _sfc_main$5 } from "./InputError-BUHLoSfJ.js";
-import { t as _sfc_main$6 } from "./ResponsiveNavLink-DxUco59W.js";
+import { t as _sfc_main$3 } from "./NavLink-Bz8QwDgc.js";
+import { t as _sfc_main$4 } from "./InputLabel-CznyKaCe.js";
+import { n as _sfc_main$5, t as _sfc_main$6 } from "./InputError-BUHLoSfJ.js";
 import { t as PrimaryButton_default } from "./PrimaryButton-BJ03_ftZ.js";
-import { createTextVNode, createVNode, mergeProps, unref, useSSRContext, withCtx, withModifiers } from "vue";
+import { computed, createTextVNode, createVNode, mergeProps, renderSlot, unref, useSSRContext, withCtx, withModifiers } from "vue";
 import { Head, Link, useForm } from "@inertiajs/vue3";
 import { ssrInterpolate, ssrRenderAttrs, ssrRenderClass, ssrRenderComponent, ssrRenderSlot } from "vue/server-renderer";
+//#region resources/js/Components/ResponsiveNavLink.vue
+var _sfc_main$2 = {
+	__name: "ResponsiveNavLink",
+	__ssrInlineRender: true,
+	props: {
+		href: {
+			type: String,
+			required: true
+		},
+		active: { type: Boolean }
+	},
+	setup(__props) {
+		const props = __props;
+		const classes = computed(() => props.active ? "block w-full pl-3 pr-4 py-2 border-l-4 border-gray-400 text-left text-base font-medium text-gray-700 bg-gray-50 focus:outline-none focus:text-gray-800 focus:bg-gray-100 focus:border-gray-700 transition duration-150 ease-in-out" : "block w-full pl-3 pr-4 py-2 border-l-4 border-transparent text-left text-base font-medium text-gray-600 hover:text-gray-800 hover:bg-gray-50 hover:border-gray-300 focus:outline-none focus:text-gray-800 focus:bg-gray-50 focus:border-gray-300 transition duration-150 ease-in-out");
+		return (_ctx, _push, _parent, _attrs) => {
+			_push(ssrRenderComponent(unref(Link), mergeProps({
+				href: __props.href,
+				class: classes.value
+			}, _attrs), {
+				default: withCtx((_, _push, _parent, _scopeId) => {
+					if (_push) ssrRenderSlot(_ctx.$slots, "default", {}, null, _push, _parent, _scopeId);
+					else return [renderSlot(_ctx.$slots, "default")];
+				}),
+				_: 3
+			}, _parent));
+		};
+	}
+};
+var _sfc_setup$2 = _sfc_main$2.setup;
+_sfc_main$2.setup = (props, ctx) => {
+	const ssrContext = useSSRContext();
+	(ssrContext.modules || (ssrContext.modules = /* @__PURE__ */ new Set())).add("resources/js/Components/ResponsiveNavLink.vue");
+	return _sfc_setup$2 ? _sfc_setup$2(props, ctx) : void 0;
+};
+//#endregion
 //#region resources/js/Layouts/GuestLayout.vue
 var _sfc_main$1 = {
 	__name: "GuestLayout",
@@ -31,21 +65,21 @@ var _sfc_main$1 = {
 				hidden: !_ctx.showingNavigationDropdown,
 				"inline-flex": _ctx.showingNavigationDropdown
 			})}" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg></button></div><div class="items-center justify-between hidden w-full md:flex md:w-auto md:order-1"><div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">`);
-			_push(ssrRenderComponent(_sfc_main$2, { href: "#" }, {
+			_push(ssrRenderComponent(_sfc_main$3, { href: "#" }, {
 				default: withCtx((_, _push, _parent, _scopeId) => {
 					if (_push) _push(` Shop `);
 					else return [createTextVNode(" Shop ")];
 				}),
 				_: 1
 			}, _parent));
-			_push(ssrRenderComponent(_sfc_main$2, { href: "#" }, {
+			_push(ssrRenderComponent(_sfc_main$3, { href: "#" }, {
 				default: withCtx((_, _push, _parent, _scopeId) => {
 					if (_push) _push(` Contact Us `);
 					else return [createTextVNode(" Contact Us ")];
 				}),
 				_: 1
 			}, _parent));
-			_push(ssrRenderComponent(_sfc_main$2, { href: "#" }, {
+			_push(ssrRenderComponent(_sfc_main$3, { href: "#" }, {
 				default: withCtx((_, _push, _parent, _scopeId) => {
 					if (_push) _push(` About Mont `);
 					else return [createTextVNode(" About Mont ")];
@@ -56,21 +90,21 @@ var _sfc_main$1 = {
 				block: _ctx.showingNavigationDropdown,
 				hidden: !_ctx.showingNavigationDropdown
 			}, "sm:hidden"])}"><div class="pt-2 pb-3 space-y-1">`);
-			_push(ssrRenderComponent(_sfc_main$6, { href: "#" }, {
+			_push(ssrRenderComponent(_sfc_main$2, { href: "#" }, {
 				default: withCtx((_, _push, _parent, _scopeId) => {
 					if (_push) _push(` Shop `);
 					else return [createTextVNode(" Shop ")];
 				}),
 				_: 1
 			}, _parent));
-			_push(ssrRenderComponent(_sfc_main$6, { href: "#" }, {
+			_push(ssrRenderComponent(_sfc_main$2, { href: "#" }, {
 				default: withCtx((_, _push, _parent, _scopeId) => {
 					if (_push) _push(` Contact us `);
 					else return [createTextVNode(" Contact us ")];
 				}),
 				_: 1
 			}, _parent));
-			_push(ssrRenderComponent(_sfc_main$6, { href: "#" }, {
+			_push(ssrRenderComponent(_sfc_main$2, { href: "#" }, {
 				default: withCtx((_, _push, _parent, _scopeId) => {
 					if (_push) _push(` About Mont `);
 					else return [createTextVNode(" About Mont ")];
@@ -78,14 +112,14 @@ var _sfc_main$1 = {
 				_: 1
 			}, _parent));
 			_push(`<a href="http://69.28.70.242:9090/ords/r/neo/erp/login_desktop?session=4961669600359" target="_blank" rel="noopener noreferrer" class="block w-full pl-3 pr-4 py-2 border-l-4 border-primary-500 text-base font-semibold text-primary-500 bg-primary-50 focus:outline-none transition duration-150 ease-in-out"> Staff Login </a></div><div class="pt-4 pb-1 border-t border-gray-200"><div class="px-4"><div class="font-medium text-base text-gray-800">${ssrInterpolate(_ctx.$page.props.auth.user.name)}</div><div class="font-medium text-sm text-gray-500">${ssrInterpolate(_ctx.$page.props.auth.user.email)}</div></div><div class="mt-3 space-y-1">`);
-			_push(ssrRenderComponent(_sfc_main$6, { href: _ctx.route("profile.edit") }, {
+			_push(ssrRenderComponent(_sfc_main$2, { href: _ctx.route("profile.edit") }, {
 				default: withCtx((_, _push, _parent, _scopeId) => {
 					if (_push) _push(` Profile `);
 					else return [createTextVNode(" Profile ")];
 				}),
 				_: 1
 			}, _parent));
-			_push(ssrRenderComponent(_sfc_main$6, {
+			_push(ssrRenderComponent(_sfc_main$2, {
 				href: _ctx.route("logout"),
 				method: "post",
 				as: "button"
@@ -124,11 +158,11 @@ var _sfc_main = {
 					if (_push) {
 						_push(ssrRenderComponent(unref(Head), { title: "Confirm Password" }, null, _parent, _scopeId));
 						_push(`<div class="mb-4 text-sm text-gray-600"${_scopeId}> This is a secure area of the application. Please confirm your password before continuing. </div><form${_scopeId}><div${_scopeId}>`);
-						_push(ssrRenderComponent(_sfc_main$3, {
+						_push(ssrRenderComponent(_sfc_main$4, {
 							for: "password",
 							value: "Password"
 						}, null, _parent, _scopeId));
-						_push(ssrRenderComponent(_sfc_main$4, {
+						_push(ssrRenderComponent(_sfc_main$5, {
 							id: "password",
 							type: "password",
 							class: "mt-1 block w-full",
@@ -138,7 +172,7 @@ var _sfc_main = {
 							autocomplete: "current-password",
 							autofocus: ""
 						}, null, _parent, _scopeId));
-						_push(ssrRenderComponent(_sfc_main$5, {
+						_push(ssrRenderComponent(_sfc_main$6, {
 							class: "mt-2",
 							message: unref(form).errors.password
 						}, null, _parent, _scopeId));
@@ -158,11 +192,11 @@ var _sfc_main = {
 						createVNode(unref(Head), { title: "Confirm Password" }),
 						createVNode("div", { class: "mb-4 text-sm text-gray-600" }, " This is a secure area of the application. Please confirm your password before continuing. "),
 						createVNode("form", { onSubmit: withModifiers(submit, ["prevent"]) }, [createVNode("div", null, [
-							createVNode(_sfc_main$3, {
+							createVNode(_sfc_main$4, {
 								for: "password",
 								value: "Password"
 							}),
-							createVNode(_sfc_main$4, {
+							createVNode(_sfc_main$5, {
 								id: "password",
 								type: "password",
 								class: "mt-1 block w-full",
@@ -172,7 +206,7 @@ var _sfc_main = {
 								autocomplete: "current-password",
 								autofocus: ""
 							}, null, 8, ["modelValue", "onUpdate:modelValue"]),
-							createVNode(_sfc_main$5, {
+							createVNode(_sfc_main$6, {
 								class: "mt-2",
 								message: unref(form).errors.password
 							}, null, 8, ["message"])
