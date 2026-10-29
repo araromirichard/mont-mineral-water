@@ -22,9 +22,9 @@
     ]);
 
     const packSizeOptions = ref([
-        { label: 'Pack of 24 bottles', value: 'Pack of 24 bottles' },
+        { label: 'Pack of 20 bottles', value: 'Pack of 20 bottles' },
         { label: 'Pack of 15 bottles', value: 'Pack of 15 bottles' },
-        { label: 'Pack of 12 bottles', value: 'Pack of 12 bottles' },
+        { label: 'Pack of 6 bottles', value: 'Pack of 6 bottles' },
     ]);
 
     const form = useForm({

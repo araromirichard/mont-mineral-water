@@ -15,16 +15,16 @@
     "/build/assets/ApplicationLogo-De7nLcr7.js"
   ],
   "resources/js/Components/BaseCardComponent.vue": [
-    "/build/assets/Index-BLtiqAZu.js",
-    "/build/assets/Index-atS-tB8W.css"
+    "/build/assets/Index-BjdnJDj8.js",
+    "/build/assets/Index-Bg5sI3yO.css"
   ],
   "resources/js/Components/BaseTab.vue": [
-    "/build/assets/Index-BLtiqAZu.js",
-    "/build/assets/Index-atS-tB8W.css"
+    "/build/assets/Index-BjdnJDj8.js",
+    "/build/assets/Index-Bg5sI3yO.css"
   ],
   "resources/js/Components/BaseTabWrapper.vue": [
-    "/build/assets/Index-BLtiqAZu.js",
-    "/build/assets/Index-atS-tB8W.css"
+    "/build/assets/Index-BjdnJDj8.js",
+    "/build/assets/Index-Bg5sI3yO.css"
   ],
   "resources/js/Components/BreadcrubItem.vue": [
     "/build/assets/CheckOut-vZeMKHhq.js",
@@ -46,7 +46,8 @@
     "/build/assets/DangerButton-CyYZaE2B.js"
   ],
   "resources/js/Components/Dropdown.vue": [
-    "/build/assets/AdminLayout-ChNnk7U6.js"
+    "/build/assets/AdminLayout-C8vXYz0r.js",
+    "/build/assets/AdminLayout-cAAnkdSz.css"
   ],
   "resources/js/Components/DropdownLink.vue": [
     "/build/assets/DropdownLink-i2Q5OIsF.js"
@@ -141,7 +142,7 @@
     "/build/assets/AppLayout-C_N8fGwh.css"
   ],
   "resources/js/Components/ResponsiveNavLink.vue": [
-    "/build/assets/ResponsiveNavLink-DxUco59W.js"
+    "/build/assets/ConfirmPassword-Ct0dy8h1.js"
   ],
   "resources/js/Components/SecondaryButton.vue": [
     "/build/assets/DangerButton-CyYZaE2B.js"
@@ -159,7 +160,8 @@
     "/build/assets/Index-Cd_VDOgd.css"
   ],
   "resources/js/Components/SideNavLinks.vue": [
-    "/build/assets/AdminLayout-ChNnk7U6.js"
+    "/build/assets/AdminLayout-C8vXYz0r.js",
+    "/build/assets/AdminLayout-cAAnkdSz.css"
   ],
   "resources/js/Components/TextArea.vue": [
     "/build/assets/Index-C3-NtFoj.js"
@@ -201,7 +203,12 @@
     "/build/assets/Welcome-BrX_Ym8t.css"
   ],
   "resources/js/Layouts/AdminLayout.vue": [
-    "/build/assets/AdminLayout-ChNnk7U6.js"
+    "/build/assets/AdminLayout-C8vXYz0r.js",
+    "/build/assets/AdminLayout-cAAnkdSz.css"
+  ],
+  "resources/js/Layouts/AdminLayout.vue?vue&type=style&index=0&scoped=6f972666&lang.scss": [
+    "/build/assets/AdminLayout-C8vXYz0r.js",
+    "/build/assets/AdminLayout-cAAnkdSz.css"
   ],
   "resources/js/Layouts/AppLayout.vue": [
     "/build/assets/AppLayout-BlnyL3wK.js",
@@ -212,7 +219,7 @@
     "/build/assets/AppLayout-C_N8fGwh.css"
   ],
   "resources/js/Layouts/GuestLayout.vue": [
-    "/build/assets/ConfirmPassword-CvtY4V4w.js"
+    "/build/assets/ConfirmPassword-Ct0dy8h1.js"
   ],
   "resources/js/Pages/AboutMontMineralWater.vue": [
     "/build/assets/AboutMontMineralWater-BXM6JQiQ.js",
@@ -223,12 +230,12 @@
     "/build/assets/AboutMontMineralWater-l9D5eYOE.css"
   ],
   "resources/js/Pages/Admin/Index.vue": [
-    "/build/assets/Index-BLtiqAZu.js",
-    "/build/assets/Index-atS-tB8W.css"
+    "/build/assets/Index-BjdnJDj8.js",
+    "/build/assets/Index-Bg5sI3yO.css"
   ],
-  "resources/js/Pages/Admin/Index.vue?vue&type=style&index=0&scoped=d99a8f98&lang.css": [
-    "/build/assets/Index-BLtiqAZu.js",
-    "/build/assets/Index-atS-tB8W.css"
+  "resources/js/Pages/Admin/Index.vue?vue&type=style&index=0&scoped=d70fb3a5&lang.css": [
+    "/build/assets/Index-BjdnJDj8.js",
+    "/build/assets/Index-Bg5sI3yO.css"
   ],
   "resources/js/Pages/Admin/Invoice.vue": [
     "/build/assets/Invoice-D6ZFrj1G.js",
@@ -239,7 +246,7 @@
     "/build/assets/Invoice-3fezpl5B.css"
   ],
   "resources/js/Pages/Auth/ConfirmPassword.vue": [
-    "/build/assets/ConfirmPassword-CvtY4V4w.js"
+    "/build/assets/ConfirmPassword-Ct0dy8h1.js"
   ],
   "resources/js/Pages/Auth/DashBoard/CreateShippingAddress.vue": [
     "/build/assets/CreateShippingAddress-BWs_e4ep.js"
@@ -269,41 +276,41 @@
     "/build/assets/DashboardWrapper-om9XS1Gt.js"
   ],
   "resources/js/Pages/Order/Index.vue": [
-    "/build/assets/Index-sMJ2zJSq.js"
+    "/build/assets/Index-fXwfsa5r.js"
   ],
   "resources/js/Pages/Order/Show.vue": [
-    "/build/assets/Show-CsATkqqn.js",
-    "/build/assets/Show-D71s4NVp.css"
+    "/build/assets/Show-C6bEKRGv.js",
+    "/build/assets/Show-Dl-1ovQ_.css"
   ],
-  "resources/js/Pages/Order/Show.vue?vue&type=style&index=0&lang.css": [
-    "/build/assets/Show-CsATkqqn.js",
-    "/build/assets/Show-D71s4NVp.css"
+  "resources/js/Pages/Order/Show.vue?vue&type=style&index=0&scoped=29b2abb2&lang.css": [
+    "/build/assets/Show-C6bEKRGv.js",
+    "/build/assets/Show-Dl-1ovQ_.css"
   ],
   "resources/js/Pages/Product/Create.vue": [
-    "/build/assets/Create-CHn6SQFs.js",
+    "/build/assets/Create-C8tOnmh7.js",
     "/build/assets/Create-B4rEqTsy.css"
   ],
   "resources/js/Pages/Product/Create.vue?vue&type=style&index=0&scoped=7b6b5d38&lang.css": [
-    "/build/assets/Create-CHn6SQFs.js",
+    "/build/assets/Create-C8tOnmh7.js",
     "/build/assets/Create-B4rEqTsy.css"
   ],
   "resources/js/Pages/Product/Edit.vue": [
-    "/build/assets/Edit-D6EycnqW.js",
+    "/build/assets/Edit-v7iKJezU.js",
     "/build/assets/Edit-C7hq9_ct.css"
   ],
   "resources/js/Pages/Product/Edit.vue?vue&type=style&index=0&scoped=2621922b&lang.css": [
-    "/build/assets/Edit-D6EycnqW.js",
+    "/build/assets/Edit-v7iKJezU.js",
     "/build/assets/Edit-C7hq9_ct.css"
   ],
   "resources/js/Pages/Product/Index.vue": [
-    "/build/assets/Index-DINJvg6o.js"
+    "/build/assets/Index-DNKVS0wY.js"
   ],
   "resources/js/Pages/Product/show.vue": [
-    "/build/assets/show-DKfKhCsZ.js",
+    "/build/assets/show-CJcwFWkN.js",
     "/build/assets/show-mEZCcEKw.css"
   ],
   "resources/js/Pages/Product/show.vue?vue&type=style&index=0&lang.css": [
-    "/build/assets/show-DKfKhCsZ.js",
+    "/build/assets/show-CJcwFWkN.js",
     "/build/assets/show-mEZCcEKw.css"
   ],
   "resources/js/Pages/Profile/Edit.vue": [
@@ -335,10 +342,10 @@
     "/build/assets/ProductDetails-D-PrDPI9.css"
   ],
   "resources/js/Pages/User/Index.vue": [
-    "/build/assets/Index-CufrnJEa.js"
+    "/build/assets/Index-NIK5aaBu.js"
   ],
   "resources/js/Pages/User/show.vue": [
-    "/build/assets/show-Dt2Nyr-X.js"
+    "/build/assets/show-CBD9kayI.js"
   ],
   "resources/js/Pages/Welcome.vue": [
     "/build/assets/Welcome-BU4CCEzg.js",
